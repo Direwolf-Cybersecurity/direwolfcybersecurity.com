@@ -2,7 +2,7 @@
 
 **Prepared:** 2026-10-23 for Direwolf Cybersecurity (Colorado Springs, CO).
 **Status:** research memo for attorney review. Nothing here is legal advice; every legal
-page it leads to is a *draft for attorney review* (see `CLAUDE.md`).
+page it leads to is a _draft for attorney review_ (see `CLAUDE.md`).
 **Scope:** a U.S. B2B cybersecurity SaaS company incorporated in Colorado, selling to U.S.
 small and mid-size businesses and to DoD contractors, with a static marketing site on
 GitHub Pages (`www.direwolfcybersecurity.com`) and a separate platform
@@ -21,20 +21,20 @@ How to read this document:
   §§2, 6.11, 6.13, 7, 8, 10, 14). Nothing about people, customers, numbers or certifications
   has been invented; the claims rules in `CLAUDE.md` and PLAN §14.3 govern wording.
 
-Summary of what is actually *required* (everything else is advisable):
+Summary of what is actually _required_ (everything else is advisable):
 
-| Requirement | Why | Section |
-|---|---|---|
-| Conspicuous privacy policy with specific contents and an effective date | CalOPPA applies to any commercial site collecting PII from California residents | 1.1 |
-| Reasonable security for personal identifying information, flowed down to vendors; written disposal policy | Colorado C.R.S. 6-1-713 and 6-1-713.5 apply to every covered entity regardless of size | 1.1.5 |
-| Breach notification within 30 days (AG at 500+ residents) | C.R.S. 6-1-716 | 1.1.5 |
-| CAN-SPAM mechanics on every marketing email (B2B included) | 15 U.S.C. 7701 et seq.; 16 CFR 316 | 1.6 |
-| Accessible website and app (standard not codified for private companies; WCAG 2.1 AA is the de facto benchmark) | ADA Title III per DOJ guidance | 1.5 |
-| Truthful, substantiated marketing and security claims | FTC Act §5; Colorado Consumer Protection Act | 6 |
-| PCI DSS validation (SAQ A) once card payments start | card-network rules via the Stripe agreement | 5.1 |
-| Auto-renewal disclosures, renewal reminders, one-step online cancellation | C.R.S. 6-1-732 (B2B reach UNVERIFIED, see 1.7.3) | 1.7.3 |
-| Enforceable assent to Terms/AUP/Privacy at sign-up (if you want the terms to bind) | contract law; see case law in §2 | 2 |
-| Payment-card, PHI, CUI and export-controlled data must not enter the platform until the service is approved for them | PCI, HIPAA, DFARS 7012/CMMC, ITAR/EAR | 4.4 |
+| Requirement                                                                                                          | Why                                                                                    | Section |
+| -------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | ------- |
+| Conspicuous privacy policy with specific contents and an effective date                                              | CalOPPA applies to any commercial site collecting PII from California residents        | 1.1     |
+| Reasonable security for personal identifying information, flowed down to vendors; written disposal policy            | Colorado C.R.S. 6-1-713 and 6-1-713.5 apply to every covered entity regardless of size | 1.1.5   |
+| Breach notification within 30 days (AG at 500+ residents)                                                            | C.R.S. 6-1-716                                                                         | 1.1.5   |
+| CAN-SPAM mechanics on every marketing email (B2B included)                                                           | 15 U.S.C. 7701 et seq.; 16 CFR 316                                                     | 1.6     |
+| Accessible website and app (standard not codified for private companies; WCAG 2.1 AA is the de facto benchmark)      | ADA Title III per DOJ guidance                                                         | 1.5     |
+| Truthful, substantiated marketing and security claims                                                                | FTC Act §5; Colorado Consumer Protection Act                                           | 6       |
+| PCI DSS validation (SAQ A) once card payments start                                                                  | card-network rules via the Stripe agreement                                            | 5.1     |
+| Auto-renewal disclosures, renewal reminders, one-step online cancellation                                            | C.R.S. 6-1-732 (B2B reach UNVERIFIED, see 1.7.3)                                       | 1.7.3   |
+| Enforceable assent to Terms/AUP/Privacy at sign-up (if you want the terms to bind)                                   | contract law; see case law in §2                                                       | 2       |
+| Payment-card, PHI, CUI and export-controlled data must not enter the platform until the service is approved for them | PCI, HIPAA, DFARS 7012/CMMC, ITAR/EAR                                                  | 4.4     |
 
 ---
 
@@ -73,7 +73,7 @@ platform users, by in-app notice (ties to (3) and to §2.4).
 
 #### 1.1.2 Colorado Privacy Act (CPA), C.R.S. 6-1-1301 to 6-1-1313: **Not applicable at launch; follow it anyway**
 
-Applies to a controller that conducts business in Colorado or targets Colorado residents *and*
+Applies to a controller that conducts business in Colorado or targets Colorado residents _and_
 either (a) controls or processes personal data of **100,000 or more consumers** in a calendar
 year, or (b) derives revenue or a price discount from the **sale** of personal data and
 processes data of **25,000 or more consumers** [S2]. There is no revenue-only threshold.
@@ -355,14 +355,14 @@ Subprocessors · Contact (with postal address once available). PLAN §14.2 alrea
 
 ### 2.1 Case law: what courts enforce and what they refuse
 
-| Case | Design at issue | Result | Lesson |
-|---|---|---|---|
-| *Specht v. Netscape*, 306 F.3d 17 (2d Cir. 2002) (not re-fetched; classic case) | Terms linked below the fold of a download page; user never saw them | Not enforceable | Terms must be visible before the action that supposedly accepts them. |
-| *Nguyen v. Barnes & Noble*, 763 F.3d 1171 (9th Cir. 2014) | **Browsewrap**: "Terms of Use" link in the footer; no click required | Not enforceable; proximity of a link to a button is not enough without notice or an act of assent [S34][S35] | Browsewrap does not bind users. |
-| *Meyer v. Uber Technologies*, 868 F.3d 66 (2d Cir. Aug. 17, 2017) | Registration screen stated that by creating an account the user agrees to the Terms of Service; "Terms of Service" underlined, blue, hyperlinked, on the same screen as the Register button | Enforceable: "reasonably conspicuous" notice and unambiguous assent by clicking Register [S36] | A clean sign-in-wrap can work if the notice is next to the button and the link looks like a link. |
-| *Berman v. Freedom Financial Network*, 30 F.4th 849 (9th Cir. Apr. 5, 2022) | Tiny gray text with a hyperlink in the same color as surrounding text; a "Continue" button that said nothing about terms | Not enforceable; two-part test: (1) reasonably conspicuous notice and (2) action that unambiguously manifests assent; the text was "the antithesis of conspicuous" [S37][S38] | Font, contrast, link styling and button wording all matter. |
-| *Oberstein v. Live Nation*, (9th Cir. Feb. 13, 2023) | Users confirmed agreement to the Terms of Use at three stages of account creation; link conspicuous | Enforceable under the *Berman* test [S39] | Repeated, conspicuous confirmation at natural decision points is robust. |
-| *Chabolla v. ClassPass*, (9th Cir. Feb. 27, 2025, 2-1) | Three screens; notice on screen 1 far from the "Continue" button and outside the user's natural flow; buttons said "Continue"/"Redeem now" | Not enforceable; notice not reasonably conspicuous and progressing through screens did not unambiguously manifest assent [S40][S41] | Button text must signal agreement; distance from the action defeats notice; clickwrap and scrollwrap give the most certainty. |
+| Case                                                                            | Design at issue                                                                                                                                                                             | Result                                                                                                                                                                        | Lesson                                                                                                                        |
+| ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| _Specht v. Netscape_, 306 F.3d 17 (2d Cir. 2002) (not re-fetched; classic case) | Terms linked below the fold of a download page; user never saw them                                                                                                                         | Not enforceable                                                                                                                                                               | Terms must be visible before the action that supposedly accepts them.                                                         |
+| _Nguyen v. Barnes & Noble_, 763 F.3d 1171 (9th Cir. 2014)                       | **Browsewrap**: "Terms of Use" link in the footer; no click required                                                                                                                        | Not enforceable; proximity of a link to a button is not enough without notice or an act of assent [S34][S35]                                                                  | Browsewrap does not bind users.                                                                                               |
+| _Meyer v. Uber Technologies_, 868 F.3d 66 (2d Cir. Aug. 17, 2017)               | Registration screen stated that by creating an account the user agrees to the Terms of Service; "Terms of Service" underlined, blue, hyperlinked, on the same screen as the Register button | Enforceable: "reasonably conspicuous" notice and unambiguous assent by clicking Register [S36]                                                                                | A clean sign-in-wrap can work if the notice is next to the button and the link looks like a link.                             |
+| _Berman v. Freedom Financial Network_, 30 F.4th 849 (9th Cir. Apr. 5, 2022)     | Tiny gray text with a hyperlink in the same color as surrounding text; a "Continue" button that said nothing about terms                                                                    | Not enforceable; two-part test: (1) reasonably conspicuous notice and (2) action that unambiguously manifests assent; the text was "the antithesis of conspicuous" [S37][S38] | Font, contrast, link styling and button wording all matter.                                                                   |
+| _Oberstein v. Live Nation_, (9th Cir. Feb. 13, 2023)                            | Users confirmed agreement to the Terms of Use at three stages of account creation; link conspicuous                                                                                         | Enforceable under the _Berman_ test [S39]                                                                                                                                     | Repeated, conspicuous confirmation at natural decision points is robust.                                                      |
+| _Chabolla v. ClassPass_, (9th Cir. Feb. 27, 2025, 2-1)                          | Three screens; notice on screen 1 far from the "Continue" button and outside the user's natural flow; buttons said "Continue"/"Redeem now"                                                  | Not enforceable; notice not reasonably conspicuous and progressing through screens did not unambiguously manifest assent [S40][S41]                                           | Button text must signal agreement; distance from the action defeats notice; clickwrap and scrollwrap give the most certainty. |
 
 The consistent rule: **a clickwrap (unchecked box or a button whose label references the terms,
 with conspicuous links on the same screen) is enforced; browsewrap is not; sign-in-wrap is
@@ -370,8 +370,8 @@ enforced only when the notice is conspicuous and adjacent to the act of assent.*
 Circuit (which covers California, where many SaaS disputes land) is the strictest.
 
 Unilateral changes: terms that let the provider change them "at any time" without notice are
-not binding on existing users without notice of the change (*Douglas v. U.S. District Court
-(Talk America)*, 495 F.3d 1062 (9th Cir. 2007); not re-fetched). Material changes need notice
+not binding on existing users without notice of the change (_Douglas v. U.S. District Court
+(Talk America)_, 495 F.3d 1062 (9th Cir. 2007); not re-fetched). Material changes need notice
 and fresh acceptance (§2.4).
 
 ### 2.2 Electronic signatures and records
@@ -388,7 +388,7 @@ and fresh acceptance (§2.4).
   electronic signature a signature requirement [S43].
 
 A checked box plus a stored record is an electronic signature. The evidentiary burden is on
-Direwolf to show *what the user saw* and *what they did*, which drives the record-keeping below.
+Direwolf to show _what the user saw_ and _what they did_, which drives the record-keeping below.
 
 ### 2.3 What the sign-up UI must look like
 
@@ -431,16 +431,16 @@ Direwolf to show *what the user saw* and *what they did*, which drives the recor
 PLAN §14.4 already specifies `ConsentRecord(user, document, version, accepted_at, ip,
 user_agent)`. Recommended full schema, append-only like the audit log:
 
-| Field | Why |
-|---|---|
-| `user_id`, `org_id` | who bound whom |
-| `document_slug` (terms, aup, privacy, banner, prohibited-data) | which document |
-| `document_version` (`vYYYY.MM.DD`) and `document_sha256` | ties the record to the exact text; keep every published version's source and rendered HTML in the website repo and a copy in the platform database so the text can be produced years later (E-SIGN 7001(d) accuracy and accessibility [S42]) |
-| `accepted_at` (UTC, from the server clock) | when |
-| `ip`, `user_agent`, `locale` | corroborates identity and the device |
-| `method` (`signup_checkbox`, `login_banner`, `stripe_checkout`, `reacceptance`) | what act of assent |
-| `ui_version` or `screenshot_ref` | which rendering of the consent screen; keep a dated screenshot of the sign-up screen for every UI change and every document version (courts decide these cases on screenshots of the flow: Berman, Chabolla, Meyer) |
-| `stripe_checkout_session_id` (when applicable) | links to Stripe's own `consent.terms_of_service` evidence [S27] |
+| Field                                                                           | Why                                                                                                                                                                                                                                          |
+| ------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `user_id`, `org_id`                                                             | who bound whom                                                                                                                                                                                                                               |
+| `document_slug` (terms, aup, privacy, banner, prohibited-data)                  | which document                                                                                                                                                                                                                               |
+| `document_version` (`vYYYY.MM.DD`) and `document_sha256`                        | ties the record to the exact text; keep every published version's source and rendered HTML in the website repo and a copy in the platform database so the text can be produced years later (E-SIGN 7001(d) accuracy and accessibility [S42]) |
+| `accepted_at` (UTC, from the server clock)                                      | when                                                                                                                                                                                                                                         |
+| `ip`, `user_agent`, `locale`                                                    | corroborates identity and the device                                                                                                                                                                                                         |
+| `method` (`signup_checkbox`, `login_banner`, `stripe_checkout`, `reacceptance`) | what act of assent                                                                                                                                                                                                                           |
+| `ui_version` or `screenshot_ref`                                                | which rendering of the consent screen; keep a dated screenshot of the sign-up screen for every UI change and every document version (courts decide these cases on screenshots of the flow: Berman, Chabolla, Meyer)                          |
+| `stripe_checkout_session_id` (when applicable)                                  | links to Stripe's own `consent.terms_of_service` evidence [S27]                                                                                                                                                                              |
 
 Retention: for the life of the customer relationship plus the limitations period for contract
 claims in the governing-law state (confirm the Colorado period with counsel). Expose the
@@ -497,7 +497,7 @@ version changes (transactional message, CAN-SPAM-exempt).
   begins "You are accessing a U.S. Government (USG) Information System (IS) that is provided for
   USG-authorized use only" and consents to USG interception, inspection and seizure [S49][S50].
   A commercial platform that displayed that text would be misrepresenting itself as a government
-  system. Customers' own 800-171 scopes may require *their* banner on *their* endpoints; that is
+  system. Customers' own 800-171 scopes may require _their_ banner on _their_ endpoints; that is
   theirs, not Direwolf's.
 
 ### 3.2 What a commercial platform serving DoD contractors should display
@@ -575,13 +575,13 @@ Publish `/legal/subprocessors` and incorporate it by reference, with notice of a
 to org admins, 30 days) and a termination right if the customer objects on reasonable
 security grounds. Today's list, with the function each serves:
 
-| Subprocessor | Function | Location |
-|---|---|---|
-| Amazon Web Services (AWS GovCloud (US)): ECS, RDS, S3, SQS, KMS, SES, Bedrock | hosting, storage, email delivery, AI model inference | United States (GovCloud (US-West)) |
-| Stripe, Inc. | payment processing, invoicing, subscription management (card data never touches Direwolf) | United States |
-| SentinelOne, Inc. | endpoint protection platform; resold subscription; receives endpoint telemetry directly from the customer's endpoints | United States (confirm data-residency option with SentinelOne; UNVERIFIED) |
-| NinjaOne, LLC | endpoint management; resold subscription; receives device inventory and management data | United States (confirm; UNVERIFIED) |
-| GitHub, Inc. | hosts the marketing website only; logs visitor IP addresses [S13] | United States |
+| Subprocessor                                                                  | Function                                                                                                              | Location                                                                   |
+| ----------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| Amazon Web Services (AWS GovCloud (US)): ECS, RDS, S3, SQS, KMS, SES, Bedrock | hosting, storage, email delivery, AI model inference                                                                  | United States (GovCloud (US-West))                                         |
+| Stripe, Inc.                                                                  | payment processing, invoicing, subscription management (card data never touches Direwolf)                             | United States                                                              |
+| SentinelOne, Inc.                                                             | endpoint protection platform; resold subscription; receives endpoint telemetry directly from the customer's endpoints | United States (confirm data-residency option with SentinelOne; UNVERIFIED) |
+| NinjaOne, LLC                                                                 | endpoint management; resold subscription; receives device inventory and management data                               | United States (confirm; UNVERIFIED)                                        |
+| GitHub, Inc.                                                                  | hosts the marketing website only; logs visitor IP addresses [S13]                                                     | United States                                                              |
 
 Note that SentinelOne and NinjaOne are both subprocessors (for Direwolf's connector data) and
 direct licensors to the customer (§4.10). Bedrock is a feature of AWS, not a separate company;
@@ -593,7 +593,7 @@ the DPA-style clause here.
 
 - **Definition:** "Security Incident" = confirmed unauthorized access to, or acquisition,
   disclosure, loss or alteration of, Customer Data on Direwolf-controlled systems. Distinguish it
-  from the threats the service *detects* on the customer's endpoints (those are the product and
+  from the threats the service _detects_ on the customer's endpoints (those are the product and
   are reported through the dashboard and alerts).
 - **Timing:** notify the org's admin contacts "without undue delay and in any event within
   72 hours of confirming" a Security Incident, with what is known, what was affected, steps
@@ -656,8 +656,8 @@ Add the matching representation to the sign-up attestation (§2.3 item 8) and th
   using FIPS 140-2 (or successor) validated modules or equivalent, "the means of decryption are
   not provided to any third party," and it is not intentionally stored in a §126.1 country
   [S59]; EAR 15 CFR 734.18(a)(5) and (b) are parallel (Country Group D:5) [S60]. These
-  carve-outs are what make U.S.-hosted cloud storage of export-controlled data lawful *when the
-  provider has no access to the plaintext*. A SOC provider necessarily reads telemetry, so the
+  carve-outs are what make U.S.-hosted cloud storage of export-controlled data lawful _when the
+  provider has no access to the plaintext_. A SOC provider necessarily reads telemetry, so the
   carve-out does not fit the core service; hence the prohibition in §4.4 until a reviewed
   offering exists.
 - **Contract clause.** Customer represents it will not provide export-controlled technical data
@@ -700,7 +700,7 @@ Add the matching representation to the sign-up attestation (§2.3 item 8) and th
   its services "in the OSA's assessment scope" and "assessed as Security Protection Assets";
   the ESP "may voluntarily undergo a CMMC certification assessment to reduce the ESP's effort,"
   and a CSP processing CUI "shall meet the FedRAMP requirements in 48 CFR 252.204-7012" [S64].
-  (The exact row for a *CSP* handling SPD only was not quoted back in my fetch; PLAN §8 reads
+  (The exact row for a _CSP_ handling SPD only was not quoted back in my fetch; PLAN §8 reads
   it as "in scope, no FedRAMP needed"; mark UNVERIFIED and confirm with the C3PAO/RPO.)
 - **What this means for the contract and the site:**
   1. Direwolf should **not accept a 7012 flow-down** that presumes it handles CDI, because the
@@ -868,7 +868,7 @@ genuinely negotiated license; state-collected local jurisdictions follow the sta
 the roughly 70 **home-rule** cities keep their own bases, definitions and sourcing rules, and
 many of them (Denver is the named example) already tax SaaS [S71][S72]. Colorado Springs is a
 home-rule city and vendor tables list it as taxing SaaS at a local rate of about 3.07 percent,
-but I could not confirm that from the city code (UNVERIFIED) [S73]. Beyond Colorado, post-*Wayfair*
+but I could not confirm that from the city code (UNVERIFIED) [S73]. Beyond Colorado, post-_Wayfair_
 economic-nexus rules mean sales to customers in other states can create collection duties in
 states that tax SaaS. Practical path: engage a Colorado CPA before the first invoice, register
 with the Department of Revenue and with Colorado Springs, consider Stripe Tax for calculation,
@@ -887,20 +887,20 @@ and treat tax as "plus applicable taxes" in the Customer Agreement.
   apply online, where disclosures must be "clear and conspicuous" [S74]. Colorado's Consumer
   Protection Act (C.R.S. 6-1-105) mirrors this for state enforcement and private suits.
 - **Security claims are where companies get hurt.** The FTC has for a decade treated (a)
-  unreasonable security as an *unfair* practice and (b) overstated security as a *deceptive*
+  unreasonable security as an _unfair_ practice and (b) overstated security as a _deceptive_
   one:
-  - *FTC v. Wyndham* (complaint June 2012; Third Circuit affirmed FTC authority August 24, 2015;
+  - _FTC v. Wyndham_ (complaint June 2012; Third Circuit affirmed FTC authority August 24, 2015;
     stipulated order December 11, 2015) [S75].
-  - *Zoom* (November 9, 2020): alleged misrepresentation of "end-to-end, 256-bit encryption"
+  - _Zoom_ (November 9, 2020): alleged misrepresentation of "end-to-end, 256-bit encryption"
     while Zoom held the keys, of recording encryption, and secret installation of a web server;
     order requires a comprehensive security program, MFA, vulnerability management, independent
     assessments and bars misrepresenting privacy and security practices [S76].
-  - *GoDaddy* (proposed order January 15, 2025; finalized May 21, 2025): counts for unfair
+  - _GoDaddy_ (proposed order January 15, 2025; finalized May 21, 2025): counts for unfair
     failure to maintain reasonable security (no asset inventory or patching, weak logging and
     monitoring, no MFA, no segmentation), deceptive claims about security, and deceptive
     Privacy Shield claims; order requires a security program reviewed by an independent assessor
     and bars misrepresentations [S77].
-  - The FTC's *Start with Security* guide distills ten lessons from these cases (collect only
+  - The FTC's _Start with Security_ guide distills ten lessons from these cases (collect only
     what you need; control access; strong authentication; encrypt in storage and transit;
     segment and monitor; secure remote access; secure development; hold service providers to
     standards; patch; secure physical media) [S78].
@@ -947,16 +947,19 @@ incentive given.
 - Misrepresenting VOSB/SDVOSB status in procurement carries a presumption of loss equal to the
   contract value, suspension and debarment, False Claims Act liability and criminal exposure
   under 15 U.S.C. 645 and 18 U.S.C. 1001 and 287 (13 CFR 128.600) [S82].
-- **Site rule (already in `CLAUDE.md`):** say "veteran-owned" only. Do not use "VOSB," "SDVOSB,"
-  "certified" or the SBA logo until VetCert is granted. If the owner wants the federal status,
-  VetCert is free and worth doing; also consider state/local veteran-business preference
-  programs (not researched).
+- **Site rule (updated 2026-10-23 from `CLAUDE.md` "Owner facts"):** the owner states that
+  Direwolf holds SBA VetCert certification as an SDVOSB, so the site says "Service-Disabled
+  Veteran-Owned Small Business (SDVOSB), SBA certified" (claims register row F1). The certificate
+  or the SAM.gov entity record must be filed under `docs/evidence/` before launch, and the SBA
+  icon may be shown only under SBA's icon rules (`docs/claims-research.md` §7;
+  `docs/launch-runbook.md`, "Logo use"). Do not write "VA-verified". Also consider state/local
+  veteran-business preference programs (not researched).
 
 ### 6.4 EEO statement conventions
 
 - **Who must say what.** Title VII applies at 15+ employees; Colorado's Anti-Discrimination Act
   (C.R.S. 24-34-401 et seq.) covers employers of any size (statute not fetched in this pass).
-  For *federal contractors and subcontractors*: Executive Order 11246 was revoked by EO 14173
+  For _federal contractors and subcontractors_: Executive Order 11246 was revoked by EO 14173
   (January 21, 2025) and OFCCP published three final rules on August 21, 2026 that rescind the
   EO 11246 regulations effective October 26, 2026, narrow Section 503 (threshold now $20,000)
   and make technical changes to VEVRAA (threshold now $200,000), both effective September 21,
@@ -966,7 +969,7 @@ incentive given.
   Section 503 clause requires the same statement that applicants "will not be discriminated
   against on the basis of disability" (41 CFR 60-741.5(a) para. 7) [S84][S85]. Direwolf sells
   to contractors rather than to the government and will be below these thresholds unless it
-  takes a subcontract that flows them down; so none of this is *required* today (UNVERIFIED
+  takes a subcontract that flows them down; so none of this is _required_ today (UNVERIFIED
   until the first contract is known).
 - **Convention to adopt anyway** (it is what the owner asked for and what customers expect):
   "Direwolf Cybersecurity is an equal opportunity employer. All qualified applicants will
@@ -978,16 +981,16 @@ incentive given.
 
 ### 6.5 Compliance-claim wording (consolidated)
 
-| Topic | Say | Do not say |
-|---|---|---|
-| NIST SP 800-171 | "aligned to NIST SP 800-171 (Rev 2)" | "NIST compliant," "NIST certified" |
-| CMMC | "pursuing CMMC Level 2 certification" | "CMMC certified," "CMMC compliant" until the C3PAO certificate exists |
-| Hosting | "hosted in AWS GovCloud (US) on FedRAMP High authorized infrastructure" (note AWS's current "Class D (formerly High)" label [S65]) | "Direwolf is FedRAMP authorized," "FedRAMP Moderate equivalent" |
-| Cryptography | "FIPS 140-validated cryptography for TLS termination and key management" | "FIPS validated platform" |
-| AI | "AI-run security operations around the clock with human analyst review"; "your data is not used to train models" [S15] | "24x7 analysts," "AI never makes mistakes" |
-| Ownership | "veteran-owned" | "VOSB," "SDVOSB," "certified" |
-| Data handling | "not approved for CUI, ITAR technical data or PHI" | silence on the point |
-| Roadmap | "on our roadmap" | present tense for GRC, LMS, dark-web, scanning, mapping, repository, sensor, SIEM |
+| Topic           | Say                                                                                                                                                               | Do not say                                                                                                          |
+| --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| NIST SP 800-171 | "aligned to NIST SP 800-171 (Rev 2)"                                                                                                                              | "NIST compliant," "NIST certified"                                                                                  |
+| CMMC            | "pursuing CMMC Level 2 certification"                                                                                                                             | "CMMC certified," "CMMC compliant" until the C3PAO certificate exists                                               |
+| Hosting         | "hosted in AWS GovCloud (US) on FedRAMP High authorized infrastructure" (note AWS's current "Class D (formerly High)" label [S65])                                | "Direwolf is FedRAMP authorized," "FedRAMP Moderate equivalent"                                                     |
+| Cryptography    | "FIPS 140-validated cryptography for TLS termination and key management"                                                                                          | "FIPS validated platform"                                                                                           |
+| AI              | "AI-run security operations around the clock with human analyst review"; "your data is not used to train models" [S15]                                            | "24x7 analysts," "AI never makes mistakes"                                                                          |
+| Ownership       | "Service-Disabled Veteran-Owned Small Business (SDVOSB), SBA certified" (register F1; owner statement 2026-10-23; certificate to be filed under `docs/evidence/`) | "VA-verified," "VOSB" alone, any certification wording beyond the SBA VetCert status, SBA icons used as advertising |
+| Data handling   | "not approved for CUI, ITAR technical data or PHI"                                                                                                                | silence on the point                                                                                                |
+| Roadmap         | "on our roadmap"                                                                                                                                                  | present tense for GRC, LMS, dark-web, scanning, mapping, repository, sensor, SIEM                                   |
 
 ---
 
@@ -1079,7 +1082,7 @@ Section508.gov and vendor EULAs directly. Law-firm summaries were used only wher
 Items marked **UNVERIFIED** above, consolidated:
 
 1. Whether C.R.S. 6-1-732 (auto-renewal) reaches B2B subscriptions after SB 25-145 (§1.7.3).
-2. 32 CFR 170.19 Table 4 row for a *CSP* handling SPD only (§4.6); confirm with C3PAO/RPO.
+2. 32 CFR 170.19 Table 4 row for a _CSP_ handling SPD only (§4.6); confirm with C3PAO/RPO.
 3. Whether Direwolf's staff with data access are all U.S. persons (a fact only the owner knows;
    §4.5) and whether SentinelOne/NinjaOne offer U.S.-only data residency (§4.2).
 4. Colorado Springs' local taxation of SaaS (§5.3) and the broader multistate nexus picture.
@@ -1087,8 +1090,8 @@ Items marked **UNVERIFIED** above, consolidated:
 6. Texas TDPSA small-business exemption (§1.1.3); Colorado's commercial-email statute (§1.6);
    the Eighth Circuit's vacatur of the FTC click-to-cancel rule (§1.7.3); DIB-VDP's current
    status (§7.4); CIRCIA's final rule (§4.3): each noted from secondary or remembered sources.
-7. Cases cited from memory without re-fetching: *Specht*, *Douglas v. Talk America*, *Robles v.
-   Domino's*; reporter citations for *Oberstein* and *Chabolla* omitted for that reason.
+7. Cases cited from memory without re-fetching: _Specht_, _Douglas v. Talk America_, _Robles v.
+   Domino's_; reporter citations for _Oberstein_ and _Chabolla_ omitted for that reason.
 8. Owner inputs still needed: legal entity name and form (LLC/Inc.), postal address, privacy
    and security contact mailboxes, whether PHI will be accepted (BAA decision), whether to
    pursue VetCert, insurance, and the partner-program agreements with SentinelOne and NinjaOne

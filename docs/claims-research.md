@@ -31,7 +31,8 @@ it is in the register.
    requirement for third-party (C3PAO) Level 2 assessments that was to begin
    2026-11-10, pending a 60-day review; Phase 1 self-assessments and the underlying
    NIST SP 800-171 obligations remain in force. No outcome of the review was found as of
-   2026-10-23. See §3.
+   2026-10-23. Confirmed against the Department of War release and the Cyber AB statement on
+   2026-10-23 (§3.4). See §3.
 3. **DFARS 252.204-7019 was removed and 7020 renumbered** by class deviation effective
    2026-02-01 (**SECONDARY**; acquisition.gov still displays 7019). See §4.
 4. **FIPS 140-2 certificates left the active list** on 2026-09-21/22; only FIPS 140-3
@@ -141,7 +142,7 @@ register is the control that keeps public statements consistent with
   [Knox Systems](https://knoxsystems.com/resources/fedramp-marketplace-explained).
   Vendor commentary agrees that "FedRAMP compliant", "FedRAMP certified" (before CR26) and
   "FedRAMP equivalent" were never official statuses
-  ([Kiteworks](https://www.kiteworks.com/?p=24125)). Under CR26 "FedRAMP Certified" *is*
+  ([Kiteworks](https://www.kiteworks.com/?p=24125)). Under CR26 "FedRAMP Certified" _is_
   the official status, which makes the word "certified" more dangerous for us, not less:
   it now means a specific designation letter and Marketplace listing.
 
@@ -163,7 +164,7 @@ Source: [FedRAMP Brand Use Policy](https://www.fedramp.gov/brand/brand-guideline
   products/services" and "Truthful descriptive references to FedRAMP in marketing
   materials". The policy refers to a "FedRAMP Marketplace Positioning Tips" document that
   could not be found (**NOT RETRIEVED**).
-- A provider may call *its own* product "FedRAMP Certified" only with an official
+- A provider may call _its own_ product "FedRAMP Certified" only with an official
   designation letter, continued compliance, an independent assessment service and "an
   active listing on the FedRAMP Marketplace" (CSP guidance).
 - Certified organizations are responsible for how their "resellers, and partners" use the
@@ -174,7 +175,7 @@ Source: [FedRAMP Brand Use Policy](https://www.fedramp.gov/brand/brand-guideline
   branding@gsa.gov (Brand Standards).
 
 **Reading for Direwolf.** Direwolf is not a FedRAMP participant and must never use the
-logo. A truthful, attributed, descriptive reference to *AWS's* status ("AWS GovCloud (US)
+logo. A truthful, attributed, descriptive reference to _AWS's_ status ("AWS GovCloud (US)
 is FedRAMP Certified at Class D (formerly High), per AWS") is the kind of "truthful
 descriptive reference" the policy permits, and is ordinary nominative use of a fact
 published by AWS. The risk is the net impression. Controls adopted in the register:
@@ -291,7 +292,7 @@ triage notes), not CUI (`docs/compliance/customer-responsibility-matrix.md`). As
 ESP Direwolf is assessed inside each customer's scope as a Security Protection Asset and
 must supply a service description and a CRM; it does not need FedRAMP Moderate. The site
 must say plainly that the platform is not for CUI storage, and must not describe any
-"CUI repository" as available (PLAN.md §8, Phase 6). Direwolf may pursue a *voluntary*
+"CUI repository" as available (PLAN.md §8, Phase 6). Direwolf may pursue a _voluntary_
 C3PAO Level 2 assessment of its own environment; until it holds a status, the words are
 "preparing for" / "pursuing".
 
@@ -324,9 +325,64 @@ C3PAO Level 2 assessment of its own environment; until it holds a status, the wo
   ([Latham & Watkins](https://www.lw.com/en/insights/what-defense-contractors-should-know-about-dod-suspension-of-cmmc-phase-2),
   [Skadden](https://www.skadden.com/insights/publications/2026/07/dow-suspends-cmmc-phase-ii),
   [Jenner & Block](https://www.jenner.com/en/news-insights/client-alerts/department-of-war-suspends-cmmc-phase-iibut-compliance-obligations-remain-as-does-enforcement-risk)).
-  The memos themselves are **NOT RETRIEVED** (war.gov / dodcio.defense.gov block the
-  tooling). No published outcome of the review was found by 2026-10-23; check before
-  launch and whenever the Compliance page is edited.
+  The memos themselves are **NOT RETRIEVED** by scripted fetches (war.gov, dowcio.war.gov
+  and media.defense.gov answer HTTP 403 to automated tooling).
+- **Primary-source check, 2026-10-23 (register row C2; launch runbook gate G10).**
+  - Department of War release, "Forging the Arsenal of Freedom: Department of War Suspends
+    CMMC Phase II Requirements", 2026-07-13,
+    <https://www.war.gov/News/Releases/Release/Article/4542329/forging-the-arsenal-of-freedom-department-of-war-suspends-cmmc-phase-ii-require/>
+    (mirror: <https://business.defense.gov/Engage/News/Article/4542563/forging-the-arsenal-of-freedom-department-of-war-suspends-cmmc-phase-ii-require/>),
+    **read in full in a browser on 2026-10-23**: "the immediate suspension of the
+    Cybersecurity Maturity Model Certification (CMMC) Phase II requirements, which were
+    originally scheduled to come into effect on November 10, 2026. All Phase I
+    self-assessment requirements remain firmly in place"; "Effective immediately, the
+    Department will suspend the transition to Phase II requirements of CMMC, as well as
+    pending and future CMMC implementation milestones across the Department of War
+    solicitations and contracts"; a CMMC Reform Task Force will deliver "their final report
+    to the DoW CIO within 60 days"; "During this interim period, the Department will enforce
+    cybersecurity compliance with the NIST SP 800-171 Rev 2 standard through self-assessments
+    and select government-led assessments"; contractors "remain contractually obligated to
+    safeguard covered defense information in accordance with DFARS clause 252.204-7012".
+    Quoted officials: DoW CIO Kirsten A. Davies; Under Secretary of War for Acquisition and
+    Sustainment Michael Duffey.
+  - DoW CIO implementing memo,
+    <https://dowcio.war.gov/Portals/0/Documents/Library/ImplementingSuspensionCMMC-PhaseII.pdf>,
+    and reform memo, <https://dowcio.war.gov/Portals/0/Documents/Library/CMMC-ReformMemo.pdf>
+    (search-engine extracts only; the PDFs refuse scripted download): program managers "may
+    request only Level 1 (Self) or Level 2 (Self) assessments, and may not designate CMMC
+    Level 2 (C3PAO) or Level 3 (DIBCAC) assessments during this period", and solicitations
+    carrying those requirements are to be amended. Phase 2 of the DFARS CMMC rule was the
+    Level 2 (C3PAO) condition of award (§3.3), which is why the Compliance page calls the
+    suspended requirement "third-party (C3PAO) Level 2 assessments".
+  - DoW CMMC FAQ, 2026-08-26,
+    <https://media.defense.gov/2026/Aug/26/2003986826/-1/-1/0/CYBERSECURITYMATURITYMODELCERTIFICATIONFAQS.PDF>
+    (search-engine extract): the suspension of Phases 2 and 3 "do not change the
+    requirements of Phase I, which continues to be a current, valid requirement".
+  - Cyber AB, "Statement on the Department of War's Suspension of CMMC Phase II
+    Requirements", 2026-07-15,
+    <https://cyberab.org/News-Events/Press-Releases/statement-on-the-department-of-wars-suspension-of-cmmc-phase-ii-requirements>
+    (PDF <https://www.cyberab.org/Portals/0/Documents/CyberABStatementOnDoWPhaseIISuspension-15JUL2026.pdf>,
+    **retrieved in full**): acknowledges "Monday's Pentagon announcement of its suspension of
+    CMMC Phase II requirements and the establishment of a CMMC Reform Task Force to conduct
+    a 60-day review of the program" and emphasises "that only Phase II implementation
+    requirements have been suspended and that all CMMC program elements remain operational
+    and available, to include C3PAO Level 2 certification assessments".
+  - DoW CIO "About CMMC" page, <https://dodcio.defense.gov/cmmc/About/>, **read in full in a
+    browser on 2026-10-23**: "On July 13, 2026 the DoW suspended the implementation of Phase
+    II of the CMMC and established a CMMC reform task force. During this period the DoW will
+    enforce cybersecurity compliance with NIST 800-171 Rev 2 through self-assessments and
+    select government-led assessments"; "The CMMC Program is paused in Phase 1 and may only
+    require self-assessments at two levels"; the status table lists only Level 1 (Self) and
+    Level 2 (Self), so the pause is still in effect on 2026-10-23.
+  - Federal Register: no 2026 document amending 32 CFR part 170 or DFARS 252.204-7021 was
+    found (federalregister.gov search, 2026-10-23); the suspension was made by memorandum,
+    not by rule. No published outcome of the 60-day review (nominally due in mid-September 2026) was found on war.gov, dodcio.defense.gov or cyberab.org.
+  - **Conclusion:** the Compliance-page sentence in register row C2 ("In July 2026 the
+    Department of War suspended the requirement for third-party (C3PAO) Level 2 assessments
+    while it reviews the CMMC program; self-assessment requirements remain in force") is
+    confirmed by primary sources and stays. Re-check at launch (gate G10) and whenever the
+    Compliance page is edited; a person should also open the two DoW CIO memos in a browser
+    and file copies under `docs/evidence/`.
 
 **Reading for Direwolf.** "Pursuing CMMC Level 2 certification" remains truthful (C3PAO
 assessments are voluntary and available) but the Compliance page should state the
@@ -400,8 +456,7 @@ Source: [CMVP FAQ](https://csrc.nist.gov/Projects/cryptographic-module-validatio
 - SG-7/SG-8: ask for the certificate number and check it against the CMVP entry; "If they
   do not agree, the vendor is not offering a validated solution." A validated module is
   only validated "when operated in approved mode".
-- CL-4: "FIPS 140-2 validated modules will remain on the active list through September 21,
-  2026. On September 22, 2026, only FIPS 140-3 module validations will remain on the
+- CL-4: "FIPS 140-2 validated modules will remain on the active list through September 21, 2026. On September 22, 2026, only FIPS 140-3 module validations will remain on the
   active list." (Also [NIST FIPS 140-3 transition page](https://csrc.nist.gov/Projects/FIPS-140-3-Transition-Effort).)
 - CMMC practice SC.L2-3.13.11 "Employ FIPS-validated cryptography when used to protect the
   confidentiality of CUI": "Simply using an approved algorithm is not sufficient"; "the
@@ -501,9 +556,29 @@ the ® / ™ and attribution lines.
 
 **Reading for Direwolf.** "Veteran-owned" as a plain description is lawful when the
 company is at least 51 % owned and controlled by a veteran (confirm against the cap
-table). "VOSB", "SDVOSB", "certified veteran-owned", "SBA-certified" and the VetCert or VA
-logos are off-limits until SBA certification is granted; the register says "veteran-owned"
-only (consistent with CLAUDE.md and PLAN.md §14.3).
+table). **Owner statement 2026-10-23 (CLAUDE.md "Owner facts"):** Direwolf holds SBA VetCert
+certification as a Service-Disabled Veteran-Owned Small Business, so register row F1 now
+approves "Service-Disabled Veteran-Owned Small Business (SDVOSB), SBA certified" on the
+owner's statement; the certificate, or the SAM.gov entity record showing the
+certification, must be filed under `docs/evidence/` before launch (the repository becomes
+public at launch, so file the public SAM.gov record or a redacted certificate). "VA-verified"
+is wrong: verification moved from VA's CVE to SBA on 2023-01-01. PLAN.md §14.3 still carries
+the older "veteran-owned only" rule and should be read with this note.
+
+**SBA icon rules (retrieved 2026-10-23).** SBA's brand page for SBA-certified businesses
+([sba.gov/brand/for-partners/sba-certified-businesses](https://www.sba.gov/brand/for-partners/sba-certified-businesses))
+says active participants in the 8(a), WOSB/EDWOSB, HUBZone and Veteran Small Business
+Certification (VetCert) programs "are eligible to use the icons"; the icons "may be used
+on business websites, business cards, and social media profiles" and on capability
+statements and proposal bids; they "may not be used on company letterhead, marketing
+materials, or advertising" (including paid ads and public service announcements in digital
+or traditional media) and "may not be used to express or imply endorsement of any goods,
+services, entities, or individuals"; a business that is no longer certified "must
+discontinue using SBA icons". The icon pack
+([decals and web icons](https://www.sba.gov/document/brand-guide-decals-web-icons), zip
+dated 2024-05-09) contains separate "Service-Disabled Veteran-Owned Certified" and
+"Veteran-Owned Certified" icons. The site shows no icon today; the rules are summarised in
+`docs/launch-runbook.md` ("Logo use") for the day it does.
 
 ---
 
@@ -571,7 +646,7 @@ or stores card numbers." Not approved: "PCI certified", "PCI compliant platform"
 
 - The website is on GitHub Pages, outside the GovCloud boundary (PLAN.md §14.1; ADR 0003
   lists public DNS and CI as the only things outside the boundary; the marketing site holds
-  no customer data). Nothing on the site may imply the *website* is in GovCloud or covered
+  no customer data). Nothing on the site may imply the _website_ is in GovCloud or covered
   by any of the platform's controls.
 - No third-party scripts, fonts or analytics and no non-essential cookies (CLAUDE.md), so
   "we do not track you" style statements are true once CI enforces them.
@@ -593,6 +668,9 @@ or stores card numbers." Not approved: "PCI certified", "PCI compliant platform"
    AWS Artifact.
 6. Signed SentinelOne and NinjaOne agreements before any vendor name appears on Services,
    Home or in purchase flows.
-7. Cap-table confirmation of at least 51 % veteran ownership and control.
-8. One-page EEO policy adopted; Colorado Springs street address added to `src/config.ts`.
+7. Cap-table confirmation of at least 51 % service-disabled-veteran ownership and control;
+   SBA VetCert certificate or SAM.gov entity record filed under `docs/evidence/` with the
+   reference recorded in register row F1.
+8. One-page EEO policy adopted; business mailing address (PO box or registered agent) added
+   to `src/config.ts`, the Privacy Policy and the Terms; legal entity type confirmed.
 9. Attorney review of this file, the register and the legal pages.

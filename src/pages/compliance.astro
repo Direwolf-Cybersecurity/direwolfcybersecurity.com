@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHeader from '../components/PageHeader.astro';
 import Section from '../components/Section.astro';
+import { hqLine, legalEntityName, ownershipStatement } from '../config';
 
 const description =
   'Where Direwolf Cybersecurity stands on NIST SP 800-171 and CMMC Level 2, where the Direwolf Platform is hosted and how its data is encrypted, and what we do not claim.';
@@ -36,10 +37,6 @@ const notClaimed = [
   'Direwolf is not FedRAMP authorized. Our infrastructure provider’s authorization is not ours.',
   'Direwolf is not yet CMMC certified.',
   'We do not hold SOC 2 or ISO/IEC 27001 attestations.',
-  // Veteran-owned status: the site says "veteran-owned" only (claims register row F1).
-  // CLAUDE.md records the owner's statement that the business is SBA VetCert-certified
-  // (SDVOSB); the register row must carry the certificate reference before any page says so,
-  // and until then the page neither claims nor disclaims the certification.
   'Our compliance guidance is not legal advice and does not replace an assessment of your own organization by an authorized assessor.',
 ];
 ---
@@ -100,7 +97,35 @@ const notClaimed = [
     </div>
   </Section>
 
-  <Section id="not-claimed" tone="surface" title="What we do not claim">
+  <Section id="company-facts" tone="surface" title="Company facts">
+    <dl class="mt-8 grid gap-6 md:grid-cols-3">
+      <div class="card">
+        <dt class="font-semibold">Ownership</dt>
+        <dd class="text-muted mt-2 text-sm">
+          {ownershipStatement}. Certified by the U.S. Small Business Administration through its
+          Veteran Small Business Certification (VetCert) program.
+        </dd>
+      </div>
+      <div class="card">
+        <dt class="font-semibold">Legal name and headquarters</dt>
+        <dd class="text-muted mt-2 text-sm">
+          {legalEntityName}, headquartered in {hqLine}.
+        </dd>
+      </div>
+      <div class="card">
+        <dt class="font-semibold">Equal opportunity employer</dt>
+        <dd class="text-muted mt-2 text-sm">
+          Direwolf Cybersecurity is an equal opportunity employer. Read our
+          <a href="/legal/eeo/" class="link">
+            EEO statement
+          </a>
+          .
+        </dd>
+      </div>
+    </dl>
+  </Section>
+
+  <Section id="not-claimed" title="What we do not claim">
     <ul class="prose mt-6 list-disc space-y-2 pl-6">
       {notClaimed.map((item) => (
         <li>{item}</li>

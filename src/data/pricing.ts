@@ -14,10 +14,7 @@
 export type PriceModel = 'per-endpoint-month' | 'per-org-month' | 'one-time' | 'custom';
 
 export type ProductId =
-  | 'ai-soc'
-  | 'endpoint-protection'
-  | 'endpoint-management'
-  | 'compliance-guidance';
+  'ai-soc' | 'endpoint-protection' | 'endpoint-management' | 'compliance-guidance';
 
 export interface Product {
   id: ProductId;

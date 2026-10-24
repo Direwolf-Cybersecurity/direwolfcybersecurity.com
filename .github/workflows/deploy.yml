@@ -1,0 +1,106 @@
+# Publishes dist/ to GitHub Pages (www.direwolfcybersecurity.com).
+#
+# Launch gate: while `SITE_LAUNCHED` in src/config.ts is `false` the `gate` job records a notice
+# and the build and publish jobs are skipped, so nothing reaches GitHub Pages. The build job also
+# refuses a dist/ whose robots.txt still disallows crawling, in case the flag is ever read wrongly.
+# Flip the flag only after every gate in docs/launch-runbook.md is closed.
+#
+# Prerequisites (docs/launch-runbook.md, "GitHub Pages"): the repository is public or the
+# organization is on the GitHub Team plan; the domain is verified for the organization; the
+# repository's Pages source is "GitHub Actions" with custom domain www.direwolfcybersecurity.com.
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  gate:
+    name: Launch gate (SITE_LAUNCHED)
+    runs-on: ubuntu-latest
+    outputs:
+      launched: ${{ steps.flag.outputs.launched }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Read SITE_LAUNCHED from src/config.ts
+        id: flag
+        run: |
+          if grep -Eq '^export const SITE_LAUNCHED = true;' src/config.ts; then
+            echo "launched=true" >> "$GITHUB_OUTPUT"
+            echo "SITE_LAUNCHED is true: building and publishing." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "launched=false" >> "$GITHUB_OUTPUT"
+            echo "::notice title=Not published::SITE_LAUNCHED is false in src/config.ts, so this workflow refuses to publish to GitHub Pages. See docs/launch-runbook.md."
+            {
+              echo "## Not published"
+              echo
+              echo '`SITE_LAUNCHED` is `false` in `src/config.ts`, so this workflow refuses to publish.'
+              echo 'Close the launch gates in docs/launch-runbook.md, then set it to `true` and push to `main`.'
+            } >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+  build:
+    name: Build
+    needs: gate
+    if: needs.gate.outputs.launched == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - uses: actions/configure-pages@v5
+
+      - run: npm ci
+
+      - name: Build
+        run: npm run build
+        env:
+          PUBLIC_APP_URL: ${{ vars.PUBLIC_APP_URL }}
+          PUBLIC_CONTACT_ENDPOINT: ${{ vars.PUBLIC_CONTACT_ENDPOINT }}
+
+      - name: Refuse to publish a pre-launch build
+        run: |
+          if grep -q 'Disallow: /' dist/robots.txt; then
+            echo "::error::dist/robots.txt disallows all crawling; the build was made with SITE_LAUNCHED=false."
+            exit 1
+          fi
+          if ! grep -qx 'www.direwolfcybersecurity.com' dist/CNAME; then
+            echo "::error::dist/CNAME is missing or does not name www.direwolfcybersecurity.com."
+            exit 1
+          fi
+
+      - name: Internal links and fragments over dist/
+        run: npm run links
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  publish:
+    name: Publish
+    needs: [gate, build]
+    if: needs.gate.outputs.launched == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

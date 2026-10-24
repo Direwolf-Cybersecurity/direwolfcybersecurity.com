@@ -82,8 +82,12 @@ const architecture = [
 
   <div>
     <div class="container-x flex flex-col gap-3 py-4 sm:flex-row">
-      <a href={signupUrl} class="btn btn-primary">Sign up</a>
-      <a href={loginUrl} class="btn btn-secondary">Log in</a>
+      <a href={signupUrl} class="btn btn-primary">
+        Sign up
+      </a>
+      <a href={loginUrl} class="btn btn-secondary">
+        Log in
+      </a>
     </div>
   </div>
 
@@ -91,32 +95,28 @@ const architecture = [
 
   <Section id="for-your-team" eyebrow="For your team" title="What your administrators see">
     <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {
-        features.map((feature) => (
-          <Card title={feature.title}>
-            <p>{feature.text}</p>
-          </Card>
-        ))
-      }
+      {features.map((feature) => (
+        <Card title={feature.title}>
+          <p>{feature.text}</p>
+        </Card>
+      ))}
     </div>
   </Section>
 
   <Section id="screenshots" tone="surface" eyebrow="Screenshots" title="A look at the platform">
     <div class="mt-10 grid gap-6 md:grid-cols-2">
-      {
-        ['Organization overview', 'Alert detail with the SOC summary'].map((label) => (
-          <figure class="card">
-            <div
-              class="border-line bg-bg flex aspect-video items-center justify-center rounded-lg border border-dashed"
-              role="img"
-              aria-label={`Placeholder for a screenshot: ${label}`}
-            >
-              <span class="text-muted text-sm">Screenshot coming soon</span>
-            </div>
-            <figcaption class="text-muted mt-3 text-sm">{label}</figcaption>
-          </figure>
-        ))
-      }
+      {['Organization overview', 'Alert detail with the SOC summary'].map((label) => (
+        <figure class="card">
+          <div
+            class="border-line bg-bg flex aspect-video items-center justify-center rounded-lg border border-dashed"
+            role="img"
+            aria-label={`Placeholder for a screenshot: ${label}`}
+          >
+            <span class="text-muted text-sm">Screenshot coming soon</span>
+          </div>
+          <figcaption class="text-muted mt-3 text-sm">{label}</figcaption>
+        </figure>
+      ))}
     </div>
     <p class="text-muted mt-6 text-sm">Screenshots will be added before launch.</p>
   </Section>
@@ -128,19 +128,20 @@ const architecture = [
     lede="A summary of how the platform protects your data. The details will be documented in our system security plan and customer responsibility matrix, which we will make available to customers and their assessors."
   >
     <dl class="mt-10 grid gap-6 md:grid-cols-2">
-      {
-        architecture.map((item) => (
-          <div class="card">
-            <dt class="text-lg font-semibold">{item.title}</dt>
-            <dd class="text-muted mt-3 text-sm leading-relaxed">{item.text}</dd>
-          </div>
-        ))
-      }
+      {architecture.map((item) => (
+        <div class="card">
+          <dt class="text-lg font-semibold">{item.title}</dt>
+          <dd class="text-muted mt-3 text-sm leading-relaxed">{item.text}</dd>
+        </div>
+      ))}
     </dl>
     <p class="text-muted mt-8 max-w-prose text-sm">
-      This describes the platform as designed and built for launch. For the status of our
-      compliance program, and for exactly what we do and do not claim, see the
-      <a href="/compliance/" class="link">Compliance</a> page.
+      This describes the platform as designed and built for launch. For the status of our compliance
+      program, and for exactly what we do and do not claim, see the
+      <a href="/compliance/" class="link">
+        Compliance
+      </a>{' '}
+      page.
     </p>
   </Section>
 

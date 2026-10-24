@@ -1,0 +1,64 @@
+# Continuous integration: the definition of done from CLAUDE.md, on every push and pull request.
+# Nothing here publishes anything; publishing is .github/workflows/deploy.yml.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Build, check, lint, format, links, a11y
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+
+      - name: Build
+        run: npm run build
+        env:
+          # Repository variables (Settings > Secrets and variables > Actions > Variables).
+          # Both are optional; src/config.ts has the production defaults.
+          PUBLIC_APP_URL: ${{ vars.PUBLIC_APP_URL }}
+          PUBLIC_CONTACT_ENDPOINT: ${{ vars.PUBLIC_CONTACT_ENDPOINT }}
+
+      - name: Type and template check (astro check)
+        run: npm run check
+
+      - name: Lint (ESLint, Astro and jsx-a11y rules)
+        run: npm run lint
+
+      - name: Formatting (prettier --check)
+        run: npm run format:check
+
+      - name: Internal links and fragments over dist/
+        run: npm run links
+
+      - name: Accessibility (axe-core, WCAG 2.1 A/AA, light and dark, phone width)
+        # scripts/a11y.mjs drives the Edge or Chrome build preinstalled on ubuntu-latest through
+        # playwright-core. If the runner image changes, point A11Y_BROWSER_PATH at a browser binary.
+        run: npm run a11y
+
+      - name: Upload the axe report when the accessibility check fails
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: a11y-report
+          path: reports/a11y.json
+          if-no-files-found: ignore

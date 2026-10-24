@@ -26,19 +26,17 @@ const headingId = id && title ? `${id}-heading` : undefined;
   ]}
 >
   <div class="container-x">
-    {
-      (eyebrow || title || lede) && (
-        <div class="max-w-2xl">
-          {eyebrow && <p class="eyebrow">{eyebrow}</p>}
-          {title && (
-            <h2 id={headingId} class="mt-2 text-3xl font-semibold tracking-tight">
-              {title}
-            </h2>
-          )}
-          {lede && <p class="text-muted mt-4 text-lg">{lede}</p>}
-        </div>
-      )
-    }
+    {(eyebrow || title || lede) && (
+      <div class="max-w-2xl">
+        {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+        {title && (
+          <h2 id={headingId} class="mt-2 text-3xl font-semibold tracking-tight">
+            {title}
+          </h2>
+        )}
+        {lede && <p class="text-muted mt-4 text-lg">{lede}</p>}
+      </div>
+    )}
     <slot />
   </div>
 </section>

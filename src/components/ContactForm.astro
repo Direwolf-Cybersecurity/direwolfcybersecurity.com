@@ -55,8 +55,16 @@ import { contactEndpoint, contactEmail } from '../config';
   </div>
 
   <div>
-    <label for="cf-company" class="block text-sm font-medium">Company or organization</label>
-    <input id="cf-company" name="company" type="text" autocomplete="organization" class="field mt-1" />
+    <label for="cf-company" class="block text-sm font-medium">
+      Company or organization
+    </label>
+    <input
+      id="cf-company"
+      name="company"
+      type="text"
+      autocomplete="organization"
+      class="field mt-1"
+    />
   </div>
 
   <div>
@@ -70,10 +78,10 @@ import { contactEndpoint, contactEmail } from '../config';
       required
       aria-required="true"
       aria-describedby="cf-message-error cf-message-hint"
-      class="field mt-1"></textarea>
+      class="field mt-1"
+    ></textarea>
     <p id="cf-message-hint" class="text-muted mt-1 text-sm">
-      Please do not include passwords, controlled unclassified information, or other sensitive
-      data.
+      Please do not include passwords, controlled unclassified information, or other sensitive data.
     </p>
     <p id="cf-message-error" class="text-danger mt-1 text-sm" data-error hidden></p>
   </div>
@@ -85,33 +93,39 @@ import { contactEndpoint, contactEmail } from '../config';
 
   <p class="text-muted text-sm">
     We use the details you provide only to reply to you. See our
-    <a href="/legal/privacy/" class="link">Privacy Policy</a>.
+    <a href="/legal/privacy/" class="link">
+      Privacy Policy
+    </a>
+    .
   </p>
 
   <div>
-    <button type="submit" class="btn btn-primary">Send message</button>
+    <button type="submit" class="btn btn-primary">
+      Send message
+    </button>
   </div>
 
   <p id="cf-status" class="text-sm" role="status" aria-live="polite"></p>
 </form>
 
-{
-  !contactEndpoint && (
-    <p class="text-muted mt-6 text-sm">
-      Our contact form is not connected to a mail service yet, so sending opens a pre-filled
-      message in your own email app. You can also write to us directly at
-      <a href={`mailto:${contactEmail}`} class="link">
-        {contactEmail}
-      </a>
-      .
-    </p>
-  )
-}
+{!contactEndpoint && (
+  <p class="text-muted mt-6 text-sm">
+    Our contact form is not connected to a mail service yet, so sending opens a pre-filled message
+    in your own email app. You can also write to us directly at
+    <a href={`mailto:${contactEmail}`} class="link">
+      {contactEmail}
+    </a>
+    .
+  </p>
+)}
 
 <noscript>
   <p class="text-muted mt-6 text-sm">
     JavaScript is turned off in your browser. Please email us at
-    <a href={`mailto:${contactEmail}`} class="link">{contactEmail}</a>.
+    <a href={`mailto:${contactEmail}`} class="link">
+      {contactEmail}
+    </a>
+    .
   </p>
 </noscript>
 
@@ -181,7 +195,8 @@ import { contactEndpoint, contactEmail } from '../config';
     for (const name of fields) {
       const input = form.elements.namedItem(name) as HTMLInputElement | HTMLTextAreaElement;
       input.addEventListener('input', () => {
-        if (input.getAttribute('aria-invalid') === 'true' && input.checkValidity()) setError(name, '');
+        if (input.getAttribute('aria-invalid') === 'true' && input.checkValidity())
+          setError(name, '');
       });
     }
 
@@ -233,9 +248,7 @@ import { contactEndpoint, contactEmail } from '../config';
         announce('Thank you. Your message has been sent and we will reply by email.');
         form.reset();
       } catch {
-        announce(
-          `We could not send your message. Please email us directly at ${mailto} instead.`,
-        );
+        announce(`We could not send your message. Please email us directly at ${mailto} instead.`);
       } finally {
         if (button) button.disabled = false;
       }
