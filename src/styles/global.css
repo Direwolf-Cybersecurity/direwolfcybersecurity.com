@@ -417,60 +417,79 @@
 }
 
 /*
- * Backdrop (Home hero): below the text on phones and tablets, cropped to 4:3 around the subject
- * (the image keeps its left third empty for the headline on wide screens, so a full-width 16:9
- * strip would be mostly dark) and fading into the band at its top and bottom; from lg up it fills
- * the right of the hero behind the text, masked to fade in from the left, so the text always sits
- * on near-black (the image's own left side is dark too).
+ * Backdrop (Home hero): the owner's image is a full-bleed background of the hero at every width,
+ * behind a near-black scrim (#05070d, the band colour) that keeps the headline, subhead and
+ * buttons at 4.5:1 or better over the brightest pixels behind them. The image was composed with
+ * an empty dark left third and the silver shield at about 66-87% across, 21-67% down.
+ * - sm (640 px) and up: the image covers the hero, positioned so the shield stays on the right,
+ *   clear of the text column (index.astro caps it at 58% of the container); the scrim runs left
+ *   to right, near-black under the text and clear over the shield, with soft fades into the
+ *   header above and the next band below.
+ * - Narrower phones: the image fills the lower 62% of the hero, cropped around the shield, so
+ *   the shield sits centred and low, behind the buttons and proof points; above it the band's
+ *   near-black continues the image's own dark sky. A top-to-bottom scrim is solid behind the
+ *   headline, strong behind the subhead and lighter lower down, where only the buttons and the
+ *   proof points (light text, which needs less) sit over the shield.
+ * Contrast was checked by sampling the rendered pixels behind every line of hero text at 1440,
+ * 1280, 1024, 768 and 375 px wide; re-check if the image, the scrim or the hero copy changes.
  */
 .hero-media {
-  position: relative;
-  aspect-ratio: 4 / 3;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
 }
 .hero-media img {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
   display: block;
   width: 100%;
-  height: 100%;
+  height: 62%;
   object-fit: cover;
-  object-position: 78% center;
+  object-position: 93% center;
 }
 .hero-media::after {
   content: '';
   position: absolute;
   inset: 0;
-  pointer-events: none;
-  background:
-    linear-gradient(to bottom, var(--bg) 0%, transparent 22%),
-    linear-gradient(to top, var(--bg) 0%, transparent 22%);
+  background: linear-gradient(
+    to bottom,
+    rgb(5 7 13) 0%,
+    rgb(5 7 13) 38%,
+    rgb(5 7 13 / 0.9) 48%,
+    rgb(5 7 13 / 0.72) 60%,
+    rgb(5 7 13 / 0.68) 100%
+  );
 }
-@media (min-width: 1024px) {
-  .hero-media {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    width: 66%;
-    aspect-ratio: auto;
-    z-index: 0;
-  }
+@media (min-width: 640px) {
   .hero-media img {
-    object-position: right center;
-  }
-  /* A mask, not a solid scrim, so the CSS glow behind the hero shows through the fade. */
-  .hero-media {
-    mask-image: linear-gradient(to right, transparent 0%, rgb(0 0 0 / 0.5) 22%, #000 52%);
+    top: 0;
+    height: 100%;
+    object-position: 72% 45%;
   }
   .hero-media::after {
-    background: linear-gradient(to top, var(--bg) 0%, transparent 18%);
+    background:
+      linear-gradient(to bottom, rgb(5 7 13) 0%, transparent 14%),
+      linear-gradient(to top, rgb(5 7 13) 0%, transparent 16%),
+      linear-gradient(
+        to right,
+        rgb(5 7 13 / 0.94) 0%,
+        rgb(5 7 13 / 0.9) 36%,
+        rgb(5 7 13 / 0.72) 50%,
+        rgb(5 7 13 / 0) 66%
+      );
   }
 }
 
 /* ------------------------------------------------------------------------------------------ */
 /* Motion (src/scripts/motion.ts). Everything is visible without JavaScript: the script adds    */
-/* .reveal-pending only to elements below the fold, and only when motion is allowed.           */
+/* .reveal-pending only to elements below the fold, and only when motion is allowed. Screen     */
+/* only, so a printed page never has blank gaps where content had not yet scrolled into view.   */
 /* ------------------------------------------------------------------------------------------ */
 
-@media (prefers-reduced-motion: no-preference) {
+@media screen and (prefers-reduced-motion: no-preference) {
   .reveal-pending:not([data-reveal='stagger']),
   .reveal-pending[data-reveal='stagger'] > * {
     opacity: 0;

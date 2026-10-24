@@ -70,13 +70,13 @@ The site draws no artwork of its own. It has five image slots, defined in `src/d
 and each one shows an image only when its file exists in `src/assets/images/`. With no file the
 slot renders nothing and its section closes up around it, so the site always looks complete.
 
-| Slot     | File name       | Where it appears                                                | Aspect | Minimum size |
-| -------- | --------------- | --------------------------------------------------------------- | ------ | ------------ |
-| hero     | `hero.webp`     | Home hero: behind the headline on the right, below it on phones | 16:9   | 2400 x 1350  |
-| mdr      | `mdr.webp`      | Services, managed detection and response                        | 4:3    | 1600 x 1200  |
-| pentest  | `pentest.webp`  | Services, penetration testing                                   | 4:3    | 1600 x 1200  |
-| platform | `platform.webp` | Platform, beside "What your administrators will see"            | 16:10  | 2000 x 1250  |
-| about    | `about.webp`    | About, beside the mission                                       | 3:2    | 1800 x 1200  |
+| Slot     | File name       | Where it appears                                     | Aspect | Minimum size |
+| -------- | --------------- | ---------------------------------------------------- | ------ | ------------ |
+| hero     | `hero.webp`     | Home hero: full-bleed background behind the headline | 16:9   | 2400 x 1350  |
+| mdr      | `mdr.webp`      | Services, managed detection and response             | 4:3    | 1600 x 1200  |
+| pentest  | `pentest.webp`  | Services, penetration testing                        | 4:3    | 1600 x 1200  |
+| platform | `platform.webp` | Platform, beside "What your administrators will see" | 16:10  | 2000 x 1250  |
+| about    | `about.webp`    | About, beside the mission                            | 3:2    | 1800 x 1200  |
 
 1. Every image must be **original or licensed for commercial use** (for example generated with a
    tool whose terms allow commercial use). Keep the licence terms with your records. No photos of

@@ -45,18 +45,21 @@ Export at the minimum size or larger, in the slot's aspect ratio (the site crops
 high-quality JPEG or WebP are all fine; the site converts and resizes them. Smaller files still
 work, but the build warns and they can look soft on large, high-density screens.
 
-| Slot                           | File name       | Aspect | Minimum size | Where it appears                                           |
-| ------------------------------ | --------------- | ------ | ------------ | ---------------------------------------------------------- |
-| Home hero                      | `hero.webp`     | 16:9   | 2400 x 1350  | Home, behind the headline on the right; below it on phones |
-| Managed detection and response | `mdr.webp`      | 4:3    | 1600 x 1200  | Services, managed detection and response                   |
-| Penetration testing            | `pentest.webp`  | 4:3    | 1600 x 1200  | Services, penetration testing                              |
-| Platform                       | `platform.webp` | 16:10  | 2000 x 1250  | Platform, beside "What your administrators will see"       |
-| About                          | `about.webp`    | 3:2    | 1800 x 1200  | About, beside the mission                                  |
+| Slot                           | File name       | Aspect | Minimum size | Where it appears                                     |
+| ------------------------------ | --------------- | ------ | ------------ | ---------------------------------------------------- |
+| Home hero                      | `hero.webp`     | 16:9   | 2400 x 1350  | Home, full-bleed background behind the headline      |
+| Managed detection and response | `mdr.webp`      | 4:3    | 1600 x 1200  | Services, managed detection and response             |
+| Penetration testing            | `pentest.webp`  | 4:3    | 1600 x 1200  | Services, penetration testing                        |
+| Platform                       | `platform.webp` | 16:10  | 2000 x 1250  | Platform, beside "What your administrators will see" |
+| About                          | `about.webp`    | 3:2    | 1800 x 1200  | About, beside the mission                            |
 
-The hero is shown two ways: on laptops and larger, the right two-thirds sit behind and beside
-the headline, so **keep the left third dark and empty**; on phones it is cropped to 4:3 around a
-point about three-quarters of the way across, so **keep the subject in the right two-thirds,
-roughly centred top to bottom**.
+The hero is a full-bleed background behind the headline at every width, under a near-black
+scrim that fades from the left (`.hero-media` in `src/styles/global.css`). From 640 px wide up
+the text sits on the left and the image is cropped around a point about three-quarters of the
+way across, so **keep the left third dark and empty and the subject in the right third**; on
+narrower phones the image fills the lower part of the hero, centred on that point, so **keep the
+subject roughly centred top to bottom with dark space above it**. If the image changes, re-check
+the hero text contrast against it (4.5:1) at phone, tablet and desktop widths.
 
 ## Style A: photographs of real things (recommended)
 

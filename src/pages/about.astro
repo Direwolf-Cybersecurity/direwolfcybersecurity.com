@@ -7,6 +7,7 @@ import Experience from '../components/Experience.astro';
 import ImageSlot from '../components/ImageSlot.astro';
 import Icon from '../components/Icon.astro';
 import { hasImage } from '../data/images';
+import { shownEngagements } from '../data/engagements';
 import type { IconName } from '../data/icons';
 import { industries, hqLine, ownershipStatement, ownershipPhrase } from '../config';
 
@@ -143,7 +144,9 @@ const withImage = hasImage('about');
 
   <Experience variant="full" />
 
+  {/* Experience (when shown) is on the page background too, so no second top padding here. */}
   <CallToAction
+    flushTop={shownEngagements.length > 0}
     title="Want to talk to us?"
     text="We are glad to discuss your environment, your goals, and whether Direwolf is the right fit."
   />

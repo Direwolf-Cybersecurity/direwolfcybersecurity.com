@@ -10,9 +10,15 @@ import { PLATFORM_LIVE, earlyAccessUrl, signupUrl } from '../config';
 interface Props {
   title?: string;
   text?: string;
+  /**
+   * No top padding: for when the section before it is on the same background and already ends in
+   * its own bottom padding (Home, after Experience), so the two paddings do not stack into a gap.
+   */
+  flushTop?: boolean;
 }
 
 const {
+  flushTop = false,
   title = 'Ready when you are.',
   text = PLATFORM_LIVE
     ? 'Create your account, choose the services you need, and deploy sensors from your dashboard. Prefer to talk first? We are happy to.'
@@ -20,7 +26,7 @@ const {
 } = Astro.props;
 ---
 
-<section aria-labelledby="cta-heading" class="py-16 md:py-24">
+<section aria-labelledby="cta-heading" class={flushTop ? 'pb-16 md:pb-24' : 'py-16 md:py-24'}>
   <div class="container-x" data-reveal>
     <div class="dark-band glow-backdrop brand-panel flex flex-col gap-8 p-8 md:flex-row md:items-center md:justify-between md:p-12">
       <div class="max-w-xl">

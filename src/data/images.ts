@@ -47,8 +47,11 @@ export const imageSlots: Record<ImageSlotId, ImageSlotSpec> = {
     minHeight: 1350,
     alt: 'A brushed-silver shield standing on a dark grid of glowing blue network nodes',
     placement:
-      'Home, hero: behind the headline on the right from laptop width up, below it on phones',
-    sizes: '(min-width: 1024px) 66vw, 100vw',
+      'Home, hero: full-bleed background, the shield on the right from 640 px wide up and low behind the buttons on phones',
+    // Rendered width of the cover-cropped background (.hero-media): the full width on wide
+    // screens, about 1280 px from 640 px up (the hero is taller than a 16:9 strip there), and
+    // about 900 px on phones (the image is 62% of a roughly 800 px tall hero).
+    sizes: '(min-width: 1280px) 100vw, (min-width: 640px) 1280px, 900px',
   },
   mdr: {
     id: 'mdr',

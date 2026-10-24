@@ -9,6 +9,7 @@ import Icon from '../components/Icon.astro';
 import StatsBand from '../components/StatsBand.astro';
 import { services, roadmap } from '../data/services';
 import { hasImage } from '../data/images';
+import { shownEngagements } from '../data/engagements';
 import type { IconName } from '../data/icons';
 import { PLATFORM_LIVE, earlyAccessUrl, signupUrl } from '../config';
 
@@ -20,8 +21,18 @@ import { PLATFORM_LIVE, earlyAccessUrl, signupUrl } from '../config';
  * S-STAT-2, S-STAT-3, S-STAT-6, W6).
  */
 
-// Without the owner's hero image the hero is a little shorter: text on the CSS glow backdrop.
-const heroMinHeight = hasImage('hero') ? 'lg:min-h-[38rem]' : 'lg:min-h-[30rem]';
+/*
+ * Hero: the owner's image (src/assets/images/hero.webp, composed with an empty dark left third
+ * and the shield on the right) is a full-bleed background at every width, under a near-black
+ * scrim that keeps the text at 4.5:1 or better (.hero-media in src/styles/global.css). From sm
+ * (640 px) up the text column is capped at 58% of the container so it stays clear of the shield;
+ * on narrower phones the shield sits centred and low, behind a stronger scrim. Without the image
+ * the hero is a little shorter: text on the CSS glow backdrop.
+ */
+const withHeroImage = hasImage('hero');
+const heroHeight = withHeroImage
+  ? 'pb-24 sm:flex sm:min-h-[36rem] sm:items-center sm:py-16 md:min-h-[38rem] md:py-20 lg:min-h-[40rem] lg:py-24'
+  : 'pb-10 lg:flex lg:min-h-[30rem] lg:items-center lg:py-24';
 
 const proofPoints: { icon: IconName; text: string }[] = [
   { icon: 'radar', text: 'AI triage on every endpoint alert' },
@@ -74,15 +85,14 @@ const reasons: { icon: IconName; title: string; text: string }[] = [
 <BaseLayout title="Home">
   <section
     aria-labelledby="hero-heading"
-    class="dark-band glow-backdrop glow-backdrop-animated relative"
+    class:list={[
+      'dark-band relative isolate overflow-hidden',
+      !withHeroImage && 'glow-backdrop glow-backdrop-animated',
+    ]}
   >
-    <div
-      class:list={[
-        'container-x relative z-10 pt-14 pb-10 md:pt-20 lg:flex lg:items-center lg:py-24',
-        heroMinHeight,
-      ]}
-    >
-      <div class="max-w-xl">
+    <ImageSlot id="hero" variant="backdrop" />
+    <div class:list={['container-x relative z-10 pt-14 md:pt-20', heroHeight]}>
+      <div class:list={['max-w-xl', withHeroImage && 'sm:max-w-[min(36rem,58%)]']}>
         <p class="eyebrow accent-sweep">AI-driven managed security</p>
         <h1
           id="hero-heading"
@@ -118,7 +128,6 @@ const reasons: { icon: IconName; title: string; text: string }[] = [
         </ul>
       </div>
     </div>
-    <ImageSlot id="hero" variant="backdrop" />
   </section>
 
   <StatsBand />
@@ -200,5 +209,6 @@ const reasons: { icon: IconName; title: string; text: string }[] = [
 
   <Experience variant="summary" />
 
-  <CallToAction />
+  {/* Experience (when shown) is on the page background too, so no second top padding here. */}
+  <CallToAction flushTop={shownEngagements.length > 0} />
 </BaseLayout>
