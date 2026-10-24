@@ -16,15 +16,23 @@ export default defineConfig({
   build: {
     // /about/index.html, which GitHub Pages serves at /about/ without a redirect hop.
     format: 'directory',
+    // Every stylesheet as a file under /_astro/, never an inline <style>: the Content Security
+    // Policy in src/layouts/BaseLayout.astro allows style-src 'self' only.
+    inlineStylesheets: 'never',
   },
   integrations: [
     mdx(),
     sitemap({
-      // Keep the 404 page and the legal index out of the sitemap.
+      // Keep the 404 page (noindex) out of the sitemap; every other page is listed.
       filter: (page) => !page.endsWith('/404/'),
     }),
   ],
   vite: {
     plugins: [tailwindcss()],
+    build: {
+      // Never inline a bundled script or asset as a data: URL or inline <script>, so every
+      // script stays a file that the policy's script-src 'self' allows.
+      assetsInlineLimit: 0,
+    },
   },
 });

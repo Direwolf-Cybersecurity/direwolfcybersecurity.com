@@ -1,0 +1,36 @@
+---
+/**
+ * The <table> element of the legal documents (MDX), mapped in src/pages/legal/[id].astro. Some
+ * tables (Cookies, Privacy, Subprocessors) are wider than a phone screen, so each table sits in a
+ * container that scrolls sideways on its own instead of widening the whole page. The container is
+ * a keyboard-focusable region named from the table's column headings, so keyboard and
+ * screen-reader users can reach and scroll it; the table itself keeps its native semantics.
+ */
+import type { HTMLAttributes } from 'astro/types';
+
+type Props = HTMLAttributes<'table'>;
+
+const html = await Astro.slots.render('default');
+
+const decode = (text: string) =>
+  text
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#(?:39|x27);/gi, "'")
+    .replace(/&amp;/g, '&');
+const headings = [...html.matchAll(/<th\b[^>]*>([\s\S]*?)<\/th>/g)]
+  .map((match) =>
+    decode(match[1].replace(/<[^>]+>/g, ''))
+      .replace(/\s+/g, ' ')
+      .trim(),
+  )
+  .filter(Boolean);
+const label = headings.length > 0 ? `Table: ${headings.join(', ')}` : 'Table';
+---
+
+{/* A scrolling region must take keyboard focus to be scrollable without a mouse (WCAG 2.1.1). */}
+{/* eslint-disable-next-line astro/jsx-a11y/no-noninteractive-tabindex */}
+<div class="table-scroll" role="region" aria-label={label} tabindex="0">
+  <table {...Astro.props} set:html={html} />
+</div>

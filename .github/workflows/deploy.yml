@@ -3,7 +3,8 @@
 # Launch gate: while `SITE_LAUNCHED` in src/config.ts is `false` the `gate` job records a notice
 # and the build and publish jobs are skipped, so nothing reaches GitHub Pages. The build job also
 # refuses a dist/ whose robots.txt still disallows crawling, in case the flag is ever read wrongly.
-# Flip the flag only after every gate in docs/launch-runbook.md is closed.
+# The flag was set to `true` at launch on 2026-10-23 (docs/launch-runbook.md, "Launch record");
+# setting it back to `false` stops further publishes but does not take down what is on Pages.
 #
 # Prerequisites (docs/launch-runbook.md, "GitHub Pages"): the repository is public or the
 # organization is on the GitHub Team plan; the domain is verified for the organization; the

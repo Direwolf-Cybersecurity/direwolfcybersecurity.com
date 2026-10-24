@@ -3,6 +3,11 @@ import Logo from './Logo.astro';
 import { primaryNav, isCurrent } from '../data/navigation';
 import { siteName, loginUrl, signupUrl } from '../config';
 
+/**
+ * Without JavaScript the toggle cannot work: public/noscript.css, loaded by BaseLayout.astro in a
+ * <noscript>, hides #menu-toggle and keeps #site-menu open. It is a file rather than an inline
+ * <style> so the Content Security Policy's style-src 'self' allows it.
+ */
 const pathname = Astro.url.pathname;
 ---
 
@@ -46,27 +51,16 @@ const pathname = Astro.url.pathname;
         </ul>
       </nav>
       <div class="flex flex-col gap-3 sm:flex-row">
-        <a href={loginUrl} class="btn btn-secondary">
+        <a href={loginUrl} class="btn btn-secondary" rel="noopener noreferrer">
           Log in
         </a>
-        <a href={signupUrl} class="btn btn-primary">
+        <a href={signupUrl} class="btn btn-primary" rel="noopener noreferrer">
           Sign up
         </a>
       </div>
     </div>
   </div>
 </header>
-
-<noscript>
-  <style>
-    #site-menu {
-      display: flex;
-    }
-    #menu-toggle {
-      display: none;
-    }
-  </style>
-</noscript>
 
 <script>
   const toggle = document.getElementById('menu-toggle');

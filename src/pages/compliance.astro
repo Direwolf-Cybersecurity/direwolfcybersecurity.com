@@ -5,10 +5,10 @@ import Section from '../components/Section.astro';
 import { hqLine, legalEntityName, ownershipStatement } from '../config';
 
 const description =
-  'Where Direwolf Cybersecurity stands on NIST SP 800-171 and CMMC Level 2, where the Direwolf Platform is hosted and how its data is encrypted, and what we do not claim.';
+  'Where Direwolf Cybersecurity stands on NIST SP 800-171 and CMMC Level 2, where the Direwolf Platform is built to run and how its data will be encrypted, and what we do not claim.';
 
 /** Update when this page is re-checked against docs/claims-register.md. */
-const lastReviewed = { iso: '2026-10-23', label: 'October 23, 2026' };
+const lastReviewed = { iso: '2026-10-24', label: 'October 24, 2026' };
 
 const posture = [
   {
@@ -22,14 +22,14 @@ const posture = [
       'Direwolf is preparing for a CMMC Level 2 assessment. In July 2026 the Department of War suspended the requirement for third-party (C3PAO) Level 2 assessments while it reviews the CMMC program; self-assessment requirements remain in force. We will update this page when our status changes. Until an assessment is complete and recorded, we do not describe Direwolf as CMMC certified.',
   },
   {
-    claim: 'Hosted on AWS GovCloud (US)',
+    claim: 'Built for AWS GovCloud (US)',
     meaning:
-      'The Direwolf Platform runs in AWS GovCloud (US). AWS states that AWS GovCloud (US) is FedRAMP Certified at Class D (formerly the FedRAMP High baseline), so the infrastructure beneath our platform carries that certification. Direwolf itself is not FedRAMP certified or authorized. FedRAMP certification applies to the AWS infrastructure we build on, not to the Direwolf Platform.',
+      'The Direwolf Platform is built to run in AWS GovCloud (US) and is not yet in service. AWS states that AWS GovCloud (US) is FedRAMP Certified at Class D (formerly the FedRAMP High baseline), so when the Platform is in service, the infrastructure beneath it carries that certification. Direwolf itself is not FedRAMP certified or authorized. FedRAMP certification applies to the AWS infrastructure we build on, not to the Direwolf Platform.',
   },
   {
-    claim: 'FIPS 140-validated TLS and key management',
+    claim: 'Designed for FIPS 140-validated TLS and key management',
     meaning:
-      'Data in transit is protected with TLS 1.2 or higher, terminated with a FIPS 140-validated cryptographic module (AWS-LC, CMVP certificate #4631). Data at rest (databases, object storage, queues, secrets and logs) is encrypted with customer-managed keys held in AWS KMS hardware security modules validated to FIPS 140-3 Level 3 (CMVP certificate #4884), with automatic key rotation. We make no FIPS claim about any other component.',
+      'When the Platform is in service, data in transit will be protected with TLS 1.2 or higher, terminated with a FIPS 140-validated cryptographic module (AWS-LC, CMVP certificate #4631), and data at rest (databases, object storage, queues, secrets and logs) will be encrypted with customer-managed keys held in AWS KMS hardware security modules validated to FIPS 140-3 Level 3 (CMVP certificate #4884), with automatic key rotation. We make no FIPS claim about any other component.',
   },
 ];
 

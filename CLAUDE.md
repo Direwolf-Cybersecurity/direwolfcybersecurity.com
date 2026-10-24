@@ -14,8 +14,10 @@ the site and platform fit together.
   the essential cookies (none by default).
 - **Accessibility:** WCAG 2.1 AA. Semantic HTML, visible focus, 4.5:1 contrast, skip link,
   reduced-motion respected, every image has alt text, forms have labels and error text.
-- **Not launched until told:** `SITE_LAUNCHED` in `src/config.ts` is `false`: `robots.txt`
-  disallows all, every page has `noindex`, and the deploy workflow refuses to publish.
+- **Launched 2026-10-23 at the owner's direction.** `SITE_LAUNCHED` in `src/config.ts` is
+  `true`; the deploy workflow publishes `main` to GitHub Pages. Legal documents are in
+  effect pending attorney review (tracked as open gates G1-G3 in docs/launch-runbook.md).
+  Flip `SITE_LAUNCHED` to `false` only to take the site offline deliberately.
 - **Accuracy of claims:** every factual or compliance claim on the site must appear in
   `docs/claims-register.md` with its status (true today / planned / pursuing) and evidence.
   Never write "certified", "authorized", "compliant" or "FedRAMP" about Direwolf unless the
@@ -31,9 +33,13 @@ the site and platform fit together.
   Domain registrar: Namecheap (DNS instructions must use Namecheap's Advanced DNS record
   format: Type, Host, Value, TTL).
   Do not invent names, numbers, customers, certifications, or testimonials.
-- **Legal pages** are drafts for attorney review, versioned `vYYYY.MM.DD` in their
-  frontmatter and shown with "Last updated"; the platform records which version a user
-  accepted, so never edit a published version in place: bump the version.
+- **Legal pages** are published: in effect 2026-10-23, version `v2026.10.23` (the Privacy
+  Policy, Terms of Service and Subprocessors page are at `v2026.10.24`, effective 2026-10-24,
+  after the platform-in-service note was added). Attorney review has not happened yet and is an
+  open post-launch gate (G1 in docs/launch-runbook.md). Each document is versioned
+  `vYYYY.MM.DD` in its frontmatter and shown with its version and "Last updated" date; the
+  platform records which version a user accepted, so every change to a published document
+  requires a version bump (new `version` and `effectiveDate`), never an edit in place.
 - **Links to the platform** use `PUBLIC_APP_URL` (default `https://app.direwolfcybersecurity.com`).
   Contact form posts to `PUBLIC_CONTACT_ENDPOINT` when set, else falls back to a mailto link.
 - **Do not run `git commit`**; the orchestrating session commits.

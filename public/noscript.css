@@ -1,0 +1,13 @@
+/*
+ * Loaded only when JavaScript is off (src/layouts/BaseLayout.astro wraps the <link> in
+ * <noscript>): the menu toggle in src/components/Header.astro cannot work, so hide it and keep
+ * the menu open. A file rather than an inline <style> so the Content Security Policy's
+ * style-src 'self' allows it.
+ */
+#site-menu {
+  display: flex;
+}
+
+#menu-toggle {
+  display: none;
+}

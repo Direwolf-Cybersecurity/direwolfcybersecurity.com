@@ -17,7 +17,8 @@
     "format:check": "prettier --check .",
     "links": "node scripts/check-links.mjs",
     "a11y": "node scripts/a11y.mjs",
-    "verify": "npm run build && npm run check && npm run lint && npm run links && npm run a11y"
+    "csp": "node scripts/check-csp.mjs",
+    "verify": "npm run build && npm run check && npm run lint && npm run format:check && npm run links && npm run a11y && npm run csp"
   },
   "dependencies": {
     "@astrojs/mdx": "^8.1.1",

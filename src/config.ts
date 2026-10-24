@@ -2,18 +2,20 @@
  * Site-wide constants.
  *
  * Everything the site says about the company that could change lives here or in
- * `src/data/`, never inline in a page. Items marked TODO are placeholders that must be
- * confirmed before launch (see docs/launch-runbook.md).
+ * `src/data/`, never inline in a page. Items marked TODO are open owner items tracked as
+ * post-launch gates in docs/launch-runbook.md.
  */
 
 /**
- * Launch switch. While `false`:
- *   - `/robots.txt` disallows all crawling and every page carries `noindex`,
- *   - a "preview build" notice is shown at the top of every page,
- *   - `.github/workflows/deploy.yml` refuses to publish to GitHub Pages.
- * Flip to `true` only after the launch runbook's legal-review and claims gates are done.
+ * Launch switch. Set to `true` on 2026-10-23 at the owner's direction (docs/launch-runbook.md,
+ * "Launch record"), with gates G1 (attorney review), G2 (mailing address) and G3 (SBA
+ * certificate on file) still open as post-launch items. While `true`, `/robots.txt` allows
+ * crawling and names the sitemap, pages carry `index, follow` (except the 404 page), and
+ * `.github/workflows/deploy.yml` publishes `main` to GitHub Pages. Setting it back to `false`
+ * restores `noindex`, the preview notice and the publish refusal; it does not take down what
+ * is already on Pages. The deploy workflow greps for this exact line, so keep its form.
  */
-export const SITE_LAUNCHED = false;
+export const SITE_LAUNCHED = true;
 
 export const siteName = 'Direwolf Cybersecurity';
 export const siteTagline = 'AI-run security operations for small and mid-size organizations';
@@ -27,15 +29,15 @@ export const siteOrigin = 'https://www.direwolfcybersecurity.com';
  * Legal entity name, used in the footer copyright line; the legal pages spell it out the same
  * way. Owner facts (CLAUDE.md, 2026-10-23): the name is exactly "Direwolf Cybersecurity" and the
  * entity type is not yet confirmed.
- * TODO(mitch): confirm the registered entity type (LLC, Inc., etc.) against the Colorado
- * Secretary of State record before launch. Do not append "LLC" or "Inc." here or anywhere else
- * until then.
+ * TODO(mitch, gate G4): confirm the registered entity type (LLC, Inc., etc.) against the Colorado
+ * Secretary of State record. Do not append "LLC" or "Inc." here or anywhere else until then.
  */
 export const legalEntityName = 'Direwolf Cybersecurity';
 
 /**
  * Ownership status. Claims register row F1: `true today` on the owner's statement; the SBA
- * VetCert certificate or SAM.gov entity record must be filed under docs/evidence/ before launch.
+ * VetCert certificate or SAM.gov entity record is still to be filed under docs/evidence/ (gate G3,
+ * open after launch).
  * Use this exact phrase, or `ownershipPhrase` inside a sentence. Before showing any SBA mark,
  * read "Logo use" in docs/launch-runbook.md.
  */
@@ -45,23 +47,35 @@ export const ownershipStatement =
 export const ownershipPhrase = 'an SBA-certified Service-Disabled Veteran-Owned Small Business';
 
 /**
- * Headquarters line shown in the footer and on the contact page.
- * PLACEHOLDER (CLAUDE.md owner facts): no business mailing address is available yet.
+ * Headquarters line shown in the footer and on the contact page (CLAUDE.md owner facts).
  */
 export const hqLine = 'Colorado Springs, Colorado';
 /**
- * TODO(mitch): business mailing address (PO box or registered agent). Publishing one here and in
- * the Privacy Policy and Terms is a launch gate in docs/launch-runbook.md. Empty hides the line.
+ * TODO(mitch, gate G2): business mailing address (PO box or registered agent). Unpublished at
+ * launch; add it here and in the Privacy Policy (sections 1 and 15) and the Terms (section 1),
+ * bumping their versions. Empty hides the line everywhere, so nothing shows until it is set.
  */
 export const streetAddress = '';
 
-/** TODO(mitch): replace with the real mailboxes once the domain's mail is set up. */
+/**
+ * Domain mailboxes. Each is an alias on the owner's Google Workspace mailbox (README.md,
+ * "Email"); the legal pages, the footer, the contact page and security.txt read them from
+ * here. Change an address here, never in a page.
+ */
+/** General inquiries, accessibility feedback, EEO accommodation requests. */
 export const contactEmail = 'contact@direwolfcybersecurity.com';
+/** Vulnerability reports and suspected compromise; also the security.txt Contact. */
 export const securityEmail = 'security@direwolfcybersecurity.com';
+/** Legal notices and questions about the Terms of Service and the Acceptable Use Policy. */
+export const legalEmail = 'legal@direwolfcybersecurity.com';
+/** Privacy requests and questions about the Privacy Policy, Cookie Notice and Subprocessors. */
 export const privacyEmail = 'privacy@direwolfcybersecurity.com';
 
-/** TODO(mitch): business phone. Leave empty to hide the phone line everywhere. */
-export const phone: string = '';
+/**
+ * Optional business phone. Unset at launch, so no phone line appears anywhere on the site; the
+ * footer and the contact page show one only when this is set to a real number.
+ */
+export const phone: string | undefined = undefined;
 
 /** Social profiles. Empty until the company has any; the footer hides the block when empty. */
 export const socials: { name: string; url: string }[] = [];
@@ -85,7 +99,7 @@ export const contactEndpoint: string | undefined =
 
 /**
  * Compliance strip, rendered by ComplianceStrip.astro on the Platform page only. Each phrase
- * is the short form of a claims-register row (C1, C2, H1 GovCloud-only form, H4/H5) and the
+ * is the short form of a claims-register row (C1, C2, H1 strip form, H4/H5 strip form) and the
  * Compliance page explains what each one means. Row H1 forbids hosting wording on Home,
  * Services and About, so never render the strip there; those pages link to /compliance/
  * instead. Change a phrase only after updating docs/claims-register.md.
@@ -93,8 +107,8 @@ export const contactEndpoint: string | undefined =
 export const complianceStrip = [
   'Aligned to NIST SP 800-171',
   'Pursuing CMMC Level 2',
-  'Hosted on AWS GovCloud (US)',
-  'FIPS 140-validated TLS and key management',
+  'Built for AWS GovCloud (US)',
+  'Designed for FIPS 140-validated TLS and key management',
 ] as const;
 
 /**

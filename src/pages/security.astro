@@ -2,7 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHeader from '../components/PageHeader.astro';
 import Section from '../components/Section.astro';
-import { SITE_LAUNCHED, securityEmail, siteOrigin, appUrl, securityTxtExpires } from '../config';
+import { securityEmail, siteOrigin, appUrl, securityTxtExpires } from '../config';
 
 const description =
   'How to report a security vulnerability in the Direwolf Cybersecurity website or the Direwolf Platform, what is in scope, the rules for good-faith research, and what researchers can expect from us.';
@@ -17,7 +17,7 @@ const expiresLabel = new Intl.DateTimeFormat('en-US', {
 }).format(new Date(securityTxtExpires));
 
 /** Bump when this policy's wording changes; the platform may record acknowledgements of it. */
-const policyVersion = 'v2026.10.23';
+const policyVersion = 'v2026.10.24';
 ---
 
 <BaseLayout title="Security and responsible disclosure" description={description}>
@@ -26,18 +26,6 @@ const policyVersion = 'v2026.10.23';
     title="Responsible disclosure"
     lede="If you believe you have found a security vulnerability in this website or in the Direwolf Platform, we want to hear from you. This page explains how to report it, what is in scope, how we treat good-faith research, and what to expect from us."
   />
-
-  {!SITE_LAUNCHED && (
-    <div class="border-line border-b">
-      <div class="container-x py-4">
-        <p class="bg-accent-soft border-line max-w-prose rounded-xl border p-4 text-sm" role="note">
-          <strong>Draft for attorney review; not yet in effect.</strong> The safe-harbor wording
-          below follows published good-faith research norms and will be confirmed by counsel before
-          launch. Until the Direwolf Platform is live, only this website is in scope.
-        </p>
-      </div>
-    </div>
-  )}
 
   <Section id="report" title="How to report">
     <div class="prose mt-6">
@@ -112,8 +100,8 @@ const policyVersion = 'v2026.10.23';
       </ul>
       <p>
         The website is hosted separately from the Direwolf Platform and does not store customer
-        data. The Platform runs in AWS GovCloud (US); how it is built and protected is described on
-        the <a href="/platform/#security">Platform</a> page.
+        data. The Platform is built to run in AWS GovCloud (US) and is not yet in service; how it is
+        built and protected is described on the <a href="/platform/#security">Platform</a> page.
       </p>
     </div>
   </Section>

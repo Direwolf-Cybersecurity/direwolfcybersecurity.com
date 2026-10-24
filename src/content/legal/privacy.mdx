@@ -1,15 +1,17 @@
 ---
 title: Privacy Policy
-version: v2026.10.23
-effectiveDate: 2026-10-23
+version: v2026.10.24
+effectiveDate: 2026-10-24
 summary: How Direwolf Cybersecurity collects, uses, shares and protects personal information on this website and in the Direwolf Platform, and the choices and rights you have.
-status: draft
+status: published
 order: 10
 ---
 
+import { securityEmail, privacyEmail } from '../../config';
+
 ## 1. Who we are and what this policy covers
 
-This Privacy Policy is issued by Direwolf Cybersecurity ("Direwolf", "we", "us"), a company headquartered in Colorado Springs, Colorado. [Legal entity type and business mailing address to be confirmed before publication.]
+This Privacy Policy is issued by Direwolf Cybersecurity ("Direwolf", "we", "us"), a company headquartered in Colorado Springs, Colorado. {/* TODO(mitch, gates G2 and G4): add the legal entity type and the business mailing address here once confirmed, and bump the version. */}
 
 It covers two things:
 
@@ -25,7 +27,7 @@ Direwolf provides services to organizations, not to individuals. When you use th
 - We collect only what we need to respond to you, to run and secure the Platform, to bill customers, and to meet our legal obligations.
 - We do not sell personal information, and we do not use it for advertising.
 - This Website sets no non-essential cookies (today, no cookies at all) and uses no analytics, tracking pixels or third-party scripts. The Platform uses strictly necessary cookies only. See our [Cookie Notice](/legal/cookies/).
-- Customer data is stored in the United States, in AWS GovCloud (US).
+- Customer data is stored in the United States, in AWS GovCloud (US). The Platform is being brought into service; these statements describe how customer data is handled once you use it.
 - The AI that analyzes security alerts runs inside the same AWS GovCloud (US) environment. Your alert data is not sent to third-party AI services and is not used to train models.
 - Our subprocessors are listed on the [Subprocessors](/legal/subprocessors/) page.
 
@@ -102,7 +104,7 @@ We do not share personal information with anyone else, and we never sell it.
 
 ## 7. Where information is stored
 
-Customer data is stored in the United States, in AWS GovCloud (US-West), with backups in AWS GovCloud (US-East). Our services call AWS only through FIPS endpoints, and customer data does not leave the AWS GovCloud (US) boundary except to the endpoint protection or endpoint management vendor's cloud that your sensors already report to, and to our payment processor for billing.
+Customer data is stored in the United States, in AWS GovCloud (US-West), with backups in AWS GovCloud (US-East). Our services call AWS only through FIPS endpoints, and customer data does not leave the AWS GovCloud (US) boundary except to the endpoint protection or endpoint management vendor's cloud that your sensors already report to, and to our payment processor for billing. The Platform is being brought into service; these statements describe how customer data is handled once you use it.
 
 Contact form messages and email are held in our business email and support systems in the United States.
 
@@ -126,7 +128,7 @@ Where we keep information after an account closes, we keep it only for the purpo
 
 In plain language, this is how the Platform protects your data. A fuller description is on our [Platform](/platform/#security) page, and our compliance status, including what we do and do not claim, is on our [Compliance](/compliance/) page.
 
-- **Hosting.** The Platform runs in AWS GovCloud (US), with customer data stored in the United States.
+- **Hosting.** The Platform runs in AWS GovCloud (US), with customer data stored in the United States. The Platform is being brought into service; these statements describe how customer data is handled once you use it.
 - **Encryption.** Data in transit is protected with TLS 1.2 or higher, and data at rest (databases, object storage, queues, secrets and logs) is encrypted with customer-managed keys in AWS Key Management Service, with automatic key rotation. The FIPS 140 validation details for these components are on our [Compliance](/compliance/) page.
 - **Multi-factor authentication** is mandatory for every user: an authenticator app or a passkey, plus recovery codes. Direwolf staff must use a passkey or hardware security key.
 - **Tenant isolation.** Each customer organization is isolated at the database layer with PostgreSQL row-level security, enforced for every query, in addition to application-level permission checks.
@@ -150,7 +152,7 @@ We do not track visitors across third-party websites, we allow no third parties 
 
 ### 11.1 Everyone
 
-You can ask us to tell you what personal information we hold about you, to correct it, to delete it, or to give you a copy in a portable format. You can also ask questions about this policy. Write to privacy@direwolfcybersecurity.com or use the [contact form](/contact/). We will verify that you are who you say you are before acting, and we will respond within 45 days. If a request concerns data we process on behalf of your organization, see section 13.
+You can ask us to tell you what personal information we hold about you, to correct it, to delete it, or to give you a copy in a portable format. You can also ask questions about this policy. Write to {privacyEmail} or use the [contact form](/contact/). We will verify that you are who you say you are before acting, and we will respond within 45 days. If a request concerns data we process on behalf of your organization, see section 13.
 
 Platform users can see and change their own account details, MFA methods and active sessions in the Platform at any time.
 
@@ -186,8 +188,8 @@ This policy is versioned. The version number and effective date appear at the to
 
 ## 15. Contact
 
-Privacy questions and requests: privacy@direwolfcybersecurity.com
+Privacy questions and requests: {privacyEmail}
 
-Security vulnerability reports: security@direwolfcybersecurity.com (see [Security and responsible disclosure](/security/))
+Security vulnerability reports: {securityEmail} (see [Security and responsible disclosure](/security/))
 
-Postal address: Direwolf Cybersecurity, Colorado Springs, Colorado [business mailing address to be added before publication]
+Postal address: Direwolf Cybersecurity, Colorado Springs, Colorado {/* TODO(mitch, gate G2): add the business mailing address here once available, and bump the version. */}

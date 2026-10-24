@@ -2,6 +2,8 @@
 import { getCollection, render } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 import LegalLayout from '../../layouts/LegalLayout.astro';
+import MdxLink from '../../components/MdxLink.astro';
+import MdxTable from '../../components/MdxTable.astro';
 
 export async function getStaticPaths() {
   const docs = await getCollection('legal');
@@ -17,5 +19,5 @@ const { Content } = await render(entry);
 ---
 
 <LegalLayout entry={entry}>
-  <Content />
+  <Content components={{ a: MdxLink, table: MdxTable }} />
 </LegalLayout>

@@ -54,7 +54,7 @@ const telHref = phone ? `tel:${phone.replace(/[^+\d]/g, '')}` : '';
         <ul class="mt-4 flex gap-4 text-sm" aria-label="Social profiles">
           {socials.map((s) => (
             <li>
-              <a href={s.url} class="link" rel="noopener">
+              <a href={s.url} class="link" rel="noopener noreferrer">
                 {s.name}
               </a>
             </li>
@@ -76,7 +76,11 @@ const telHref = phone ? `tel:${phone.replace(/[^+\d]/g, '')}` : '';
           </li>
         ))}
         <li>
-          <a href={loginUrl} class="text-muted hover:text-accent no-underline hover:underline">
+          <a
+            href={loginUrl}
+            class="text-muted hover:text-accent no-underline hover:underline"
+            rel="noopener noreferrer"
+          >
             Log in to the platform
           </a>
         </li>

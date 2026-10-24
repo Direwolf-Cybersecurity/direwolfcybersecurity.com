@@ -18,7 +18,10 @@ const legal = defineCollection({
     effectiveDate: z.coerce.date(),
     /** One or two sentences shown under the title and on the legal index. */
     summary: z.string().min(1),
-    /** Drafts carry an "awaiting attorney review" notice. */
+    /**
+     * `published` documents show the in-effect sentence; a `draft` shows a draft notice
+     * (src/layouts/LegalLayout.astro). All documents were published at launch, 2026-10-23.
+     */
     status: z.enum(['draft', 'published']).default('draft'),
     /** Footer link label, when shorter than the title. */
     shortTitle: z.string().optional(),

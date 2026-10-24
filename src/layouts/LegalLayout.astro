@@ -1,7 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import BaseLayout from './BaseLayout.astro';
-import { SITE_LAUNCHED, privacyEmail } from '../config';
+import { contactEmail, legalEmail, privacyEmail } from '../config';
 
 interface Props {
   entry: CollectionEntry<'legal'>;
@@ -20,11 +20,22 @@ const effectiveLabel = dateFormat.format(effectiveDate);
 const effectiveIso = effectiveDate.toISOString().slice(0, 10);
 
 /**
- * Every legal document is a draft until an attorney has reviewed it and the site has
- * launched. The notice is shown while SITE_LAUNCHED is false, and afterwards for any
- * document still marked `status: draft` (a draft must never appear to be in effect).
+ * Every document was published (`status: published`) at launch on 2026-10-23, at the owner's
+ * direction and before attorney review (gate G1, open). A published document shows the one
+ * in-effect sentence below the version line. A document marked `status: draft` (a future new
+ * document, before it takes effect) shows the draft notice instead, so a draft never appears to
+ * be in effect.
  */
-const showDraftNotice = !SITE_LAUNCHED || status === 'draft';
+const isDraft = status === 'draft';
+
+/** Where questions about this document go: the mailbox each document itself names. */
+const questionsEmailById: Record<string, string> = {
+  terms: legalEmail,
+  'acceptable-use': legalEmail,
+  accessibility: contactEmail,
+  eeo: contactEmail,
+};
+const questionsEmail = questionsEmailById[entry.id] ?? privacyEmail;
 ---
 
 <BaseLayout title={title} description={summary}>
@@ -59,19 +70,22 @@ const showDraftNotice = !SITE_LAUNCHED || status === 'draft';
       </div>
     </dl>
 
-    {showDraftNotice && (
+    {isDraft ? (
       <div
         class="bg-accent-soft border-line mt-6 max-w-prose rounded-xl border p-4 text-sm"
         role="note"
         aria-label="Draft notice"
       >
         <p>
-          <strong>Draft for attorney review; not yet in effect.</strong> This document has not been
-          reviewed by an attorney and does not bind anyone. Text in [square brackets] marks a
-          decision still to be made. The version that takes effect will carry a new version number
-          and effective date.
+          <strong>Draft; not yet in effect.</strong> This document does not bind anyone yet. The
+          version that takes effect will carry a new version number and effective date.
         </p>
       </div>
+    ) : (
+      <p class="text-muted mt-4 max-w-prose text-sm">
+        These documents are in effect and are reviewed periodically; the current version is shown
+        above.
+      </p>
     )}
 
     <article class="prose mt-8">
@@ -80,8 +94,8 @@ const showDraftNotice = !SITE_LAUNCHED || status === 'draft';
 
     <p class="text-muted mt-12 max-w-prose text-sm">
       Questions about this document? Write to{' '}
-      <a href={`mailto:${privacyEmail}`} class="link">
-        {privacyEmail}
+      <a href={`mailto:${questionsEmail}`} class="link">
+        {questionsEmail}
       </a>
       .
     </p>

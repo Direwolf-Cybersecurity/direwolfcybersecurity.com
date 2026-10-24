@@ -26,17 +26,18 @@ Build-time variables (copy `.env.example` to `.env`; CI reads them from reposito
 
 ## Verify (definition of done)
 
-| Command                | What it checks                                                                                                                               |
-| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| `npm run build`        | Astro static build into `dist/`                                                                                                              |
-| `npm run check`        | `astro check`: TypeScript and template diagnostics                                                                                           |
-| `npm run lint`         | ESLint with the Astro and jsx-a11y (strict) rules                                                                                            |
-| `npm run format:check` | Prettier. `npm run format` rewrites the files.                                                                                               |
-| `npm run links`        | Every internal link, asset and `#fragment` in `dist/` resolves                                                                               |
-| `npm run a11y`         | axe-core WCAG 2.1 A/AA over every built page, light and dark, phone width. Needs Edge or Chrome installed, or `A11Y_BROWSER_PATH=<browser>`. |
+| Command                | What it checks                                                                                                                                                                                                                                                                                                                         |
+| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm run build`        | Astro static build into `dist/`                                                                                                                                                                                                                                                                                                        |
+| `npm run check`        | `astro check`: TypeScript and template diagnostics                                                                                                                                                                                                                                                                                     |
+| `npm run lint`         | ESLint with the Astro and jsx-a11y (strict) rules                                                                                                                                                                                                                                                                                      |
+| `npm run format:check` | Prettier. `npm run format` rewrites the files.                                                                                                                                                                                                                                                                                         |
+| `npm run links`        | Every internal link, asset and `#fragment` in `dist/` resolves                                                                                                                                                                                                                                                                         |
+| `npm run a11y`         | axe-core WCAG 2.1 A/AA over every built page, light and dark, phone width. Needs Edge or Chrome installed, or `A11Y_BROWSER_PATH=<browser>`.                                                                                                                                                                                           |
+| `npm run csp`          | Every page carries the Content Security Policy and referrer meta, has no inline script or style, and links out with `rel="noopener noreferrer"`; each page then loads in the same browser as `a11y` with zero CSP violations or console errors, and the mobile menu, contact-form validation and no-JavaScript fallback are exercised. |
 
-`npm run verify` runs build, check, lint, links and a11y in that order. CI
-(`.github/workflows/ci.yml`) runs all six on every push to `main` and on every pull request.
+`npm run verify` runs build, check, lint, format:check, links, a11y and csp in that order. CI
+(`.github/workflows/ci.yml`) runs all seven on every push to `main` and on every pull request.
 
 ## Layout
 
@@ -45,74 +46,116 @@ src/pages/        home, services, platform, about, contact, compliance, security
 src/components/   header, footer, nav, hero, cards, forms, legal layout
 src/content/      legal documents (MDX with versioned frontmatter)
 src/data/         navigation, services, pricing
-src/config.ts     site constants: launch flag, names, ownership statement, address placeholder
-public/           favicon, CNAME; robots.txt, sitemap and security.txt are generated at build
-scripts/          check-links.mjs, a11y.mjs
+src/config.ts     site constants: launch flag, names, ownership statement, mailboxes, HQ line
+public/           favicon, CNAME, noscript.css; robots.txt, sitemap and security.txt are generated
+scripts/          check-links.mjs, a11y.mjs, check-csp.mjs, lib/site.mjs (shared by a11y and csp)
 docs/             claims-register.md, claims-research.md, legal-research.md,
                   legal-requirements-checklist.md, platform-consent-spec.md, launch-runbook.md
-.github/workflows ci.yml (build, check, lint, format, links, a11y), deploy.yml (GitHub Pages)
+.github/workflows ci.yml (build, check, lint, format, links, a11y, csp), deploy.yml (GitHub Pages)
 ```
 
 ## Deploy and launch
 
-The site is **not launched**. `SITE_LAUNCHED` in `src/config.ts` is `false`, and while it is:
+The site **launched on 2026-10-23** at the owner's direction. `SITE_LAUNCHED` in
+`src/config.ts` is `true`, so:
 
-- `/robots.txt` disallows all crawling and every page carries `noindex`;
-- a "Preview build" notice is shown at the top of every page;
-- `.github/workflows/deploy.yml` refuses to publish: its `gate` job reads the flag, writes a
-  notice, and the build and publish jobs are skipped. The build job additionally refuses any
-  `dist/` whose `robots.txt` still says `Disallow: /`.
+- `/robots.txt` allows all crawling and names `/sitemap-index.xml` (generated by
+  `@astrojs/sitemap`); every page carries `index, follow` except the 404 page;
+- no preview notice is shown, and each legal page states that the documents are in effect;
+- `.github/workflows/deploy.yml` builds and publishes `main` to GitHub Pages on every push. Its
+  `gate` job reads the flag, and the build job still refuses any `dist/` whose `robots.txt` says
+  `Disallow: /`.
 
-Flipping the flag is the last step of [docs/launch-runbook.md](docs/launch-runbook.md), after
-its gates are closed: attorney review of the legal pages, the business mailing address (PO box or
-registered agent), the SBA VetCert certificate filed under `docs/evidence/`, and the rest.
+The launch went ahead with three gates still open, now tracked as post-launch items in
+[docs/launch-runbook.md](docs/launch-runbook.md) ("Launch record"): attorney review of the legal
+pages (G1), the business mailing address (G2), and the SBA VetCert certificate filed under
+`docs/evidence/` (G3). Setting the flag back to `false` stops further publishes and restores
+`noindex`; it does not take down what is already on Pages.
 
-### Before the first publish
+GitHub Pages cannot set response headers, so the Content Security Policy and the referrer policy
+are `<meta>` tags in `src/layouts/BaseLayout.astro`; `npm run csp` checks them over `dist/`.
 
-1. **Make GitHub Pages available.** GitHub Pages serves only public repositories on the Free
-   organization plan. Before launch either make this repository public (normal for a marketing
-   site; check that nothing private is in the history or in `docs/evidence/` first) or move the
-   `Direwolf-Cybersecurity` organization to the GitHub Team plan.
-2. **Verify the domain for the organization** before enabling it on the repository: GitHub
-   organization Settings → Pages → "Add a domain" → `direwolfcybersecurity.com`, then create the
-   TXT record GitHub shows (Namecheap: Type `TXT`, Host like
-   `_github-pages-challenge-direwolf-cybersecurity`, Value as displayed). Once verified, only
+### GitHub (done by the orchestrator)
+
+1. **Done: repository public.** GitHub Pages serves only public repositories on the Free
+   organization plan; this repository is public (confirmed through the GitHub API on
+   2026-10-23).
+2. **Done: Pages enabled with the custom domain.** Repository Settings → Pages → Build and
+   deployment → Source: **GitHub Actions**; Custom domain: `www.direwolfcybersecurity.com`
+   (matches `public/CNAME`).
+3. **Done 2026-10-24: organization-level domain verification.** Organization Settings → Pages
+   shows `direwolfcybersecurity.com` as verified, using the
+   `_github-pages-challenge-direwolf-cybersecurity` TXT record in the DNS table below. Only
    repositories owned by the organization can publish a Pages site on the domain or its
    subdomains, which prevents takeover ([GitHub Docs, "Verifying your custom domain for GitHub
    Pages"](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/verifying-your-custom-domain-for-github-pages)).
    Keep the TXT record in place.
-3. **Repository settings** → Pages → Build and deployment → Source: **GitHub Actions**. Custom
-   domain: `www.direwolfcybersecurity.com` (must match `public/CNAME`). Tick **Enforce HTTPS**
-   once GitHub has issued the certificate.
-4. **Repository variables** (Settings → Secrets and variables → Actions → Variables):
+4. **Pending: Enforce HTTPS.** Repository Settings → Pages → tick **Enforce HTTPS**. The
+   orchestrator enables it once GitHub has issued the certificate for
+   `www.direwolfcybersecurity.com`.
+5. **Repository variables** (Settings → Secrets and variables → Actions → Variables), optional:
    `PUBLIC_APP_URL` and, when the platform's contact endpoint exists, `PUBLIC_CONTACT_ENDPOINT`.
-5. **Launch:** set `SITE_LAUNCHED = true` in `src/config.ts`, commit, push to `main`.
-   `deploy.yml` builds and publishes; "Run workflow" (workflow_dispatch) re-publishes on demand.
+   None is set, so the build uses the default `https://app.direwolfcybersecurity.com`.
+   "Run workflow" (workflow_dispatch) on `deploy.yml` re-publishes on demand.
 
-### DNS at Namecheap (Advanced DNS)
+### DNS at Namecheap (Advanced DNS): done 2026-10-24
 
-Namecheap → Domain List → Manage → **Advanced DNS** → Host records. The columns are Type, Host,
-Value, TTL; Host is relative to the domain (`@` is the apex, `www` is www). First delete
-Namecheap's default parking records (the URL Redirect record on `@` and the CNAME `www` →
-`parkingpage.namecheap.com`), then add:
+Namecheap → Domain List → Manage → **Advanced DNS**. The columns are Type, Host, Value, TTL;
+Host is relative to the domain (`@` is the apex, `www` is www). These records are live (checked
+against public DNS on 2026-10-24):
 
-| Type  | Host                                            | Value                                   | TTL       |
-| ----- | ----------------------------------------------- | --------------------------------------- | --------- |
-| A     | @                                               | 185.199.108.153                         | Automatic |
-| A     | @                                               | 185.199.109.153                         | Automatic |
-| A     | @                                               | 185.199.110.153                         | Automatic |
-| A     | @                                               | 185.199.111.153                         | Automatic |
-| AAAA  | @                                               | 2606:50c0:8000::153                     | Automatic |
-| AAAA  | @                                               | 2606:50c0:8001::153                     | Automatic |
-| AAAA  | @                                               | 2606:50c0:8002::153                     | Automatic |
-| AAAA  | @                                               | 2606:50c0:8003::153                     | Automatic |
-| CNAME | www                                             | direwolf-cybersecurity.github.io.       | Automatic |
-| TXT   | \_github-pages-challenge-direwolf-cybersecurity | (the value GitHub displays, see step 2) | Automatic |
+| Type  | Host                                            | Value                                                 | TTL       |
+| ----- | ----------------------------------------------- | ----------------------------------------------------- | --------- |
+| A     | @                                               | 185.199.108.153                                       | Automatic |
+| A     | @                                               | 185.199.109.153                                       | Automatic |
+| A     | @                                               | 185.199.110.153                                       | Automatic |
+| A     | @                                               | 185.199.111.153                                       | Automatic |
+| AAAA  | @                                               | 2606:50c0:8000::153                                   | Automatic |
+| AAAA  | @                                               | 2606:50c0:8001::153                                   | Automatic |
+| AAAA  | @                                               | 2606:50c0:8002::153                                   | Automatic |
+| AAAA  | @                                               | 2606:50c0:8003::153                                   | Automatic |
+| CNAME | www                                             | direwolf-cybersecurity.github.io.                     | Automatic |
+| TXT   | \_github-pages-challenge-direwolf-cybersecurity | (the value GitHub displays; verified)                 | Automatic |
+| CAA   | @                                               | `0 issue "letsencrypt.org"`                           | Automatic |
+| CAA   | @                                               | `0 issue "amazon.com"`                                | Automatic |
+| CAA   | @                                               | `0 iodef "mailto:security@direwolfcybersecurity.com"` | Automatic |
+
+The mail records are in "Email" below. Also done: **DNSSEC** on (the DS record is published),
+**Domain Lock** on and **WHOIS privacy** on. The CAA records allow only Let's Encrypt (which
+issues the GitHub Pages certificate) and Amazon (AWS Certificate Manager, for the platform's
+load balancer) to issue certificates for the domain, and the `iodef` record asks a certificate
+authority that refuses a request to report it to security@. Add a CAA `issue` record before
+using any other certificate authority, or its certificates will be refused.
 
 The A and AAAA addresses were verified on 2026-10-23 against GitHub Docs, ["Managing a custom
 domain for your GitHub Pages
-site"](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site);
-re-check them there before adding. With both the apex and `www` configured, GitHub Pages
-redirects the apex to `www` (the custom domain in `public/CNAME`). The platform (`app`), the
-mail records that the platform's Terraform will output, DNSSEC and the Namecheap account hygiene
-checklist are in [docs/launch-runbook.md](docs/launch-runbook.md).
+site"](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site).
+With both the apex and `www` configured, GitHub Pages redirects the apex to `www` (the custom
+domain in `public/CNAME`). The platform (`app`), the Amazon SES sending records that the
+platform's Terraform will output, DNSSEC and the Namecheap account hygiene checklist are in
+[docs/launch-runbook.md](docs/launch-runbook.md).
+
+### Email (Google Workspace): done 2026-10-24
+
+Mail for `direwolfcybersecurity.com` runs on **Google Workspace**. The site publishes four
+addresses, all set in `src/config.ts`: contact@, security@ (also the `security.txt` contact),
+legal@ and privacy@direwolfcybersecurity.com. They and dmarc@ (DMARC aggregate reports) are
+aliases on the owner's Workspace mailbox, and each already delivers there. Add or remove an
+alias in the Google Admin console, never at Namecheap.
+
+The mail records, all live on 2026-10-24:
+
+| Type | Host               | Value                                                                                                                 | TTL       |
+| ---- | ------------------ | --------------------------------------------------------------------------------------------------------------------- | --------- |
+| MX   | @                  | `smtp.google.com`, priority 1 (entered under **Mail Settings → Custom MX**, not in Host records)                      | Automatic |
+| TXT  | @                  | `v=spf1 include:_spf.google.com ~all` (SPF)                                                                           | Automatic |
+| TXT  | google.\_domainkey | `v=DKIM1;k=rsa;p=…` (Gmail DKIM key from Google Admin → Apps → Google Workspace → Gmail → Authenticate email; active) | Automatic |
+| TXT  | \_dmarc            | `v=DMARC1; p=quarantine; rua=mailto:dmarc@direwolfcybersecurity.com; adkim=s; aspf=r; pct=100`                        | Automatic |
+
+**Warning: do not change Advanced DNS → Mail Settings away from Custom MX.** Choosing Email
+Forwarding, Private Email or any other option there, or adding forwarders under Redirect Email,
+replaces the Google MX records, and mail to every address on the site (including the security@
+contact in `security.txt`) stops arriving. Keep exactly one SPF record on `@`: when the
+platform's Amazon SES sending is set up, merge any `include:` it needs into this record rather
+than adding a second one. Keep exactly one `_dmarc` record, and do not lower its policy to
+`p=none`. Runbook §3.4 has the SES records.

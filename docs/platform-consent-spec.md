@@ -17,10 +17,10 @@ section of `docs/legal-requirements-checklist.md`.
 
 | Slug                      | Document                                                          | Current version                                            | Canonical URL                                                |
 | ------------------------- | ----------------------------------------------------------------- | ---------------------------------------------------------- | ------------------------------------------------------------ |
-| `terms`                   | Terms of Service                                                  | `v2026.10.23`                                              | https://www.direwolfcybersecurity.com/legal/terms/           |
+| `terms`                   | Terms of Service                                                  | `v2026.10.24`                                              | https://www.direwolfcybersecurity.com/legal/terms/           |
 | `aup`                     | Acceptable Use Policy                                             | `v2026.10.23`                                              | https://www.direwolfcybersecurity.com/legal/acceptable-use/  |
-| `privacy`                 | Privacy Policy                                                    | `v2026.10.23`                                              | https://www.direwolfcybersecurity.com/legal/privacy/         |
-| `subprocessors`           | Subprocessors (incorporated by reference; no separate acceptance) | `v2026.10.23`                                              | https://www.direwolfcybersecurity.com/legal/subprocessors/   |
+| `privacy`                 | Privacy Policy                                                    | `v2026.10.24`                                              | https://www.direwolfcybersecurity.com/legal/privacy/         |
+| `subprocessors`           | Subprocessors (incorporated by reference; no separate acceptance) | `v2026.10.24`                                              | https://www.direwolfcybersecurity.com/legal/subprocessors/   |
 | `banner`                  | System-use notice (text in §4 below)                              | `v2026.10.23`                                              | n/a (served by the platform)                                 |
 | `prohibited-data`         | Prohibited-data attestation (text in §1 below)                    | `v2026.10.23`                                              | n/a (part of sign-up)                                        |
 | `vendor-eula:sentinelone` | SentinelOne Terms of Service (vendor document)                    | as published by the vendor; record its "last updated" date | https://www.sentinelone.com/legal/terms-of-service/          |

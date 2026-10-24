@@ -168,6 +168,10 @@
   .prose :where(code) {
     @apply bg-surface rounded px-1 py-0.5 font-mono text-[0.9em];
   }
+  /* A table wider than the screen scrolls inside this region, not the page (MdxTable.astro). */
+  .prose > :where(.table-scroll) {
+    @apply mt-4 mb-4 max-w-full overflow-x-auto;
+  }
   .prose :where(table) {
     @apply w-full border-collapse text-sm;
   }

@@ -17,7 +17,7 @@ concurrency:
 
 jobs:
   verify:
-    name: Build, check, lint, format, links, a11y
+    name: Build, check, lint, format, links, a11y, csp
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -54,6 +54,10 @@ jobs:
         # scripts/a11y.mjs drives the Edge or Chrome build preinstalled on ubuntu-latest through
         # playwright-core. If the runner image changes, point A11Y_BROWSER_PATH at a browser binary.
         run: npm run a11y
+
+      - name: Content Security Policy (meta on every page, no inline code, pages work under it)
+        # Same browser as the a11y step; see scripts/check-csp.mjs.
+        run: npm run csp
 
       - name: Upload the axe report when the accessibility check fails
         if: failure()

@@ -1,0 +1,42 @@
+---
+/**
+ * The <a> element of the legal documents (MDX), mapped in src/pages/legal/[id].astro. A link to
+ * another origin gets rel="noopener noreferrer", matching the hand-written links in the
+ * components; links to this site, relative links, fragments and mailto: links are unchanged.
+ * `npm run csp` (scripts/check-csp.mjs) checks the built pages for it.
+ */
+import type { HTMLAttributes } from 'astro/types';
+import { siteOrigin } from '../config';
+
+type Props = HTMLAttributes<'a'>;
+
+const { href, rel, ...rest } = Astro.props;
+
+const siteHost = new URL(siteOrigin).host.toLowerCase();
+const siteHosts = new Set([siteHost, siteHost.replace(/^www\./, '')]);
+const target = href === undefined || href === null ? '' : String(href);
+
+let external = false;
+if (/^https?:\/\//i.test(target)) {
+  try {
+    external = !siteHosts.has(new URL(target).host.toLowerCase());
+  } catch {
+    external = false;
+  }
+}
+
+const relTokens = new Set(
+  String(rel ?? '')
+    .split(/\s+/)
+    .filter(Boolean),
+);
+if (external) {
+  relTokens.add('noopener');
+  relTokens.add('noreferrer');
+}
+const relValue = relTokens.size > 0 ? [...relTokens].join(' ') : undefined;
+---
+
+<a href={href} rel={relValue} {...rest}>
+  <slot />
+</a>

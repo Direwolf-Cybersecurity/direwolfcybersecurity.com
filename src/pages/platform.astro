@@ -40,7 +40,7 @@ const features = [
 const architecture = [
   {
     title: 'Hosting',
-    text: 'The platform runs entirely in AWS GovCloud (US), on FedRAMP High authorized infrastructure, with private networks, a web application firewall, and controlled egress between the internet and your data. Direwolf itself is not FedRAMP certified or authorized. FedRAMP certification applies to the AWS infrastructure we build on, not to the Direwolf Platform.',
+    text: 'The platform is built to run entirely in AWS GovCloud (US), on FedRAMP High authorized infrastructure, with private networks, a web application firewall, and controlled egress between the internet and your data. It is not yet in service. Direwolf itself is not FedRAMP certified or authorized. FedRAMP certification applies to the AWS infrastructure we build on, not to the Direwolf Platform.',
   },
   {
     title: 'Tenant isolation',
@@ -56,7 +56,7 @@ const architecture = [
   },
   {
     title: 'AI SOC guardrails',
-    text: 'AI triage runs on Amazon Bedrock inside the same GovCloud boundary. Autonomous actions are limited by per-organization policies, rate limits, a list of hosts the AI may never isolate on its own, one-click undo, and a platform-wide switch that drops the AI to recommend-only. Every action is recorded with its reasoning.',
+    text: 'AI triage is designed to run on Amazon Bedrock inside the same GovCloud boundary. Autonomous actions are limited by per-organization policies, rate limits, a list of hosts the AI may never isolate on its own, one-click undo, and a platform-wide switch that drops the AI to recommend-only. Every action is recorded with its reasoning.',
   },
   {
     title: 'Audit logging',
@@ -64,7 +64,7 @@ const architecture = [
   },
   {
     title: 'Encryption',
-    text: 'Connections use TLS 1.2 or later with a FIPS 140-validated security policy at the edge. Data at rest in databases, storage, queues, and secrets is encrypted with customer-managed keys in AWS Key Management Service, whose hardware security modules are FIPS 140-validated. No secrets are stored in code.',
+    text: 'When the platform is in service, connections will use TLS 1.2 or later with a FIPS 140-validated security policy at the edge, and data at rest in databases, storage, queues, and secrets will be encrypted with customer-managed keys in AWS Key Management Service, whose hardware security modules are FIPS 140-validated. No secrets are stored in code.',
   },
   {
     title: 'Operations',
@@ -82,10 +82,10 @@ const architecture = [
 
   <div>
     <div class="container-x flex flex-col gap-3 py-4 sm:flex-row">
-      <a href={signupUrl} class="btn btn-primary">
+      <a href={signupUrl} class="btn btn-primary" rel="noopener noreferrer">
         Sign up
       </a>
-      <a href={loginUrl} class="btn btn-secondary">
+      <a href={loginUrl} class="btn btn-secondary" rel="noopener noreferrer">
         Log in
       </a>
     </div>
@@ -118,7 +118,7 @@ const architecture = [
         </figure>
       ))}
     </div>
-    <p class="text-muted mt-6 text-sm">Screenshots will be added before launch.</p>
+    <p class="text-muted mt-6 text-sm">Screenshots of the Platform will be added here.</p>
   </Section>
 
   <Section

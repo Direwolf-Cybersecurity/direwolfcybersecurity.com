@@ -4,9 +4,11 @@ shortTitle: Acceptable use
 version: v2026.10.23
 effectiveDate: 2026-10-23
 summary: What users of the Direwolf Platform and services may and may not do, the rules for security testing, and how to report abuse.
-status: draft
+status: published
 order: 30
 ---
+
+import { securityEmail } from '../../config';
 
 ## 1. Purpose and scope
 
@@ -28,7 +30,7 @@ You may use the Platform and services:
 - **Tell your people.** The services monitor activity on Endpoints and will take response actions on them. You are responsible for giving your own personnel whatever notice of monitoring your policies and applicable law require.
 - **Protect credentials.** Keep passwords, authenticator apps, passkeys, recovery codes, installer tokens and API credentials confidential. Do not share accounts. Remove Users who leave your organization promptly.
 - **Keep your Response Policy current.** Maintain the list of hosts the AI SOC may never isolate on its own and tag your critical systems, so that automatic containment does not take down something you cannot afford to lose.
-- **Report problems.** Tell us promptly at security@direwolfcybersecurity.com if you suspect an account, token or Endpoint enrolled in the Platform has been compromised, or if you find a security weakness in the Platform (see section 6).
+- **Report problems.** Tell us promptly at {securityEmail} if you suspect an account, token or Endpoint enrolled in the Platform has been compromised, or if you find a security weakness in the Platform (see section 6).
 
 ## 4. Prohibited conduct
 
@@ -61,9 +63,9 @@ Testing of SentinelOne, NinjaOne or any other vendor's product or cloud is gover
 
 ## 6. Reporting abuse and security problems
 
-- **Abuse of the Platform** (for example, a Direwolf installer found on a device without authorization, suspected misuse of an account, or unsolicited messages that appear to come from Direwolf): email security@direwolfcybersecurity.com.
+- **Abuse of the Platform** (for example, a Direwolf installer found on a device without authorization, suspected misuse of an account, or unsolicited messages that appear to come from Direwolf): email {securityEmail}.
 - **Security vulnerabilities** in the Platform or website: follow our [responsible disclosure policy](/security/) and the contact details in [/.well-known/security.txt](/.well-known/security.txt).
-- **Suspected compromise** of your own account or Endpoints: email security@direwolfcybersecurity.com and, if you are an administrator, end the affected User's sessions from the Platform.
+- **Suspected compromise** of your own account or Endpoints: email {securityEmail} and, if you are an administrator, end the affected User's sessions from the Platform.
 
 Please do not include Prohibited Data, passwords or other secrets in a report. We acknowledge reports and keep reporters informed as described on the Security page.
 

@@ -1,15 +1,17 @@
 ---
 title: Terms of Service
-version: v2026.10.23
-effectiveDate: 2026-10-23
+version: v2026.10.24
+effectiveDate: 2026-10-24
 summary: The agreement between Direwolf Cybersecurity and the organizations that use the Direwolf Platform and services, and the terms that apply to visitors of this website.
-status: draft
+status: published
 order: 20
 ---
 
+import { securityEmail, legalEmail } from '../../config';
+
 ## 1. This agreement
 
-These Terms of Service (the "Terms") are a contract between Direwolf Cybersecurity ("Direwolf", "we", "us") and the organization that creates an account on the Direwolf Platform ("Customer", "you"). [Legal entity type and address of Direwolf to be confirmed before publication.] They also apply, in sections 1, 15, 16, 17, 20 and 22 only, to visitors of the website at [www.direwolfcybersecurity.com](https://www.direwolfcybersecurity.com/).
+These Terms of Service (the "Terms") are a contract between Direwolf Cybersecurity ("Direwolf", "we", "us") and the organization that creates an account on the Direwolf Platform ("Customer", "you"). {/* TODO(mitch, gates G2 and G4): add the legal entity type and the business mailing address here once confirmed, and bump the version. */} They also apply, in sections 1, 15, 16, 17, 20 and 22 only, to visitors of the website at [www.direwolfcybersecurity.com](https://www.direwolfcybersecurity.com/).
 
 **Acceptance.** You accept these Terms by checking the acceptance box and creating an account, by clicking to accept them when we present a new version, or by purchasing a subscription. The person who accepts represents that they are at least 18 years old and are authorized to bind the Customer organization. The Platform records the version you accepted, when, and from where.
 
@@ -59,7 +61,7 @@ The person who creates your organization becomes its first administrator. Admini
 
 ### 4.2 Account security
 
-Every User must enroll in multi-factor authentication before accessing any data. Users must keep their credentials, authenticator apps, passkeys and recovery codes confidential, must not share accounts, and must tell us promptly at security@direwolfcybersecurity.com if they suspect compromise. You must remove Users who leave your organization promptly. We may suspend an account we reasonably believe is compromised.
+Every User must enroll in multi-factor authentication before accessing any data. Users must keep their credentials, authenticator apps, passkeys and recovery codes confidential, must not share accounts, and must tell us promptly at {securityEmail} if they suspect compromise. You must remove Users who leave your organization promptly. We may suspend an account we reasonably believe is compromised.
 
 ### 4.3 Sign-in notice and monitoring
 
@@ -105,7 +107,7 @@ If a payment fails, Stripe will retry it and we will email your billing contact.
 
 ### 6.8 Refunds
 
-Except where these Terms provide for a refund (sections 3.4, 7.6 and 21) or the law requires one, fees are non-refundable. [Owner decision: whether to offer a short money-back period for first purchases.]
+Except where these Terms provide for a refund (sections 3.4, 7.6 and 21) or the law requires one, fees are non-refundable. {/* TODO(mitch, gate G1): owner decision, whether to offer a short money-back period for first purchases; decide with counsel, then bump the version. */}
 
 ## 7. Third-Party Software and pass-through terms
 
@@ -169,7 +171,7 @@ The Services are not approved for the following, and **you must not upload, stor
 - **Payment card account numbers** and other cardholder data.
 - **Classified information** of any kind.
 
-Please do not place these in alert notes, organization settings, support messages, uploaded files or the website contact form. If Prohibited Data reaches the Platform, tell us at security@direwolfcybersecurity.com; we will work with you to remove it, and we may suspend affected features until it is removed. You will reimburse our reasonable costs of removal if the upload was knowing or repeated. Direwolf is not responsible for Prohibited Data you provide in breach of this section.
+Please do not place these in alert notes, organization settings, support messages, uploaded files or the website contact form. If Prohibited Data reaches the Platform, tell us at {securityEmail}; we will work with you to remove it, and we may suspend affected features until it is removed. You will reimburse our reasonable costs of removal if the upload was knowing or repeated. Direwolf is not responsible for Prohibited Data you provide in breach of this section.
 
 ## 10. Response actions on your Endpoints
 
@@ -214,14 +216,14 @@ You will keep your Users' credentials and MFA devices secure, remove departed Us
 Direwolf makes the following statements about its own compliance posture and no others. Our [Compliance](/compliance/) page is kept current and controls if it differs from this section.
 
 - The Platform and our internal practices are built and operated to align with NIST SP 800-171 Rev. 2, the standard that CMMC Level 2 is based on. Direwolf is preparing for a CMMC Level 2 assessment. Direwolf does not claim to be CMMC certified, and "aligned" is not a certification.
-- The Platform runs in AWS GovCloud (US), with customer data stored in the United States. Authorizations held by Amazon Web Services for that infrastructure belong to AWS and do not make the Direwolf Platform an authorized service.
+- The Platform runs in AWS GovCloud (US), with customer data stored in the United States. Authorizations held by Amazon Web Services for that infrastructure belong to AWS and do not make the Direwolf Platform an authorized service. The Platform is being brought into service; these statements describe how customer data is handled once you use it.
 - Direwolf does not hold SOC 2, ISO/IEC 27001, PCI DSS, HIPAA, ITAR or StateRAMP attestations or authorizations of its own, and does not hold any government cloud authorization of its own; authorizations held by our infrastructure provider are not ours.
 - For customers subject to NIST SP 800-171, Direwolf is an External Service Provider that handles Security Protection Data and not CUI. We provide customers and their assessors with a service description and a Customer Responsibility Matrix describing which NIST SP 800-171 requirements AWS, Direwolf and the customer each own, and we will make our control evidence available to your assessor under a non-disclosure agreement as it is completed.
 - **Government contract clauses.** No FAR, DFARS or other government flow-down clause applies to Direwolf unless expressly accepted in an Order. The Services are not designed for Covered Defense Information, and you will not flow down obligations premised on Direwolf handling CDI. A DoD contractor addendum covering the matters in this section and in section 11 is available on request.
 
 ## 13. Export control and sanctions
 
-Each party will comply with United States export control and sanctions laws, including the EAR, the ITAR and the regulations of the Office of Foreign Assets Control. You represent that neither you nor any of your Users is located in, organized under the laws of, or ordinarily resident in a country or territory subject to comprehensive U.S. sanctions, or listed on a U.S. government restricted-party list, and you will not permit access to the Services from such a country or by such a person. You will not provide export-controlled technical data to the Services except as section 9 permits. The Services are offered to organizations in the United States; if you are organized outside the United States, tell us before purchasing so we can confirm whether we can serve you. [Owner to confirm before publication whether to add a factual statement that Direwolf personnel with access to Customer Data are U.S. persons as defined in 22 CFR 120.62.]
+Each party will comply with United States export control and sanctions laws, including the EAR, the ITAR and the regulations of the Office of Foreign Assets Control. You represent that neither you nor any of your Users is located in, organized under the laws of, or ordinarily resident in a country or territory subject to comprehensive U.S. sanctions, or listed on a U.S. government restricted-party list, and you will not permit access to the Services from such a country or by such a person. You will not provide export-controlled technical data to the Services except as section 9 permits. The Services are offered to organizations in the United States; if you are organized outside the United States, tell us before purchasing so we can confirm whether we can serve you. {/* TODO(mitch, gate G1): owner to confirm whether to add a factual statement that Direwolf personnel with access to Customer Data are U.S. persons as defined in 22 CFR 120.62; if added, bump the version. */}
 
 ## 14. Confidentiality
 
@@ -317,7 +319,7 @@ Before starting formal proceedings, a party will send the other a written descri
 
 ### 20.3 Venue
 
-Subject to 20.2, the state and federal courts located in El Paso County, Colorado have exclusive jurisdiction over any dispute, and each party submits to their personal jurisdiction and waives objection to venue there, except that either party may seek injunctive relief to protect its intellectual property or Confidential Information in any court of competent jurisdiction. [Counsel to decide whether to substitute binding arbitration with a small-claims carve-out and a conspicuous presentation in the sign-up flow; and whether to add a jury-trial waiver.]
+Subject to 20.2, the state and federal courts located in El Paso County, Colorado have exclusive jurisdiction over any dispute, and each party submits to their personal jurisdiction and waives objection to venue there, except that either party may seek injunctive relief to protect its intellectual property or Confidential Information in any court of competent jurisdiction. {/* TODO(counsel, gate G1): decide whether to substitute binding arbitration with a small-claims carve-out and a conspicuous presentation in the sign-up flow, and whether to add a jury-trial waiver; any change is a new version. */}
 
 ### 20.4 Time limit
 
@@ -329,7 +331,7 @@ These Terms are versioned. The version and effective date appear at the top of t
 
 ## 22. General
 
-- **Notices.** Notices to Direwolf go to legal@direwolfcybersecurity.com [mailbox to be created] and, for security matters, security@direwolfcybersecurity.com, with a copy by post to the address on the Contact page once published. Notices to you go to your administrators' and billing contact's email addresses of record.
+- **Notices.** Notices to Direwolf go to {legalEmail} and, for security matters, {securityEmail}, with a copy by post to the address on the Contact page once published. Notices to you go to your administrators' and billing contact's email addresses of record.
 - **Assignment.** Neither party may assign these Terms without the other's consent, except to a successor in a merger, acquisition or sale of substantially all assets that assumes them in writing. Direwolf may use subprocessors as described in the Subprocessors list.
 - **Force majeure.** Neither party is liable for delay or failure caused by events beyond its reasonable control, including acts of government, internet or utility failures, and vendor outages, provided it uses reasonable efforts to mitigate. Payment obligations are not excused.
 - **Independent contractors.** The parties are independent contractors; nothing creates a partnership, agency or joint venture.
@@ -341,4 +343,4 @@ These Terms are versioned. The version and effective date appear at the top of t
 
 ## 23. Contact
 
-Questions about these Terms: legal@direwolfcybersecurity.com [mailbox to be created] or the [contact form](/contact/).
+Questions about these Terms: {legalEmail} or the [contact form](/contact/).
