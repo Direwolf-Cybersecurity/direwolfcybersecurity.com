@@ -3,7 +3,8 @@
 **For:** the platform team (`direwolf-platform`), implementing sign-up, purchase and login
 consent for PLAN.md §14.4.
 **From:** the website workstream, which owns the legal documents.
-**Status:** draft for attorney review, 2026-10-23. The texts below are the recommended
+**Status:** draft for attorney review, 2026-10-23; versions and sample texts updated 2026-10-24
+for the `v2026.10.24.2` documents (§0.1). The texts below are the recommended
 wording; counsel must approve the banner and the clickwrap labels before launch
 (NIST SP 800-53 AC-8 guidance has legal counsel review the banner; the contract-formation
 cases in `docs/legal-research.md` §2 turn on exactly how these screens look).
@@ -15,18 +16,22 @@ section of `docs/legal-requirements-checklist.md`.
 
 ## 0. The documents and their versions
 
-| Slug                      | Document                                                          | Current version                                            | Canonical URL                                                |
-| ------------------------- | ----------------------------------------------------------------- | ---------------------------------------------------------- | ------------------------------------------------------------ |
-| `terms`                   | Terms of Service                                                  | `v2026.10.24`                                              | https://www.direwolfcybersecurity.com/legal/terms/           |
-| `aup`                     | Acceptable Use Policy                                             | `v2026.10.23`                                              | https://www.direwolfcybersecurity.com/legal/acceptable-use/  |
-| `privacy`                 | Privacy Policy                                                    | `v2026.10.24`                                              | https://www.direwolfcybersecurity.com/legal/privacy/         |
-| `subprocessors`           | Subprocessors (incorporated by reference; no separate acceptance) | `v2026.10.24`                                              | https://www.direwolfcybersecurity.com/legal/subprocessors/   |
-| `banner`                  | System-use notice (text in §4 below)                              | `v2026.10.23`                                              | n/a (served by the platform)                                 |
-| `prohibited-data`         | Prohibited-data attestation (text in §1 below)                    | `v2026.10.23`                                              | n/a (part of sign-up)                                        |
-| `vendor-eula:sentinelone` | SentinelOne Terms of Service (vendor document)                    | as published by the vendor; record its "last updated" date | https://www.sentinelone.com/legal/terms-of-service/          |
-| `vendor-eula:ninjaone`    | NinjaOne End User License Agreement for End Users of Resellers    | as published by the vendor; record its "last updated" date | https://www.ninjaone.com/license-for-end-users-of-resellers/ |
+| Slug                      | Document                                                          | Current version                                            | Canonical URL                                               |
+| ------------------------- | ----------------------------------------------------------------- | ---------------------------------------------------------- | ----------------------------------------------------------- |
+| `terms`                   | Terms of Service                                                  | `v2026.10.24.2`                                            | https://www.direwolfcybersecurity.com/legal/terms/          |
+| `aup`                     | Acceptable Use Policy                                             | `v2026.10.24.2`                                            | https://www.direwolfcybersecurity.com/legal/acceptable-use/ |
+| `privacy`                 | Privacy Policy                                                    | `v2026.10.24.2`                                            | https://www.direwolfcybersecurity.com/legal/privacy/        |
+| `subprocessors`           | Subprocessors (incorporated by reference; no separate acceptance) | `v2026.10.24.2`                                            | https://www.direwolfcybersecurity.com/legal/subprocessors/  |
+| `banner`                  | System-use notice (text in §4 below)                              | `v2026.10.24.2`                                            | n/a (served by the platform)                                |
+| `prohibited-data`         | Prohibited-data attestation (text in §1 below)                    | `v2026.10.23`                                              | n/a (part of sign-up)                                       |
+| `vendor-eula:sentinelone` | SentinelOne Terms of Service (vendor document)                    | as published by the vendor; record its "last updated" date | https://www.sentinelone.com/legal/terms-of-service/         |
 
-Versions are `vYYYY.MM.DD` and come from the frontmatter of
+`vendor-eula:ninjaone` was removed on 2026-10-24: Direwolf offers no endpoint management or RMM
+service and resells no NinjaOne product (owner direction 2026-10-24; claims register rows A5,
+V2), so the platform presents no NinjaOne terms.
+
+Versions are `vYYYY.MM.DD`, or `vYYYY.MM.DD.N` (N from 2) for a further version published the
+same day (first used for `v2026.10.24.2`), and come from the frontmatter of
 `src/content/legal/*.mdx` in the website repository. The platform must store, for each
 version it shows, the version string, the SHA-256 of the document's source text and a copy of
 the rendered text, so the exact text a user accepted can be produced later (E-SIGN
@@ -35,6 +40,23 @@ the rendered text, so the exact text a user accepted can be produced later (E-SI
 versions it presents; a mismatch between the pinned version and the live site is a deploy
 check, not a runtime surprise. (Website action item: add that build output and, before any
 second version is published, per-version archive URLs such as `/legal/terms/v2026.10.23/`.)
+Platform note: `apps.legal.documents.VERSION_RE` (`^v\d{4}\.\d{2}\.\d{2}$`) must accept the
+`.N` suffix before the platform pins `v2026.10.24.2`. Plain string comparison (`is_newer`)
+still orders `v2026.10.24` < `v2026.10.24.2` < `v2026.10.25`, but not a tenth version on one
+day (`.10`).
+
+### 0.1 Version history
+
+No one has accepted any version before `v2026.10.24.2`: each was live for a few hours at most
+and the Platform is not in service, so no consent record names one and no re-acceptance notice is due.
+Pin `v2026.10.24.2` directly.
+
+| Slug                                       | Version                                                                  | Live                                 | Change                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| ------------------------------------------ | ------------------------------------------------------------------------ | ------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `terms`, `aup`, `privacy`, `subprocessors` | `v2026.10.23`                                                            | from the launch on 2026-10-23        | Launch texts.                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| `terms`, `privacy`, `subprocessors`        | `v2026.10.24`                                                            | 2026-10-24, a few hours              | "The Platform is being brought into service" note beside the hosting statements.                                                                                                                                                                                                                                                                                                                                                                                     |
+| `terms`, `aup`, `privacy`, `subprocessors` | `v2026.10.24.2`                                                          | from 2026-10-24                      | Owner direction 2026-10-24 (MSSP scope): endpoint management and NinjaOne removed everywhere; penetration testing added (Terms §§2, 3.1, 3.6, 5, 6.1, 16.3, 18.2; AUP §§1, 4(5), 5.4; Privacy §§2, 3.4, 4); "a Direwolf analyst reviews" and "human analyst review" replaced with "monitored by a team of security professionals" wording, with no staffing level or hours promised (Terms §3.1); "compliance guidance" renamed "compliance readiness" in the Terms. |
+| `banner`                                   | `v2026.10.23`, then `v2026.10.24` (the platform's per-document citation) | not served (Platform not in service) | Replaced by `v2026.10.24.2`, which cites the `v2026.10.24.2` documents (§4.1, §4.2).                                                                                                                                                                                                                                                                                                                                                                                 |
 
 ## 1. Sign-up screen (clickwrap)
 
@@ -45,7 +67,7 @@ the notice from the button):
 2. **Checkbox A (unchecked, required).** Label, with each document name an underlined link in
    the link color that opens the versioned document in a new tab:
 
-   > I have read and agree to the Direwolf Cybersecurity **[Terms of Service](https://www.direwolfcybersecurity.com/legal/terms/)** (v2026.10.23), **[Acceptable Use Policy](https://www.direwolfcybersecurity.com/legal/acceptable-use/)** (v2026.10.23) and **[Privacy Policy](https://www.direwolfcybersecurity.com/legal/privacy/)** (v2026.10.23).
+   > I have read and agree to the Direwolf Cybersecurity **[Terms of Service](https://www.direwolfcybersecurity.com/legal/terms/)** (v2026.10.24.2), **[Acceptable Use Policy](https://www.direwolfcybersecurity.com/legal/acceptable-use/)** (v2026.10.24.2) and **[Privacy Policy](https://www.direwolfcybersecurity.com/legal/privacy/)** (v2026.10.24.2).
 
 3. **Checkbox B (unchecked, required).** The prohibited-data attestation:
 
@@ -84,8 +106,6 @@ Stripe redirect, one **unchecked, required checkbox per vendor product**:
 
 > I accept the **[SentinelOne Terms of Service](https://www.sentinelone.com/legal/terms-of-service/)** (last updated _[date shown on the vendor page]_) for the SentinelOne licenses in this order. SentinelOne, not Direwolf, licenses this software.
 
-> I accept the **[NinjaOne End User License Agreement for End Users of Resellers](https://www.ninjaone.com/license-for-end-users-of-resellers/)** (last updated _[date]_) for the NinjaOne licenses in this order. NinjaOne, not Direwolf, licenses this software.
-
 Button: **"Continue to payment"** (acceptance is by the checkbox, so the button label need not
 reference it, but it may: "Accept and continue to payment"). Record
 `document_slug = vendor-eula:<vendor>`, `document_version = <vendor last-updated date>`,
@@ -101,7 +121,7 @@ Vendor partner agreements may dictate their own required language; conform when 
   (`https://www.direwolfcybersecurity.com/legal/privacy/`) before enabling consent collection.
 - On every Checkout Session: `consent_collection[terms_of_service] = required`, and
   `custom_text[terms_of_service_acceptance][message]` =
-  _"I agree to the [Direwolf Cybersecurity Terms of Service](https://www.direwolfcybersecurity.com/legal/terms/) (v2026.10.23)."_
+  _"I agree to the [Direwolf Cybersecurity Terms of Service](https://www.direwolfcybersecurity.com/legal/terms/) (v2026.10.24.2)."_
 - Do **not** enable promotional-email consent collection unless marketing email is launched;
   if enabled, it must be its own checkbox (Stripe requires separate consent).
 - Enable the refund-policy display in Checkout settings and publish the refund terms (Terms
@@ -118,7 +138,7 @@ Vendor partner agreements may dictate their own required language; conform when 
 
 Shown **before** the email and password fields, on every sign-in (PLAN.md §14.4), retained on
 screen until the user activates **"I acknowledge"**, which reveals the credential fields.
-Record `document_slug = banner`, `document_version = v2026.10.23`, `method = login_banner`
+Record `document_slug = banner`, `document_version = v2026.10.24.2`, `method = login_banner`
 on every acknowledgement (cheap, and exactly the evidence an assessor asks for under
 AC.L2-3.1.9).
 
@@ -147,7 +167,7 @@ that this is **not a U.S. Government system**, the **prohibited-data** reminder,
 > - You will not upload Controlled Unclassified Information, export-controlled technical data
 >   (ITAR/EAR), protected health information or payment card data unless your agreement with
 >   Direwolf expressly permits it.
-> - Your use is governed by the [Terms of Service](https://www.direwolfcybersecurity.com/legal/terms/) (v2026.10.23), [Acceptable Use Policy](https://www.direwolfcybersecurity.com/legal/acceptable-use/) (v2026.10.23) and [Privacy Policy](https://www.direwolfcybersecurity.com/legal/privacy/) (v2026.10.23).
+> - Your use is governed by the [Terms of Service](https://www.direwolfcybersecurity.com/legal/terms/) (v2026.10.24.2), [Acceptable Use Policy](https://www.direwolfcybersecurity.com/legal/acceptable-use/) (v2026.10.24.2) and [Privacy Policy](https://www.direwolfcybersecurity.com/legal/privacy/) (v2026.10.24.2).
 >
 > **[ I acknowledge ]**
 
@@ -156,7 +176,7 @@ that this is **not a U.S. Government system**, the **prohibited-data** reminder,
 > Private system of Direwolf Cybersecurity. Authorized use only. Activity is monitored and
 > recorded. Unauthorized use is prohibited and may be prosecuted. This is not a U.S.
 > Government system. Do not upload CUI, ITAR/EAR data, PHI or card data. By continuing you
-> accept the Terms of Service, Acceptable Use Policy and Privacy Policy (v2026.10.23).
+> accept the Terms of Service, Acceptable Use Policy and Privacy Policy (v2026.10.24.2).
 > **[ I acknowledge ]**
 
 ### 4.3 Rules for the banner
@@ -194,17 +214,17 @@ notice, 30 days before a material change takes effect; Terms §21).
 
 ## 6. ConsentRecord schema (append-only, like the audit log)
 
-| Field                                    | Notes                                                                                       |
-| ---------------------------------------- | ------------------------------------------------------------------------------------------- |
-| `user_id`, `org_id`                      | who bound whom; `org_id` nullable for banner acknowledgements before org context            |
-| `document_slug`                          | `terms`, `aup`, `privacy`, `banner`, `prohibited-data`, `vendor-eula:<vendor>`              |
-| `document_version`                       | `vYYYY.MM.DD` for Direwolf documents; vendor "last updated" date for vendor EULAs           |
-| `document_sha256`                        | hash of the document source at that version; the platform keeps the text too                |
-| `accepted_at`                            | server UTC time                                                                             |
-| `ip`, `user_agent`, `locale`             | corroboration                                                                               |
-| `method`                                 | `signup_checkbox`, `purchase_checkbox`, `stripe_checkout`, `login_banner`, `reacceptance`   |
-| `ui_version`                             | git SHA or build id of the frontend that rendered the screen; pairs with the screenshot set |
-| `stripe_checkout_session_id`, `order_id` | when applicable                                                                             |
+| Field                                    | Notes                                                                                                |
+| ---------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `user_id`, `org_id`                      | who bound whom; `org_id` nullable for banner acknowledgements before org context                     |
+| `document_slug`                          | `terms`, `aup`, `privacy`, `banner`, `prohibited-data`, `vendor-eula:<vendor>`                       |
+| `document_version`                       | `vYYYY.MM.DD` or `vYYYY.MM.DD.N` for Direwolf documents; vendor "last updated" date for vendor EULAs |
+| `document_sha256`                        | hash of the document source at that version; the platform keeps the text too                         |
+| `accepted_at`                            | server UTC time                                                                                      |
+| `ip`, `user_agent`, `locale`             | corroboration                                                                                        |
+| `method`                                 | `signup_checkbox`, `purchase_checkbox`, `stripe_checkout`, `login_banner`, `reacceptance`            |
+| `ui_version`                             | git SHA or build id of the frontend that rendered the screen; pairs with the screenshot set          |
+| `stripe_checkout_session_id`, `order_id` | when applicable                                                                                      |
 
 Retention: life of the customer relationship plus the Colorado limitation period for
 contract claims (counsel to confirm the period). Expose to the platform owner; let an
@@ -226,3 +246,10 @@ to you. See our Privacy Policy." That is notice, not a contract, and is sufficie
 4. Whether an `account_owner` role (officer-level) is needed in addition to `org_admin` for
    acceptance of material changes (platform; PLAN.md Appendix A).
 5. Confirm the Colorado contract limitation period for consent-record retention (attorney).
+6. Platform: accept the `vYYYY.MM.DD.N` form in `VERSION_RE`, pin the `v2026.10.24.2` documents and
+   banner, and recompute each pinned `sha256` from the website's sources (§0, §0.1).
+7. Penetration testing (Terms §3.6, AUP §5.4): no engagement starts until rules of engagement signed
+   for it and the customer's written authorization listing every target are on file. These are
+   engagement documents, not website documents; if the platform records their acceptance, it uses
+   its own document slug with the engagement id, and counsel approves their text with the rest of
+   this spec.

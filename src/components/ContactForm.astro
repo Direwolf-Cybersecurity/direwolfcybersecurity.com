@@ -7,8 +7,9 @@
  * submission a silent no-op.
  *
  * Topic: `?topic=<value>` in the page URL preselects a matching option, so "Request early
- * access" links (`earlyAccessUrl` in src/config.ts, `/contact/?topic=early-access`) open the
- * form ready for that request. Without JavaScript the topic stays at its default.
+ * access" links (`earlyAccessUrl` in src/config.ts, `/contact/?topic=early-access`) and the
+ * Services page's per-service links (`?topic=mdr`, `endpoint-protection`, `penetration-testing`,
+ * `compliance-readiness`) open the form ready for that request. Without JavaScript the topic stays at its default, Other.
  */
 import { contactEndpoint, contactEmail } from '../config';
 ---
@@ -77,14 +78,23 @@ import { contactEndpoint, contactEmail } from '../config';
       Topic
     </label>
     <select id="cf-topic" name="topic" class="field mt-1">
-      <option value="general" data-subject="Website inquiry" selected>
-        General question
-      </option>
-      <option value="services" data-subject="Services inquiry">
-        Services and pricing
-      </option>
       <option value="early-access" data-subject="Early access request">
         Early access to the Direwolf Platform
+      </option>
+      <option value="mdr" data-subject="Managed detection and response inquiry">
+        Managed detection and response
+      </option>
+      <option value="endpoint-protection" data-subject="Managed endpoint protection inquiry">
+        Managed endpoint protection (EDR)
+      </option>
+      <option value="penetration-testing" data-subject="Penetration testing inquiry">
+        Penetration testing
+      </option>
+      <option value="compliance-readiness" data-subject="Compliance readiness inquiry">
+        Compliance readiness
+      </option>
+      <option value="other" data-subject="Website inquiry" selected>
+        Other
       </option>
     </select>
   </div>
@@ -132,8 +142,7 @@ import { contactEndpoint, contactEmail } from '../config';
 
 {!contactEndpoint && (
   <p class="text-muted mt-6 text-sm">
-    Our contact form is not connected to a mail service yet, so sending opens a pre-filled message
-    in your own email app. You can also write to us directly at{' '}
+    Sending opens a pre-filled email in your mail app. You can also write to us at{' '}
     <a href={`mailto:${contactEmail}`} class="link">
       {contactEmail}
     </a>
@@ -242,7 +251,7 @@ import { contactEndpoint, contactEmail } from '../config';
         name: String(data.get('name') ?? '').trim(),
         email: String(data.get('email') ?? '').trim(),
         company: String(data.get('company') ?? '').trim(),
-        topic: String(data.get('topic') ?? 'general'),
+        topic: String(data.get('topic') ?? 'other'),
         message: String(data.get('message') ?? '').trim(),
       };
       const selectedTopic = topic?.selectedOptions[0];

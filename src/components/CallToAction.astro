@@ -1,8 +1,9 @@
 ---
 /**
- * Closing call to action. While the platform is not in service (PLATFORM_LIVE is false) the
- * primary button is "Request early access" (claims register row W6) instead of "Sign up", and
- * the default text says the platform is opening to early customers.
+ * Closing call to action: a near-black panel with a blue edge glow, the same in both color
+ * schemes. While the platform is not in service (PLATFORM_LIVE is false) the primary button is
+ * "Request early access" (claims register row W6) instead of "Sign up", and the default text
+ * says the platform is opening to early customers.
  */
 import { PLATFORM_LIVE, earlyAccessUrl, signupUrl } from '../config';
 
@@ -19,16 +20,16 @@ const {
 } = Astro.props;
 ---
 
-<section aria-labelledby="cta-heading" class="py-14 md:py-20">
-  <div class="container-x">
-    <div class="card flex flex-col gap-6 p-8 md:flex-row md:items-center md:justify-between md:p-10">
+<section aria-labelledby="cta-heading" class="py-16 md:py-24">
+  <div class="container-x" data-reveal>
+    <div class="dark-band glow-backdrop brand-panel flex flex-col gap-8 p-8 md:flex-row md:items-center md:justify-between md:p-12">
       <div class="max-w-xl">
-        <h2 id="cta-heading" class="text-2xl font-semibold tracking-tight">
+        <h2 id="cta-heading" class="text-3xl font-semibold tracking-tight">
           {title}
         </h2>
-        <p class="text-muted mt-2">{text}</p>
+        <p class="text-muted mt-3 text-lg">{text}</p>
       </div>
-      <div class="flex flex-col gap-3 sm:flex-row">
+      <div class="flex shrink-0 flex-col gap-3 sm:flex-row">
         {PLATFORM_LIVE ? (
           <a href={signupUrl} class="btn btn-primary" rel="noopener noreferrer">
             Sign up

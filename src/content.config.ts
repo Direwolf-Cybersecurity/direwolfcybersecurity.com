@@ -13,8 +13,17 @@ const legal = defineCollection({
   loader: glob({ base: './src/content/legal', pattern: '**/*.{md,mdx}' }),
   schema: z.object({
     title: z.string().min(1),
-    /** vYYYY.MM.DD, matching the platform's consent records. */
-    version: z.string().regex(/^v\d{4}\.\d{2}\.\d{2}$/, 'version must look like v2026.10.23'),
+    /**
+     * vYYYY.MM.DD, matching the platform's consent records. A further version published the same
+     * day adds a sequence suffix, vYYYY.MM.DD.N with N from 2 (first used for v2026.10.24.2).
+     * A version string is never reused for different text.
+     */
+    version: z
+      .string()
+      .regex(
+        /^v\d{4}\.\d{2}\.\d{2}(\.[2-9]|\.[1-9]\d+)?$/,
+        'version must look like v2026.10.23, or v2026.10.24.2 for a later version the same day',
+      ),
     effectiveDate: z.coerce.date(),
     /** One or two sentences shown under the title and on the legal index. */
     summary: z.string().min(1),

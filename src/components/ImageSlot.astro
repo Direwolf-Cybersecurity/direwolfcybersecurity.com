@@ -1,0 +1,61 @@
+---
+/**
+ * An owner-supplied image slot (src/data/images.ts). When the slot's file exists in
+ * src/assets/images/ it renders through Astro's image pipeline: AVIF and WebP sources at several
+ * widths up to the file's own width (never upscaled), explicit width and height so nothing shifts
+ * while loading, and lazy loading except for the hero (eager, high fetch priority). When the file
+ * does not exist it renders NOTHING: no box, no placeholder. Pages that place a slot beside text
+ * check `hasImage()` and lay the row out as a single column without it, so no gap is left.
+ *
+ * `framed` (default): fixed aspect ratio, rounded corners and a thin electric-blue edge glow.
+ * `backdrop`: the Home hero's full-bleed treatment (.hero-media in src/styles/global.css).
+ */
+import { Picture } from 'astro:assets';
+import { imageLoader, imageSlots, type ImageSlotId } from '../data/images';
+
+interface Props {
+  id: ImageSlotId;
+  variant?: 'framed' | 'backdrop';
+  class?: string;
+}
+
+const { id, variant = 'framed', class: className } = Astro.props;
+const spec = imageSlots[id];
+const loader = imageLoader(id);
+const image = loader ? (await loader()).default : undefined;
+
+if (image && (image.width < spec.minWidth || image.height < spec.minHeight)) {
+  console.warn(
+    `[image slot "${id}"] ${spec.file} is ${image.width}x${image.height}; ${spec.minWidth}x${spec.minHeight} or larger is recommended (src/data/images.ts).`,
+  );
+}
+
+const candidateWidths = [480, 640, 800, 960, 1200, 1600, 2000, 2400];
+const widths = image
+  ? [...new Set([...candidateWidths.filter((w) => w < image.width), image.width])]
+  : [];
+const eager = id === 'hero';
+---
+
+{image && (
+  <div
+    class:list={[
+      'image-slot',
+      variant === 'framed' ? ['image-frame', spec.aspectClass] : 'hero-media',
+      className,
+    ]}
+    data-image-slot={id}
+  >
+    <Picture
+      src={image}
+      alt={spec.alt}
+      widths={widths}
+      sizes={spec.sizes}
+      formats={['avif', 'webp']}
+      fallbackFormat="webp"
+      loading={eager ? 'eager' : 'lazy'}
+      fetchpriority={eager ? 'high' : 'auto'}
+      decoding="async"
+    />
+  </div>
+)}

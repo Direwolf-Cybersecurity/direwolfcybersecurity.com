@@ -1,14 +1,18 @@
 ---
 /**
- * A page section with the standard container, optional eyebrow/heading/lede, and an
- * optional tinted background. Headings are h2; nest Cards (h3) inside.
+ * A page section with the standard container, optional eyebrow/heading/lede, and a tone:
+ * `default` (page background), `surface` (tinted band) or `dark` (the near-black band with the
+ * CSS glow backdrop and a faint blue hairline at its edges, the same in both color schemes).
+ * Headings are h2; nest h3 inside. The
+ * heading block fades in as it enters the viewport (src/scripts/motion.ts); content that should
+ * also enter on scroll carries its own `data-reveal`.
  */
 interface Props {
   id?: string;
   eyebrow?: string;
   title?: string;
   lede?: string;
-  tone?: 'default' | 'surface';
+  tone?: 'default' | 'surface' | 'dark';
   class?: string;
 }
 
@@ -20,17 +24,21 @@ const headingId = id && title ? `${id}-heading` : undefined;
   id={id}
   aria-labelledby={headingId}
   class:list={[
-    'py-14 md:py-20',
+    'py-16 md:py-24',
     tone === 'surface' && 'bg-surface border-line border-y',
+    tone === 'dark' && 'dark-band glow-backdrop section-dark',
     className,
   ]}
 >
   <div class="container-x">
     {(eyebrow || title || lede) && (
-      <div class="max-w-2xl">
+      <div class="max-w-2xl" data-reveal>
         {eyebrow && <p class="eyebrow">{eyebrow}</p>}
         {title && (
-          <h2 id={headingId} class="mt-2 text-3xl font-semibold tracking-tight">
+          <h2
+            id={headingId}
+            class="mt-2 text-3xl font-semibold tracking-tight text-balance md:text-4xl"
+          >
             {title}
           </h2>
         )}

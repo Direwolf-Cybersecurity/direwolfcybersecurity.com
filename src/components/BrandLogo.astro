@@ -1,0 +1,50 @@
+---
+import logo44 from '../assets/brand/direwolf-logo-horizontal-44.png';
+import logo56 from '../assets/brand/direwolf-logo-horizontal-56.png';
+import logo80 from '../assets/brand/direwolf-logo-horizontal-80.png';
+import logo112 from '../assets/brand/direwolf-logo-horizontal-112.png';
+import logo168 from '../assets/brand/direwolf-logo-horizontal-168.png';
+import { siteName } from '../config';
+
+/**
+ * The owner's horizontal lockup (the shield plus "DIREWOLF CYBERSECURITY" lettering, in the image
+ * itself), trimmed of its transparent margin. It is designed for dark surfaces, so it only ever
+ * sits on the near-black band (`.dark-band` in src/styles/global.css), and no typed brand name is
+ * set beside it: the alt text carries the name. The copies are generated from
+ * docs/brand/v2/direwolf-logo-horizontal.png by `npm run brand:assets` (palette PNGs, served as
+ * they are); the browser picks the smallest that covers the rendered width at the screen's
+ * density. The width always follows the height (h-* w-auto), so the logo scales and never squashes.
+ *
+ * Size: the "DIREWOLF" lettering is about a fifth of the lockup's height, so the header shows it
+ * 56 px tall from md up and 44 px on phones (h-11 md:h-14), and the footer 80 px (h-20). The small
+ * "CYBERSECURITY" line only becomes legible at about 100 px tall; that is accepted, and no typed
+ * text is added beside the image.
+ */
+interface Props {
+  /** Rendered height in CSS pixels at the largest breakpoint (header 56, footer 80). */
+  height: 56 | 80;
+  loading?: 'eager' | 'lazy';
+  class?: string;
+}
+
+const { height, loading = 'lazy', class: className } = Astro.props;
+const copies = [logo44, logo56, logo80, logo112, logo168];
+const widthAt = (h: number) => Math.round((h * logo56.width) / logo56.height);
+const width = widthAt(height);
+const srcset = copies.map((copy) => `${copy.src} ${copy.width}w`).join(', ');
+// The header logo is 44 px tall on phones and 56 px from md up (h-11 md:h-14).
+const sizes = height === 56 ? `(min-width: 768px) ${width}px, ${widthAt(44)}px` : `${width}px`;
+const src = height === 56 ? logo56.src : logo80.src;
+---
+
+<img
+  src={src}
+  srcset={srcset}
+  sizes={sizes}
+  alt={siteName}
+  width={width}
+  height={height}
+  loading={loading}
+  decoding="async"
+  class:list={['block w-auto max-w-none', className]}
+/>

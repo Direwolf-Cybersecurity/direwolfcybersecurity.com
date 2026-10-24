@@ -1,0 +1,38 @@
+---
+/**
+ * A Lucide UI icon (src/data/icons.ts), inlined as SVG. Decorative: always aria-hidden, so put
+ * the meaning in adjacent text. `draw` gives every shape pathLength="1" so the stroke can draw
+ * itself in once (`.icon-draw` in src/styles/global.css, off with reduced motion).
+ */
+import { icons, type IconName } from '../data/icons';
+
+interface Props {
+  name: IconName;
+  class?: string;
+  /** Animate the strokes drawing in on load; 1 to 3 staggers the start. */
+  draw?: false | 1 | 2 | 3;
+}
+
+const { name, class: className = 'h-6 w-6', draw = false } = Astro.props;
+const classes = [
+  'shrink-0',
+  draw && 'icon-draw',
+  draw && draw > 1 && `icon-draw-${draw}`,
+  className,
+]
+  .filter(Boolean)
+  .join(' ');
+
+let markup = icons[name]
+  .trim()
+  .replace(/\s+class="[^"]*"/, '')
+  .replace('<svg', `<svg class="${classes}" aria-hidden="true" focusable="false"`);
+if (draw) {
+  markup = markup.replace(
+    /<(path|circle|rect|line|polyline|polygon|ellipse)\b/g,
+    '<$1 pathLength="1"',
+  );
+}
+---
+
+<Fragment set:html={markup} />

@@ -11,12 +11,12 @@ for the full rule.
 **This is engineering and marketing-compliance research, not legal advice.** It belongs with
 `docs/claims-research.md` in the attorney review (launch gate G1).
 
-**Where it is used.** `src/data/engagements.ts` (one entry per organization, every
-`logoApproved: false` and without a `logo`), `src/components/Experience.astro` (Home and About;
-off until the owner's confirmation is recorded, gate G18), and claims register rows E1-E6 and F7
-(`docs/claims-register.md`). The logo files the owner supplied are not committed: this repository
-is public, so `src/assets/engagements/*` is gitignored and the file paths below refer to the
-owner's local copies.
+**Where it is used.** `src/data/engagements.ts` (one entry per organization, every `logoApproved:
+false` and without a `logo`), `src/components/Experience.astro` (Home and About; an entry shows
+only once the owner's confirmation is recorded, gate G18; all six since 2026-10-24), and claims
+register rows E1-E6 and F7 (`docs/claims-register.md`). The logo files the owner supplied are not
+committed: this repository is public, so `src/assets/engagements/*` is gitignored and the file
+paths below refer to the owner's local copies.
 
 ## Summary
 
@@ -52,7 +52,9 @@ owner's local copies.
   member for a former employer, that employer's contract and the team member's confidentiality
   obligations govern. **Before publishing each name, the owner confirms that no contract or
   confidentiality obligation forbids it** (recorded in each E-row and as the entry's
-  `ownerConfirmed`; gate G18 in `docs/launch-runbook.md`, open, so no name is shown yet).
+  `ownerConfirmed`; gate G18 in `docs/launch-runbook.md`, closed for names on 2026-10-24 with
+  the confirmation dated 2026-10-23, so the six names are shown; the owner should still check the
+  client contracts).
 - **Turning a logo on:** file the mark owner's written permission (email or licence) under
   `docs/evidence/`, record it in the row (who granted it, date, scope, conditions such as
   attribution lines or colours), follow the owner's logo standards exactly, then in one change

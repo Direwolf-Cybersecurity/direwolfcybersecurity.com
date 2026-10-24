@@ -9,7 +9,9 @@ the site and platform fit together.
 
 - **Astro** (static output) + **Tailwind CSS** + TypeScript, built with Node 24 / npm.
   No PHP anywhere (owner decision). No server-side code in this repo.
-- **No third-party scripts, fonts, or analytics.** Everything is self-hosted. The site sets
+- **No third-party scripts, fonts, or analytics.** Everything is self-hosted: headings use Geist
+  (OFL), bundled from the pinned `@fontsource-variable/geist` package and served from `/_astro/`,
+  and body text uses the system font stack. The site sets
   no non-essential cookies, so no cookie-consent banner is shown; `/legal/cookies` explains
   the essential cookies (none by default).
 - **Accessibility:** WCAG 2.1 AA. Semantic HTML, visible focus, 4.5:1 contrast, skip link,
@@ -33,11 +35,12 @@ the site and platform fit together.
   Domain registrar: Namecheap (DNS instructions must use Namecheap's Advanced DNS record
   format: Type, Host, Value, TTL).
   Do not invent names, numbers, customers, certifications, or testimonials.
-- **Legal pages** are published: in effect 2026-10-23, version `v2026.10.23` (the Privacy
-  Policy, Terms of Service and Subprocessors page are at `v2026.10.24`, effective 2026-10-24,
-  after the platform-in-service note was added). Attorney review has not happened yet and is an
-  open post-launch gate (G1 in docs/launch-runbook.md). Each document is versioned
-  `vYYYY.MM.DD` in its frontmatter and shown with its version and "Last updated" date; the
+- **Legal pages** are published. Terms of Service, Privacy Policy, Acceptable Use Policy and
+  Subprocessors are at `v2026.10.24.2` (effective 2026-10-24, MSSP scope: no NinjaOne or
+  endpoint management, penetration testing added); Cookie Notice, Accessibility and EEO are at
+  `v2026.10.23`. Attorney review has not happened yet and is an open post-launch gate (G1 in
+  docs/launch-runbook.md). Each document is versioned `vYYYY.MM.DD` (a same-day re-issue adds
+  `.N`, N from 2) in its frontmatter and shown with its version and "Last updated" date; the
   platform records which version a user accepted, so every change to a published document
   requires a version bump (new `version` and `effectiveDate`), never an edit in place.
 - **Links to the platform** use `PUBLIC_APP_URL` (default `https://app.direwolfcybersecurity.com`),
@@ -45,12 +48,26 @@ the site and platform fit together.
   is in service (no DNS yet): every "Log in" / "Sign up" is then "Request early access" to
   `/contact/?topic=early-access`, and `npm run links` fails on any link to the platform host.
   Contact form posts to `PUBLIC_CONTACT_ENDPOINT` when set, else falls back to a mailto link.
-- **Brand and logos:** the owner's logo masters (shield and stacked lockup, 1254 px, designed for
-  dark surfaces, 2026-10-24) are in `docs/brand/v2/` and are never shipped; `npm run brand:assets`
-  generates the shield and lockup copies in `src/assets/brand/`, the favicons, touch and manifest
-  icons and the social card. The stacked lockup appears only on its near-black panel
-  (`src/components/BrandLockup.astro`); the header and footer show the shield beside the name as
-  text. The veteran-owned badge is in `src/assets/brand/` (row F7). Other organizations' logos stay off until the mark owner's written
+- **Positioning (owner direction 2026-10-24):** an AI-driven managed security services provider
+  (MSSP) for any small or mid-size business, not an MSP and not only for government contractors.
+  Services: managed detection and response powered by the Direwolf AI SOC, managed endpoint
+  protection (EDR), penetration testing, compliance readiness; no endpoint management or RMM.
+  Say "monitored by a team of security professionals", never "human analyst reviewing", and
+  never claim 24/7 human staffing (claims register rule 8, rows A2, A6, A7, F5).
+- **Brand and logos:** the owner's logo masters (the 1254 px shield and stacked lockup, and the
+  1672 x 941 horizontal lockup, all designed for dark surfaces, 2026-10-24) are in
+  `docs/brand/v2/` and are never shipped; `npm run brand:assets` generates the horizontal lockup
+  copies in `src/assets/brand/`, the favicons, touch and manifest icons (from the shield) and the
+  social card (horizontal lockup and tagline). The header and footer show the horizontal lockup
+  (`src/components/BrandLogo.astro`) on the near-black band (`.dark-band`, #05070d in both color
+  schemes) with no typed name beside it; the stacked lockup is no longer used. The veteran-owned badge is in `src/assets/brand/` (row F7).
+- **No illustrations (owner direction 2026-10-24):** never draw SVG artwork or scenes. Imagery is
+  the owner's own (image-generator output or licensed), placed in the five slots of
+  `src/data/images.ts` (`src/assets/images/`, README "Adding images"); a slot with no file renders
+  nothing. UI icons come from Lucide (`lucide-static`, ISC, pinned) via `src/data/icons.ts`.
+  Motion (`src/scripts/motion.ts`, CSS in `src/styles/global.css`) is off under
+  `prefers-reduced-motion`, and content is fully visible without JavaScript. Third-party statistics
+  come only from `src/data/stats.ts` (rows S-STAT-1 to S-STAT-6, rule 13). Other organizations' logos stay off until the mark owner's written
   permission is filed (claims register rows E1-E6, `docs/logo-use-research.md`), and their files
   are **not committed**: this repository is public, so `src/assets/engagements/*` is gitignored and
   the owner's copies stay in local or private storage. Commit a logo file (with a
@@ -58,16 +75,20 @@ the site and platform fit together.
   its entry's `logoApproved: true` in `src/data/engagements.ts`; never for the DoD seal or The
   Cyber AB logo. The Experience section lists an organization only once the owner's confirmation
   (the engagement happened as stated; no publicity or confidentiality restriction known) is
-  recorded in its E-row and as `ownerConfirmed` (gate G18 in docs/launch-runbook.md, open, so the
-  section is off).
+  recorded in its E-row and as `ownerConfirmed` (gate G18 in docs/launch-runbook.md: closed for
+  names on 2026-10-24 by the owner's instruction of 2026-10-23, so the six names are live; logos
+  remain pending).
 - **Do not run `git commit`**; the orchestrating session commits.
 
 ## Layout
 
 ```
 src/pages/        home, services, platform, about, contact, compliance, security, legal/*
-src/components/   header, footer, nav, hero, cards, forms, legal layout
-src/content/      services and legal documents (Markdown/MDX with frontmatter)
+src/components/   header, footer, brand logo, image slots, icons, stats, cards, forms, legal layout
+src/content/      legal documents (MDX with frontmatter)
+src/data/         services, pricing, stats, images (slots), icons, navigation, engagements
+src/scripts/      motion.ts (scroll reveal, count-up, header state)
+src/assets/       brand/ (generated logo copies, badge), images/ (owner-supplied slot images)
 src/config.ts     site constants (name, address line, phone/email placeholders, flags)
 public/           favicons, web manifest, og-image.png, CNAME; robots.txt and security.txt generated
 docs/             claims-register.md, legal-research.md, claims-research.md, logo-use-research.md,

@@ -17,7 +17,7 @@ const expiresLabel = new Intl.DateTimeFormat('en-US', {
 }).format(new Date(securityTxtExpires));
 
 /** Bump when this policy's wording changes; the platform may record acknowledgements of it. */
-const policyVersion = 'v2026.10.24';
+const policyVersion = 'v2026.10.24.2';
 ---
 
 <BaseLayout title="Security and responsible disclosure" description={description}>
@@ -78,8 +78,8 @@ const policyVersion = 'v2026.10.24';
       <ul>
         <li>
           Systems we use but do not operate: our hosting providers (GitHub for this website, Amazon
-          Web Services for the Platform), our payment processor (Stripe), and the SentinelOne and
-          NinjaOne products and clouds. Report those to the vendor's own program.
+          Web Services for the Platform), our payment processor (Stripe), and SentinelOne&rsquo;s
+          products and cloud. Report those to the vendor's own program.
         </li>
         <li>
           Our customers&rsquo; endpoints, networks and accounts. Those belong to our customers.

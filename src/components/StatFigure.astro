@@ -1,0 +1,46 @@
+---
+/**
+ * One cited third-party statistic (src/data/stats.ts): the figure, its label and its source line
+ * linking to the publisher. The figure's final text is always in the HTML; when it counts up
+ * (src/scripts/motion.ts) the animated copy is hidden from screen readers and a static copy is
+ * read instead, so assistive technology never hears the intermediate numbers.
+ */
+import type { ThreatStat } from '../data/stats';
+
+interface Props {
+  stat: ThreatStat;
+  /** `band`: large figure for the statistics band; `inline`: a compact callout. */
+  size?: 'band' | 'inline';
+}
+
+const { stat, size = 'band' } = Astro.props;
+---
+
+<div class="flex h-full flex-col">
+  <p
+    class:list={[
+      'text-accent font-display font-semibold tracking-tight tabular-nums',
+      size === 'band' ? 'text-5xl md:text-6xl' : 'text-4xl',
+    ]}
+  >
+    {stat.countUp ? (
+      <>
+        <span class="sr-only">{stat.figure}</span>
+        <span aria-hidden="true" data-countup>
+          {stat.figure}
+        </span>
+      </>
+    ) : (
+      stat.figure
+    )}
+  </p>
+  <p class:list={['text-fg mt-3 font-medium', size === 'band' ? 'text-base' : 'text-sm']}>
+    {stat.label}
+  </p>
+  <p class="text-muted mt-auto pt-4 text-xs">
+    Source:{' '}
+    <a href={stat.url} class="link" rel="noopener noreferrer">
+      {stat.source}
+    </a>
+  </p>
+</div>

@@ -1,0 +1,28 @@
+---
+/**
+ * A service's "What you get" list: a small heading and check-marked bullets (Services page).
+ * `columns={2}` splits the bullets into two columns from md up, for the full-width card below a
+ * service's image.
+ */
+import Icon from './Icon.astro';
+
+interface Props {
+  items: string[];
+  columns?: 1 | 2;
+  class?: string;
+}
+
+const { items, columns = 1, class: className } = Astro.props;
+---
+
+<div class={className}>
+  <h3 class="font-semibold">What you get</h3>
+  <ul class:list={['mt-4 grid gap-3', columns === 2 ? 'md:grid-cols-2 md:gap-x-10' : 'max-w-2xl']}>
+    {items.map((item) => (
+      <li class="flex gap-3">
+        <Icon name="check" class="text-accent mt-0.5 h-5 w-5" />
+        <span>{item}</span>
+      </li>
+    ))}
+  </ul>
+</div>

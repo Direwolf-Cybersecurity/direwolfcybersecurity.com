@@ -1,6 +1,6 @@
 ---
 title: Terms of Service
-version: v2026.10.24
+version: v2026.10.24.2
 effectiveDate: 2026-10-24
 summary: The agreement between Direwolf Cybersecurity and the organizations that use the Direwolf Platform and services, and the terms that apply to visitors of this website.
 status: published
@@ -22,11 +22,11 @@ These Terms of Service (the "Terms") are a contract between Direwolf Cybersecuri
 ## 2. Definitions
 
 - **"Platform"** means the Direwolf web application at app.direwolfcybersecurity.com, its API, and the installers and tokens it issues.
-- **"Services"** means the Platform and the services Direwolf provides through it under your subscription: the Direwolf AI SOC, managed endpoint protection, endpoint management, and compliance guidance, as described in your Order and on our [Services](/services/) page at the time of purchase.
-- **"Third-Party Software"** means software products made by other companies that Direwolf resells and provisions for you through the Platform, currently SentinelOne endpoint protection and NinjaOne endpoint management, together with their vendors' clouds.
+- **"Services"** means the Platform and the services Direwolf provides under your subscription or Order: managed detection and response powered by the Direwolf AI SOC, managed endpoint protection, penetration testing, and compliance readiness, as described in your Order and on our [Services](/services/) page at the time of purchase.
+- **"Third-Party Software"** means software products made by other companies that Direwolf resells and provisions for you through the Platform, currently SentinelOne endpoint protection, together with its vendor's cloud.
 - **"Endpoint"** means a device (workstation, server or virtual machine) on which a sensor or agent for the Services is installed.
 - **"Customer Data"** means all data you or your Endpoints provide to the Services, including account and organization data, security data from your Endpoints (alerts, inventory, telemetry and the records the SOC creates about them), notes, settings and support messages.
-- **"Service Data"** means data Direwolf derives from operating the Services that does not identify you, your users or your Endpoints: de-identified detection statistics, triage accuracy measurements, and the prompts and rules we tune from analyst feedback.
+- **"Service Data"** means data Direwolf derives from operating the Services that does not identify you, your users or your Endpoints: de-identified detection statistics, triage accuracy measurements, and the prompts and rules we tune from the feedback of our security professionals and your Users.
 - **"Response Policy"** means the per-organization settings in the Platform that govern what containment actions the Direwolf AI SOC may take automatically on your Endpoints (section 10).
 - **"Users"** means the individuals your administrators invite to use the Platform on your behalf.
 - **"Prohibited Data"** means the data categories in section 9.
@@ -35,7 +35,7 @@ These Terms of Service (the "Terms") are a contract between Direwolf Cybersecuri
 
 ### 3.1 What we provide
 
-Direwolf provides the Services described in your Order. The Direwolf AI SOC enriches and triages every alert from your Endpoints automatically, around the clock, producing a verdict, a confidence level, a MITRE ATT&CK mapping and a plain-English summary; when it confirms a threat with high confidence it contains the threat through your endpoint protection under your Response Policy; and a Direwolf analyst reviews the AI's decisions and takes every case it cannot decide. Managed endpoint protection and endpoint management are delivered through Third-Party Software bound to your organization. Compliance guidance is a consulting service scoped in its Order.
+Direwolf provides the Services described in your Order. In managed detection and response, the Direwolf AI SOC enriches and triages every alert from your Endpoints automatically, around the clock, producing a verdict, a confidence level, a MITRE ATT&CK mapping and a plain-English summary; when it confirms a threat with high confidence it contains the threat through your endpoint protection under your Response Policy; and its work is monitored by a team of security professionals, who take the cases it cannot decide. Nothing in these Terms commits Direwolf to a staffing level or to hours of coverage for that monitoring unless your Order states one. Managed endpoint protection is delivered through Third-Party Software bound to your organization. Penetration testing is delivered in scoped engagements with a written report, under section 3.6. Compliance readiness is a consulting service scoped in its Order.
 
 ### 3.2 What we do not promise
 
@@ -52,6 +52,10 @@ We may improve, add to and change the Services, provided we do not materially re
 ### 3.5 Support
 
 We provide support by email and through the Platform during the hours and at the targets described in your Order or, where an Order is silent, on a reasonable-efforts basis. [Service level terms, if any, to be set out in a separate SLA document before launch; no availability or response-time commitments are made in these Terms.]
+
+### 3.6 Penetration testing
+
+Direwolf performs penetration testing, including phishing simulation, only under rules of engagement that you have signed for that engagement (acceptance by checkbox and click, as section 22 describes, is a signature) and only against targets you have authorized in writing. Every target, whether a network, system, application, cloud account or email recipient, must be listed in that written authorization; anything not listed is out of scope and is not tested. You represent that you own each target or are authorized by its owner to have it tested, including any permission a hosting, cloud or other service provider requires, and that the person who signs the authorization may approve the testing on your behalf. Testing can affect the availability of the systems tested; the rules of engagement set out the testing window, the safeguards and how either party can stop testing.
 
 ## 4. Accounts and organizations
 
@@ -73,13 +77,13 @@ You must give us accurate organization, contact and billing information and keep
 
 ## 5. Acceptable use
 
-Your use of the Services must comply with the [Acceptable Use Policy](/legal/acceptable-use/), which is part of these Terms. In particular, you may install sensors and agents only on Endpoints you own or are authorized to manage, you must inform your own personnel of the monitoring the Services perform in the manner your policies and applicable law require, and you may not use the Services to attack, probe or interfere with anyone else's systems. We may suspend access for AUP violations as described in section 19.
+Your use of the Services must comply with the [Acceptable Use Policy](/legal/acceptable-use/), which is part of these Terms. In particular, you may install sensors and agents only on Endpoints you own or are authorized to manage, you must inform your own personnel of the monitoring the Services perform in the manner your policies and applicable law require, and you may not use the Services, including penetration testing, to attack, probe or interfere with anyone else's systems. We may suspend access for AUP violations as described in section 19.
 
 ## 6. Subscriptions, fees and billing
 
 ### 6.1 Subscriptions
 
-Services are sold as subscriptions in the quantities (for example, number of Endpoints or seats) and for the term stated at checkout or in your Order. You may increase quantities at any time; increases are charged pro rata for the remainder of the current billing period. Decreases take effect at the next renewal.
+Services are sold as subscriptions in the quantities (for example, number of Endpoints or seats) and for the term stated at checkout or in your Order. You may increase quantities at any time; increases are charged pro rata for the remainder of the current billing period. Decreases take effect at the next renewal. Penetration testing and compliance readiness are priced per engagement, as stated in their Order.
 
 ### 6.2 Payment processor
 
@@ -113,7 +117,7 @@ Except where these Terms provide for a refund (sections 3.4, 7.6 and 21) or the 
 
 ### 7.1 Vendor terms apply
 
-Third-Party Software is licensed to you by its vendor, not by Direwolf, under the vendor's own end user license agreement or terms of service (the "Vendor Terms"). For SentinelOne that is the SentinelOne Terms of Service, and for NinjaOne the NinjaOne End User License Agreement for End Users of Resellers, each as the vendor publishes and updates them. You must accept the applicable Vendor Terms before we provision the product for you, and we will present them to you, with their version, for separate acceptance in the purchase flow. If the Vendor Terms and these Terms conflict as to the Third-Party Software itself, the Vendor Terms govern your relationship with the vendor.
+Third-Party Software is licensed to you by its vendor, not by Direwolf, under the vendor's own end user license agreement or terms of service (the "Vendor Terms"). For SentinelOne that is the SentinelOne Terms of Service, as SentinelOne publishes and updates them. You must accept the applicable Vendor Terms before we provision the product for you, and we will present them to you, with their version, for separate acceptance in the purchase flow. If the Vendor Terms and these Terms conflict as to the Third-Party Software itself, the Vendor Terms govern your relationship with the vendor.
 
 ### 7.2 What Direwolf does and does not provide
 
@@ -177,7 +181,7 @@ Please do not place these in alert notes, organization settings, support message
 
 ### 10.1 Your authorization
 
-The Direwolf AI SOC acts on your Endpoints without waiting for a human when its confidence is high. **By enabling the Direwolf AI SOC you authorize Direwolf, acting through its automated systems and its analysts, to take the containment actions permitted by your Response Policy on your Endpoints, including killing processes, quarantining files and isolating hosts from the network, and you acknowledge that these actions can interrupt business operations and that an isolated host may lose network connectivity until it is reconnected.** Actions taken in accordance with your Response Policy are authorized access to your Endpoints for the purposes of the Computer Fraud and Abuse Act and comparable state laws.
+The Direwolf AI SOC acts on your Endpoints without waiting for a human when its confidence is high. **By enabling the Direwolf AI SOC you authorize Direwolf, acting through its automated systems and its security professionals, to take the containment actions permitted by your Response Policy on your Endpoints, including killing processes, quarantining files and isolating hosts from the network, and you acknowledge that these actions can interrupt business operations and that an isolated host may lose network connectivity until it is reconnected.** Actions taken in accordance with your Response Policy are authorized access to your Endpoints for the purposes of the Computer Fraud and Abuse Act and comparable state laws.
 
 ### 10.2 Your Response Policy and guardrails
 
@@ -193,7 +197,7 @@ You represent that you own or control every Endpoint on which you install a sens
 
 ### 10.5 Allocation of responsibility
 
-Subject to the exclusions in section 17.3, Direwolf is not liable for losses resulting from response actions taken in good faith in accordance with your Response Policy, including on a false positive. You remain responsible for backups, redundancy and business continuity for your Endpoints. If you prefer that no action be taken automatically, set your Response Policy accordingly; the AI will then recommend and a Direwolf analyst or your administrators will decide.
+Subject to the exclusions in section 17.3, Direwolf is not liable for losses resulting from response actions taken in good faith in accordance with your Response Policy, including on a false positive. You remain responsible for backups, redundancy and business continuity for your Endpoints. If you prefer that no action be taken automatically, set your Response Policy accordingly; the AI will then recommend an action, and Direwolf's security professionals or your administrators will decide.
 
 ## 11. Security and security incidents
 
@@ -233,7 +237,7 @@ Each party will protect the other's Confidential Information with at least the c
 
 Direwolf and its licensors own the Platform, the Services, the Website, their content, and all related intellectual property. You receive only the rights these Terms expressly grant. You may not copy, modify, reverse engineer, resell, sublicense or create derivative works of the Platform except as the law permits notwithstanding this restriction, and you may not remove proprietary notices. If you give us suggestions or feedback, we may use them without obligation to you. We will not use your name or logo in marketing, customer lists or testimonials without your prior written consent.
 
-The Website's content is provided for information. You may view, download and print it for your own non-commercial reference, keeping all notices intact. SentinelOne, NinjaOne, AWS, Stripe and other product names on the Website are trademarks of their owners and are used only to identify those products.
+The Website's content is provided for information. You may view, download and print it for your own non-commercial reference, keeping all notices intact. SentinelOne, AWS, Stripe and other product names on the Website are trademarks of their owners and are used only to identify those products.
 
 ## 16. Warranties and disclaimers
 
@@ -247,7 +251,7 @@ Direwolf warrants that the Services will perform materially as described in your
 
 ### 16.3 Disclaimer
 
-EXCEPT AS EXPRESSLY STATED IN THESE TERMS, THE SERVICES, THE PLATFORM, THE WEBSITE AND ALL THIRD-PARTY SOFTWARE ARE PROVIDED "AS IS" AND "AS AVAILABLE", AND DIREWOLF DISCLAIMS ALL OTHER WARRANTIES, EXPRESS, IMPLIED OR STATUTORY, INCLUDING WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE AND NON-INFRINGEMENT, AND ANY WARRANTY ARISING FROM COURSE OF DEALING OR USAGE OF TRADE. WITHOUT LIMITING THE FOREGOING, DIREWOLF DOES NOT WARRANT THAT THE SERVICES WILL DETECT, PREVENT, CONTAIN OR REMEDIATE ANY OR ALL THREATS, THAT ANY AUTOMATED VERDICT OR ACTION WILL BE CORRECT, THAT THE SERVICES WILL BE UNINTERRUPTED OR ERROR-FREE, OR THAT USE OF THE SERVICES WILL MAKE YOU COMPLIANT WITH ANY LAW, REGULATION, STANDARD OR CONTRACT. COMPLIANCE GUIDANCE IS NOT LEGAL ADVICE AND DOES NOT REPLACE AN ASSESSMENT BY AN AUTHORIZED ASSESSOR. SOME JURISDICTIONS DO NOT ALLOW CERTAIN DISCLAIMERS; TO THAT EXTENT, DIREWOLF'S WARRANTIES ARE LIMITED TO THE MINIMUM THE LAW REQUIRES.
+EXCEPT AS EXPRESSLY STATED IN THESE TERMS, THE SERVICES, THE PLATFORM, THE WEBSITE AND ALL THIRD-PARTY SOFTWARE ARE PROVIDED "AS IS" AND "AS AVAILABLE", AND DIREWOLF DISCLAIMS ALL OTHER WARRANTIES, EXPRESS, IMPLIED OR STATUTORY, INCLUDING WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE AND NON-INFRINGEMENT, AND ANY WARRANTY ARISING FROM COURSE OF DEALING OR USAGE OF TRADE. WITHOUT LIMITING THE FOREGOING, DIREWOLF DOES NOT WARRANT THAT THE SERVICES WILL DETECT, PREVENT, CONTAIN OR REMEDIATE ANY OR ALL THREATS, THAT ANY AUTOMATED VERDICT OR ACTION WILL BE CORRECT, THAT THE SERVICES WILL BE UNINTERRUPTED OR ERROR-FREE, OR THAT USE OF THE SERVICES WILL MAKE YOU COMPLIANT WITH ANY LAW, REGULATION, STANDARD OR CONTRACT. A PENETRATION TEST EXAMINES ONLY THE TARGETS IN SCOPE DURING THE TESTING WINDOW AND IS NOT GUARANTEED TO FIND EVERY VULNERABILITY. COMPLIANCE READINESS SERVICES ARE NOT LEGAL ADVICE AND DO NOT REPLACE AN ASSESSMENT BY AN AUTHORIZED ASSESSOR. SOME JURISDICTIONS DO NOT ALLOW CERTAIN DISCLAIMERS; TO THAT EXTENT, DIREWOLF'S WARRANTIES ARE LIMITED TO THE MINIMUM THE LAW REQUIRES.
 
 ## 17. Limitation of liability
 
@@ -279,7 +283,7 @@ Direwolf will defend you against any third-party claim alleging that the Platfor
 
 ### 18.2 By Customer
 
-You will defend Direwolf against any third-party claim arising from Customer Data, from Prohibited Data you provided, from your or your Users' breach of the AUP or of sections 9, 10.4 or 13, from your installation of sensors on devices you did not own or control, or from your failure to give your own personnel any legally required notice of monitoring, and will pay the damages and costs finally awarded or agreed in settlement.
+You will defend Direwolf against any third-party claim arising from Customer Data, from Prohibited Data you provided, from your or your Users' breach of the AUP or of sections 3.6, 9, 10.4 or 13, from your installation of sensors on devices you did not own or control, or from your failure to give your own personnel any legally required notice of monitoring, and will pay the damages and costs finally awarded or agreed in settlement.
 
 ### 18.3 Procedure
 

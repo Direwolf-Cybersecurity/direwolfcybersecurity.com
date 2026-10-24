@@ -3,91 +3,167 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHeader from '../components/PageHeader.astro';
 import Section from '../components/Section.astro';
 import CallToAction from '../components/CallToAction.astro';
-import { launchServices, roadmap } from '../data/services';
+import ImageSlot from '../components/ImageSlot.astro';
+import Icon from '../components/Icon.astro';
+import StatFigure from '../components/StatFigure.astro';
+import WhatYouGet from '../components/WhatYouGet.astro';
+import { services, roadmap } from '../data/services';
+import { threatStats, statsNote } from '../data/stats';
+import { hasImage } from '../data/images';
 import { getProduct, formatPrice } from '../data/pricing';
 
+/*
+ * One template for every service. The DOM order is the reading order on phones: kicker, heading,
+ * lede and any cited statistic; the owner's image, when its file exists; "What you get"; "Who it
+ * is for"; then the call to action and footnote. From lg up the copy sits on the left and the
+ * right column holds the image, or, in a row without an image, the "What you get" card; with an
+ * image, "What you get" is a full-width two-column card below the pair. A cited statistic is
+ * always an inline callout in the copy column, with the note that it is not a Direwolf result
+ * (claims register rule 13).
+ *
+ * Calls to action: a primary button per service. While a product has no price (row P1) the button
+ * reads "Get a quote" and no price line is shown; once a price is entered the button reads
+ * "Ask about ..." with the price beside it.
+ */
+const rows = services.map((service, index) => {
+  const product = getProduct(service.productId);
+  return {
+    service,
+    stat: service.stat ? threatStats[service.stat] : undefined,
+    image: service.image && hasImage(service.image) ? service.image : undefined,
+    price: product.priceUsd === null ? undefined : formatPrice(product),
+    shortName: service.name.replace(/ \(EDR\)$/, '').toLowerCase(),
+    tinted: index % 2 === 1,
+  };
+});
+
 const description =
-  'Direwolf services at launch: the Direwolf AI SOC, managed endpoint protection, endpoint management, and NIST SP 800-171 / CMMC compliance guidance. Later services are listed as roadmap.';
+  'Direwolf Cybersecurity services for small and mid-size businesses: managed detection and response powered by the Direwolf AI SOC, managed endpoint protection (EDR), penetration testing and compliance readiness. Later services are listed as roadmap.';
 ---
 
 <BaseLayout title="Services" description={description}>
   <PageHeader
     eyebrow="Services"
-    title="What Direwolf does for you"
-    lede="Four services available at launch, all delivered through the Direwolf Platform. Everything else we are building is listed, clearly, as roadmap."
-  />
-
-  <nav aria-label="On this page" class="border-line border-b">
-    <div class="container-x flex flex-wrap gap-x-6 gap-y-2 py-3 text-sm">
-      {launchServices.map((service) => (
-        <a href={`#${service.id}`} class="link">
-          {service.name}
-        </a>
-      ))}
-      <a href="#roadmap" class="link">
-        Roadmap
-      </a>
-    </div>
-  </nav>
-
-  {launchServices.map((service, index) => {
-    const product = getProduct(service.productId);
-    return (
-      <Section
-        id={service.id}
-        title={service.name}
-        lede={service.description}
-        tone={index % 2 === 1 ? 'surface' : 'default'}
-      >
-        <div class="mt-10 grid gap-8 lg:grid-cols-3">
-          <div>
-            <h3 class="font-semibold">What you get</h3>
-            <ul class="text-muted mt-3 list-disc space-y-2 pl-5 text-sm leading-relaxed">
-              {service.whatYouGet.map((item) => (
-                <li>{item}</li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <h3 class="font-semibold">Who it is for</h3>
-            <ul class="text-muted mt-3 list-disc space-y-2 pl-5 text-sm leading-relaxed">
-              {service.whoItIsFor.map((item) => (
-                <li>{item}</li>
-              ))}
-            </ul>
-          </div>
-          <div class="card self-start">
-            <h3 class="font-semibold">Pricing</h3>
-            <p class="mt-3 text-lg font-semibold">{formatPrice(product)}</p>
-            {product.note && <p class="text-muted mt-1 text-sm">{product.note}</p>}
-            <p class="text-muted mt-3 text-sm">
-              {product.priceUsd === null
-                ? 'Pricing is being finalized. Tell us about your organization and we will send a quote.'
-                : 'Plus applicable taxes. Manage license counts from your dashboard at any time.'}
-            </p>
-            <a href="/contact/" class="btn btn-secondary mt-5">
-              Contact us
+    title="Managed security, from first alert to final report"
+    lede="Four services for small and mid-size businesses. Anything we plan to add later is labelled as roadmap."
+  >
+    <nav aria-label="On this page" class="mt-8">
+      <ul class="flex flex-wrap gap-2 text-sm">
+        {services.map((service) => (
+          <li>
+            <a
+              href={`#${service.id}`}
+              class="border-line text-fg hover:border-accent inline-flex items-center gap-2 rounded-full border px-3.5 py-1.5 no-underline transition-colors"
+            >
+              <Icon name={service.icon} class="text-accent h-4 w-4" />
+              {service.name}
             </a>
+          </li>
+        ))}
+        <li>
+          <a
+            href="#roadmap"
+            class="border-line text-muted hover:border-accent inline-flex items-center rounded-full border border-dashed px-3.5 py-1.5 no-underline transition-colors"
+          >
+            Roadmap
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </PageHeader>
+
+  {rows.map(({ service, stat, image, price, shortName, tinted }) => (
+    <section
+      id={service.id}
+      aria-labelledby={`${service.id}-heading`}
+      class:list={['py-16 md:py-24', tinted && 'bg-surface border-line border-y']}
+    >
+      <div class="container-x">
+        <div class="grid gap-10 lg:grid-cols-2 lg:items-start lg:gap-16">
+          <div data-reveal>
+            <div class="flex items-center gap-3">
+              <span class="icon-tile">
+                <Icon name={service.icon} class="h-5 w-5" />
+              </span>
+              <p class="eyebrow">{service.kicker}</p>
+            </div>
+            <h2
+              id={`${service.id}-heading`}
+              class="mt-5 text-3xl font-semibold tracking-tight text-balance md:text-4xl"
+            >
+              {service.name}
+            </h2>
+            <p class="text-muted mt-4 max-w-2xl text-lg">{service.lede}</p>
+            {stat && (
+              <div class="border-accent mt-8 max-w-md border-l-2 pl-5">
+                <StatFigure stat={stat} size="inline" />
+                <p class="text-muted mt-2 text-xs">{statsNote}</p>
+              </div>
+            )}
           </div>
+          {image ? (
+            <div data-reveal>
+              <ImageSlot id={image} />
+            </div>
+          ) : (
+            <div class:list={['card p-6 md:p-8', tinted && 'bg-bg']} data-reveal>
+              <WhatYouGet items={service.whatYouGet} />
+            </div>
+          )}
         </div>
-        {service.footnote && <p class="text-muted mt-8 max-w-prose text-xs">{service.footnote}</p>}
-      </Section>
-    );
-  })}
+
+        {image && (
+          <div class:list={['card mt-10 p-6 md:p-8', tinted && 'bg-bg']} data-reveal>
+            <WhatYouGet items={service.whatYouGet} columns={2} />
+          </div>
+        )}
+
+        <div class="mt-10" data-reveal>
+          <p class="max-w-3xl">
+            <span class="font-semibold">Who it is for:</span>{' '}
+            <span class="text-muted">{service.whoItIsFor}</span>
+          </p>
+          <div class="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-5">
+            <a href={`/contact/?topic=${service.contactTopic}`} class="btn btn-primary">
+              {price ? (
+                `Ask about ${shortName}`
+              ) : (
+                <>
+                  Get a quote<span class="sr-only"> for {shortName}</span>
+                </>
+              )}
+            </a>
+            {price && <p class="text-muted text-sm">{price}</p>}
+          </div>
+          {service.footnote && (
+            <p class="text-muted mt-6 max-w-prose text-xs">
+              {service.footnote} See our{' '}
+              <a href="/compliance/" class="link">
+                Compliance page
+              </a>{' '}
+              for the current status of the CMMC program.
+            </p>
+          )}
+        </div>
+      </div>
+    </section>
+  ))}
 
   <Section
     id="roadmap"
     eyebrow="Roadmap"
-    title="Coming later: not yet available"
-    lede="These are services we plan to build after launch. They are not available today, and plans can change. We will update this page when a service is released."
-    tone="surface"
+    title="Coming later, not yet available"
+    lede="Services we plan to add. They are not available today, and plans can change."
   >
-    <ul class="mt-10 grid gap-6 md:grid-cols-2">
+    <ul
+      class="mt-10 grid gap-x-8 gap-y-6 sm:grid-cols-2 lg:grid-cols-4"
+      aria-label="Roadmap: coming later, not yet available"
+      data-reveal="stagger"
+    >
       {roadmap.map((item) => (
-        <li class="card">
-          <p class="eyebrow">Roadmap</p>
-          <h3 class="mt-1 text-lg font-semibold">{item.name}</h3>
-          <p class="text-muted mt-3 text-sm leading-relaxed">{item.summary}</p>
+        <li>
+          <p class="font-medium">{item.name}</p>
+          <p class="text-muted mt-1 text-sm">{item.summary}</p>
         </li>
       ))}
     </ul>

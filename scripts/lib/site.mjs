@@ -20,6 +20,7 @@ export const contentTypes = {
   '.png': 'image/png',
   '.jpg': 'image/jpeg',
   '.webp': 'image/webp',
+  '.avif': 'image/avif',
   '.ico': 'image/x-icon',
   '.txt': 'text/plain; charset=utf-8',
   '.xml': 'application/xml',

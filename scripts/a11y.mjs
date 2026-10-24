@@ -1,6 +1,6 @@
 // Accessibility check: axe-core (WCAG 2.1 A and AA rules) over every built page in dist/,
 // in light and dark color schemes and at a phone-width viewport (CLAUDE.md, "Definition of
-// done"). Serves dist/ from a local HTTP server and drives a locally installed Chromium-based
+// done"), with reduced motion so scroll-revealed content is checked in its final, visible state. Serves dist/ from a local HTTP server and drives a locally installed Chromium-based
 // browser through playwright-core (scripts/lib/site.mjs, shared with scripts/check-csp.mjs), so
 // no browser download is needed. Exit code 1 on any violation; a JSON report is written to
 // reports/a11y.json (git-ignored).
@@ -36,9 +36,12 @@ async function main() {
 
   try {
     for (const mode of modes) {
+      // Reduced motion: the scroll reveal (src/scripts/motion.ts) then never hides content below
+      // the fold and nothing is mid-animation, so axe checks every element in its final state.
       const context = await browser.newContext({
         viewport: mode.viewport,
         colorScheme: mode.colorScheme,
+        reducedMotion: 'reduce',
       });
       const page = await context.newPage();
       for (const pagePath of pages) {

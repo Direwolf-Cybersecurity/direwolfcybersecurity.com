@@ -1,109 +1,127 @@
+import type { IconName } from './icons';
+import type { ImageSlotId } from './images';
 import type { ProductId } from './pricing';
+import type { StatId } from './stats';
 
 /**
- * Services offered at launch and the roadmap. Only `launchServices` may be described as
- * available; `roadmap` items are always labeled as roadmap on the site (CLAUDE.md,
- * platform PLAN.md section 14.5). Every factual statement below is in docs/claims-register.md.
+ * Services and the roadmap. Owner direction 2026-10-24: Direwolf is an AI-driven managed
+ * security services provider (MSSP) for any small or mid-size business, with no endpoint
+ * management or RMM service. Only `services` may be described as offered; `roadmap` items are
+ * always labelled as roadmap on the site (CLAUDE.md, register rule 9). Every statement below is
+ * in docs/claims-register.md (rows A1-A4, A6, A7, C5, R1). While PLATFORM_LIVE is false, bullets
+ * that describe the Direwolf Platform use the future tense (row W6).
  *
- * Vendor names: the endpoint protection and endpoint management vendors are not named
- * anywhere in this file until the partner agreements are signed (register rule 5, rows
- * V1/V2 and A4/A5). When a gate closes, update the register row first, then this file.
+ * Vendor names: the endpoint protection vendor is not named anywhere in this file until the
+ * partner agreement is signed (register rule 5, rows V1 and A4). When the gate closes, update
+ * the register row first, then this file.
  */
 
 export interface Service {
+  /** Anchor on /services/ and the card link target. */
   id: string;
   name: string;
-  /** One sentence for cards and teasers. */
+  /** Short line above the name on the Services page. */
+  kicker: string;
+  icon: IconName;
+  /** One sentence of 20 words or fewer, for the Home card. */
   summary: string;
-  /** Two or three sentences for the services page. */
-  description: string;
+  /** One or two benefit-led sentences for the Services page. */
+  lede: string;
+  /** Three to five bullets. */
   whatYouGet: string[];
-  whoItIsFor: string[];
+  /** One sentence. */
+  whoItIsFor: string;
   productId: ProductId;
-  /** Trademark or reseller note shown under the section. */
+  /** Contact-form topic preselected by the section's quote link (ContactForm.astro). */
+  contactTopic: 'mdr' | 'endpoint-protection' | 'penetration-testing' | 'compliance-readiness';
+  /** Owner-supplied image beside the section, when its file exists (src/data/images.ts). */
+  image?: ImageSlotId;
+  /** A cited third-party statistic shown in the section (register rule 13). */
+  stat?: StatId;
+  /** Note shown under the section. */
   footnote?: string;
 }
 
-export const launchServices: Service[] = [
+export const services: Service[] = [
   {
-    id: 'ai-soc',
-    name: 'Direwolf AI SOC',
-    summary:
-      '24x7 AI-run security operations for your endpoints, with a human analyst reviewing the decisions that matter.',
-    description:
-      'Every alert from your endpoints is triaged by our AI analyst around the clock: enriched with context about your organization, given a verdict and a plain-English summary, and, when a threat is confirmed, contained automatically under guardrails you control. A Direwolf analyst reviews what the AI did and handles anything it could not decide.',
+    id: 'mdr',
+    name: 'Managed detection and response',
+    kicker: 'Powered by the Direwolf AI SOC',
+    icon: 'radar',
+    summary: 'The Direwolf AI SOC triages every endpoint alert and contains confirmed threats.',
+    lede: 'Every alert from your endpoints is enriched and triaged automatically, around the clock, and confirmed threats are contained under guardrails you control. A team of security professionals monitors the AI SOC’s work.',
     whatYouGet: [
-      'Around-the-clock monitoring of endpoint detection alerts from your sensors.',
-      'AI triage of every alert with a verdict, a confidence level, and a summary written for people who are not security specialists.',
-      'Automatic containment of confirmed threats (stopping the process, quarantining the file, isolating the host) under per-organization guardrails, with one-click undo.',
-      'Human analyst review of autonomous actions and of every alert the AI could not decide.',
-      'A dashboard with open alerts, sensor health, license usage, users, and your organization’s own audit log.',
-      'Email notifications to your administrators for confirmed threats and the actions taken.',
+      'AI triage of every endpoint alert: a verdict, a confidence level, a MITRE ATT&CK mapping and a plain-English summary.',
+      'Automatic containment of confirmed threats (stop the process, quarantine the file, isolate the host), with one-click undo.',
+      'A team of security professionals monitoring the AI SOC and taking the cases it cannot decide.',
+      'Email alerts for your administrators, and a dashboard in the Direwolf Platform that will show alerts, sensor health and your audit log.',
     ],
-    whoItIsFor: [
-      'Small and mid-size organizations without a security team of their own.',
-      'Government contractors who need monitoring, incident handling, and the evidence trail that goes with them.',
-      'Firms that want security operations without buying hardware or hiring analysts.',
-    ],
-    productId: 'ai-soc',
+    whoItIsFor:
+      'Businesses without an in-house security team that want threats handled, not just reported.',
+    productId: 'mdr',
+    contactTopic: 'mdr',
+    image: 'mdr',
   },
   {
     id: 'endpoint-protection',
-    name: 'Managed endpoint protection',
+    name: 'Managed endpoint protection (EDR)',
+    kicker: 'Enterprise EDR on every endpoint',
+    icon: 'shield-check',
     summary:
-      'An enterprise EDR agent deployed to your endpoints and bound to your organization, with alerts flowing into the Direwolf AI SOC.',
-    description:
-      'Your endpoint protection is the platform our SOC is built around. We set up a dedicated tenant for your organization and give you installers that are tied to it, so every sensor reports to the right place from its first check-in and every alert flows into the Direwolf AI SOC.',
+      'An enterprise EDR agent on every endpoint, bound to your organization, with alerts flowing into the AI SOC.',
+    lede: 'Replace legacy antivirus with an enterprise endpoint detection and response (EDR) agent on your Windows, macOS and Linux endpoints, reporting to the Direwolf AI SOC from its first check-in.',
     whatYouGet: [
-      'Endpoint protection licenses for Windows, macOS, and Linux endpoints, purchased and managed from the Direwolf Platform.',
+      'EDR licenses for Windows, macOS and Linux, which will be bought and managed from the Direwolf Platform.',
       'A dedicated tenant for your organization, provisioned automatically when you buy.',
-      'Installers and install commands bound to your organization, downloadable by your administrators.',
-      'Seat tracking in your dashboard, with sensors that go offline or fall out of date flagged.',
-      'Response actions carried out through your endpoint protection by the Direwolf AI SOC.',
+      'Installers bound to your organization, so every sensor reports to the right place.',
+      'Sensors that go offline or fall out of date will be flagged in your dashboard.',
     ],
-    whoItIsFor: [
-      'Organizations replacing consumer or legacy antivirus with a modern endpoint protection platform.',
-      'Teams that want one vendor to license, deploy, and monitor their endpoint protection.',
-    ],
+    whoItIsFor:
+      'Businesses replacing consumer or legacy antivirus with modern endpoint protection.',
     productId: 'endpoint-protection',
+    contactTopic: 'endpoint-protection',
   },
   {
-    id: 'endpoint-management',
-    name: 'Endpoint management',
+    id: 'penetration-testing',
+    name: 'Penetration testing',
+    kicker: 'See your business the way an attacker would',
+    icon: 'crosshair',
     summary:
-      'Remote monitoring, patching and inventory for your fleet through an enterprise RMM platform, managed under your Direwolf organization.',
-    description:
-      'Endpoint management keeps your devices inventoried, patched, and reachable. We set up a tenant for your organization on an enterprise remote monitoring and management platform, with an installer bound to it, so you can manage your fleet from day one.',
+      'Scoped tests of your networks, web applications, cloud and email defenses, with a written report.',
+    lede: 'We agree the scope with you, test it, and deliver a written report of what we found and how to fix it.',
     whatYouGet: [
-      'Endpoint management licenses, purchased and managed from the Direwolf Platform.',
-      'A tenant set up for your organization, with an installer bound to it.',
-      'Device inventory, operating system and software patching, remote management, and automation.',
+      'External and internal network penetration testing.',
+      'Web application testing.',
+      'Cloud configuration testing.',
+      'Phishing simulation for your staff.',
+      'A scoped engagement and a written report of findings and recommended fixes.',
     ],
-    whoItIsFor: [
-      'Organizations without an IT team who need their devices kept patched and inventoried.',
-      'Contractors who need patching and configuration evidence for their compliance program.',
-    ],
-    productId: 'endpoint-management',
+    whoItIsFor:
+      'Businesses that need a test for a customer, an insurer, a compliance program or their own peace of mind.',
+    productId: 'penetration-testing',
+    contactTopic: 'penetration-testing',
+    image: 'pentest',
+    stat: 'S-STAT-5',
   },
   {
-    id: 'compliance-guidance',
-    name: 'NIST SP 800-171 and CMMC guidance',
+    id: 'compliance-readiness',
+    name: 'Compliance readiness',
+    kicker: 'NIST SP 800-171, CMMC and similar frameworks',
+    icon: 'clipboard-check',
     summary:
-      'Practical help understanding what NIST SP 800-171 and CMMC Level 2 ask of you, and how Direwolf services fit into your program.',
-    description:
-      'Our team has worked inside regulated industries and understands what an assessor will ask. We help you understand the requirements, show where Direwolf services apply, and document the responsibilities that remain yours, so your security program and your assessment tell the same story.',
+      'Gap assessments, security plan drafting and assessment preparation for NIST SP 800-171, CMMC and similar frameworks.',
+    lede: 'Know where you stand before an assessor asks. We map your environment to the framework, document the gaps and help you prepare.',
     whatYouGet: [
-      'Gap assessment against NIST SP 800-171 Rev. 2.',
-      'System Security Plan and POA&M drafting.',
-      'Assessment preparation, including how Direwolf services fit into your program and which responsibilities remain yours.',
+      'Gap assessment against NIST SP 800-171 Rev. 2, CMMC Level 2 or a similar framework.',
+      'Drafting of your System Security Plan and plan of action and milestones (POA&M).',
+      'Assessment preparation, including which responsibilities Direwolf services cover and which remain yours.',
     ],
-    whoItIsFor: [
-      'Department of Defense contractors and subcontractors with DFARS safeguarding and CMMC obligations.',
-      'Any organization preparing for an assessment that needs clear answers about an external service provider.',
-    ],
-    productId: 'compliance-guidance',
+    whoItIsFor:
+      'Government contractors and other businesses with a framework to meet, by contract or by choice.',
+    productId: 'compliance-readiness',
+    contactTopic: 'compliance-readiness',
     footnote:
-      'Guidance only. Direwolf does not certify organizations and is not an assessor; see our Compliance page for the current status of the CMMC program.',
+      'Readiness support only. Direwolf does not certify organizations and is not an assessor.',
   },
 ];
 
@@ -112,40 +130,22 @@ export interface RoadmapItem {
   summary: string;
 }
 
-/** Later services. Never described as available. */
+/** Later services (register row R1). Never described as available. */
 export const roadmap: RoadmapItem[] = [
   {
-    name: 'GRC and compliance tracker',
-    summary:
-      'Track NIST SP 800-171 control status, implementation statements, evidence, and plans of action in one place, and export a system security plan.',
+    name: 'Vulnerability scanning',
+    summary: 'Scheduled external scans, with findings in the same alert queue.',
+  },
+  {
+    name: 'Dark web monitoring',
+    summary: 'Searches for your domains and accounts in breach data.',
   },
   {
     name: 'Security awareness training',
-    summary:
-      'Short courses on phishing, malware, social engineering, CUI handling, and acceptable use, with completion tracking that feeds your compliance evidence.',
+    summary: 'Short courses for your staff, with completion tracking.',
   },
   {
-    name: 'Dark-web exposure monitoring',
-    summary:
-      'Scheduled searches for your domains and accounts in breach data, with findings routed into the same alert queue.',
-  },
-  {
-    name: 'Vulnerability scanning',
-    summary: 'External vulnerability scanning with findings normalized alongside your alerts.',
-  },
-  {
-    name: 'Network mapping',
-    summary:
-      'Discovery of the devices and applications on your network, starting from sensor telemetry.',
-  },
-  {
-    name: 'Secure CUI document repository',
-    summary:
-      'A managed repository for controlled unclassified information, subject to the authorization path that storing CUI requires.',
-  },
-  {
-    name: 'Direwolf sensor and SIEM',
-    summary:
-      'Our own lightweight endpoint sensor and log platform, designed to lower per-endpoint cost over time.',
+    name: 'GRC and compliance tracker',
+    summary: 'Control status, evidence and plans of action in one place.',
   },
 ];

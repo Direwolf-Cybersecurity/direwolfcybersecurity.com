@@ -1,21 +1,25 @@
 // Generates every brand image the website ships from the owner's master artwork in docs/brand/v2/
-// (1254 x 1254 RGBA PNGs with transparent backgrounds, designed for dark surfaces), with sharp.
+// (RGBA PNGs with transparent backgrounds, designed for dark surfaces: the 1254 px shield and the
+// 1672 x 941 horizontal lockup), with sharp.
 // The outputs are committed, so the build and CI never run this; run it again only when the
 // masters, the site name or the tagline change:
 //
 //   npm run brand:assets
 //
-// The 1254 px masters are never shipped: pages import only the derivatives written to
-// src/assets/brand/, and public/ holds only the icons and the social card below. The platform app
+// The masters are never shipped: pages import only the derivatives written to src/assets/brand/,
+// and public/ holds only the icons and the social card below. The platform app
 // (direwolf-platform, frontend/scripts/brand-assets.mjs) is built from the same masters; the tile
-// colour and the electric blue here match its `--brand-panel` and primary colours.
+// colour and the electric blue here match its `--brand-panel` and primary colours. The stacked
+// lockup master (docs/brand/v2/direwolf-logo-stacked.png) is no longer used by the website.
 //
 // Outputs:
-//   src/assets/brand/direwolf-shield-{72,144,288}.png     the shield cropped to its artwork and
-//                                                          centred on a transparent square (header
-//                                                          36 px and footer 32 px, srcset 2x to 8x)
-//   src/assets/brand/direwolf-logo-stacked-{320,640}.png  the stacked lockup cropped to its artwork
-//                                                          (Home hero and About panels, 1x and 2x)
+//   src/assets/brand/direwolf-logo-horizontal-{44,56,80,112,168}.png
+//                                 the horizontal lockup (shield plus DIREWOLF CYBERSECURITY
+//                                 lettering) cropped to its artwork, named by height in pixels.
+//                                 The header shows it 56 px tall (44 px on phones) and the footer
+//                                 80 px tall, both on the near-black band; the browser picks the
+//                                 copy that covers the rendered size at the screen's density
+//                                 (src/components/BrandLogo.astro)
 //   public/favicon.ico            16, 32 and 48 px PNGs in one ICO container (/favicon.ico requests)
 //   public/favicon-16x16.png      tab icon, transparent
 //   public/favicon-32x32.png      tab icon, high density, transparent
@@ -23,22 +27,21 @@
 //                                 black anyway, and the dark shield needs a dark field to read)
 //   public/icon-192.png           web manifest (public/manifest.webmanifest), same tile
 //   public/icon-512.png           web manifest, same tile
-//   public/og-image.png           1200 x 630 Open Graph / Twitter card: the stacked lockup and the
-//                                 tagline on near-black
+//   public/og-image.png           1200 x 630 Open Graph / Twitter card: the horizontal lockup above
+//                                 the tagline on near-black
 //
 // "Cropped to its artwork": the masters carry a faint glow haze far from the art, so the crop is
 // the bounding box of pixels at least ALPHA_CROP opaque (8/255, about 3 %, invisible on any
-// background). Nothing is upscaled: the largest derivative (the 640 px lockup, the 512 px icon's
-// 410 px shield) is drawn from the 1254 px masters.
+// background). Nothing is upscaled: the largest derivatives (the 168 px tall lockup, the social
+// card's 300 px tall lockup, the 512 px icon's 410 px shield) are drawn from the masters.
 //
 // Encoding: each image is encoded as truecolour and as a 256-colour palette with alpha
 // (libimagequant), and the palette copy is written only when it looks identical: its PSNR against
 // the truecolour copy, composited over white and over the near-black panel, is at least MIN_PSNR
 // (38 dB), and smaller. On 2026-10-24 every output passed (38.8 to 47.4 dB; the 16 px favicon is
 // lossless either way and smaller as truecolour) and the copies were compared by eye at 2x to 5x
-// zoom with no visible difference; the palette files are about a third of the size (the 640 px
-// lockup: about 120 KB instead of 450 KB). An output that fails falls back to truecolour and the
-// log says so.
+// zoom with no visible difference; the palette files are about a third of the size. An output
+// that fails falls back to truecolour and the log says so.
 //
 // Deterministic: the same masters, sharp version and fonts produce byte-identical files (no
 // timestamps or metadata are written). The tagline on the social card is rendered by sharp's SVG
@@ -55,7 +58,13 @@ import sharp from 'sharp';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const mastersDir = path.join(root, 'docs', 'brand', 'v2');
 const SHIELD_MASTER = path.join(mastersDir, 'direwolf-shield.png');
-const LOCKUP_MASTER = path.join(mastersDir, 'direwolf-logo-stacked.png');
+const LOCKUP_MASTER = path.join(mastersDir, 'direwolf-logo-horizontal.png');
+/**
+ * Heights (px) of the horizontal lockup copies. Header: 44 on phones and 56 from md up (1x), so
+ * 112 and 168 cover 2x and 3x; footer: 80 (1x), with 168 covering 2x. Phones at 2x and 3x use
+ * the 112 and 168 copies.
+ */
+const LOCKUP_HEIGHTS = [44, 56, 80, 112, 168];
 const brandDir = path.join(root, 'src', 'assets', 'brand');
 const publicDir = path.join(root, 'public');
 
@@ -291,9 +300,10 @@ function ico(images) {
 }
 
 /**
- * The 1200 x 630 social card: near-black ground with a faint blue glow behind the stacked lockup
- * on the left, the tagline on the right under a short electric-blue rule, and a thin blue line
- * along the bottom edge. The site name is in the lockup itself.
+ * The 1200 x 630 social card: near-black ground with a faint blue glow behind the horizontal
+ * lockup (shield and lettering) centred in the upper part, the tagline centred below it under a
+ * short electric-blue rule, and a thin blue line along the bottom edge. The site name is in the
+ * lockup itself.
  * @param {{ png: Buffer, width: number, height: number }} lockup
  * @param {string} tagline
  * @returns {Promise<Buffer>}
@@ -301,37 +311,35 @@ function ico(images) {
 async function ogImage(lockup, tagline) {
   const width = 1200;
   const height = 630;
-  const lockupHeight = 480;
+  const lockupHeight = 300;
   const lockupWidth = Math.round((lockupHeight * lockup.width) / lockup.height);
-  const lockupLeft = 80;
-  const lockupTop = Math.round((height - lockupHeight) / 2);
-  const textLeft = lockupLeft + lockupWidth + 64;
+  const lockupLeft = Math.round((width - lockupWidth) / 2);
+  const lockupTop = 70;
   const font = "'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif";
 
-  const taglineLines = wrap(tagline, 20);
-  const taglineSize = 46;
+  const taglineLines = wrap(tagline, 46);
+  const taglineSize = 38;
   const lineHeight = Math.round(taglineSize * 1.3);
-  const ruleHeight = 6;
-  const ruleGap = 36;
-  const blockHeight = ruleHeight + ruleGap + taglineLines.length * lineHeight;
-  let y = Math.round((height - blockHeight) / 2);
+  const ruleWidth = 96;
+  const ruleHeight = 5;
+  let y = lockupTop + lockupHeight + 40;
 
   const parts = [
-    `<rect x="${textLeft}" y="${y}" width="96" height="${ruleHeight}" rx="3" fill="${BLUE}"/>`,
+    `<rect x="${(width - ruleWidth) / 2}" y="${y}" width="${ruleWidth}" height="${ruleHeight}" rx="2.5" fill="${BLUE}"/>`,
   ];
-  y += ruleHeight + ruleGap + Math.round(taglineSize * 0.95);
+  y += ruleHeight + 26 + Math.round(taglineSize * 0.95);
   for (const line of taglineLines) {
     parts.push(
-      `<text x="${textLeft}" y="${y}" font-family="${font}" font-size="${taglineSize}" font-weight="600" fill="#e6eaf2">${escapeXml(line)}</text>`,
+      `<text x="${width / 2}" y="${y}" text-anchor="middle" font-family="${font}" font-size="${taglineSize}" font-weight="600" fill="#e6eaf2">${escapeXml(line)}</text>`,
     );
     y += lineHeight;
   }
 
-  const glowX = lockupLeft + lockupWidth / 2;
-  const glowY = height / 2;
+  const glowX = width / 2;
+  const glowY = lockupTop + lockupHeight / 2;
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
   <defs>
-    <radialGradient id="glow" cx="${glowX}" cy="${glowY}" r="${lockupHeight * 0.62}" gradientUnits="userSpaceOnUse">
+    <radialGradient id="glow" cx="${glowX}" cy="${glowY}" r="${lockupWidth * 0.62}" gradientUnits="userSpaceOnUse">
       <stop offset="0" stop-color="${BLUE}" stop-opacity="0.16"/>
       <stop offset="1" stop-color="${BLUE}" stop-opacity="0"/>
     </radialGradient>
@@ -359,18 +367,15 @@ async function main() {
     artwork(LOCKUP_MASTER),
   ]);
   const shield = await squared(shieldArt);
-  /** @param {number} width */
-  const lockupHeight = (width) => Math.round((width * lockupArt.height) / lockupArt.width);
+  /** @param {number} height */
+  const lockupWidth = (height) => Math.round((height * lockupArt.width) / lockupArt.height);
 
   /** @type {Array<[string, Buffer]>} lossless images to encode, by output path */
   const images = [];
-  for (const size of [72, 144, 288]) {
-    images.push([`src/assets/brand/direwolf-shield-${size}.png`, await scaled(shield, size, size)]);
-  }
-  for (const width of [320, 640]) {
+  for (const height of LOCKUP_HEIGHTS) {
     images.push([
-      `src/assets/brand/direwolf-logo-stacked-${width}.png`,
-      await scaled(lockupArt.png, width, lockupHeight(width)),
+      `src/assets/brand/direwolf-logo-horizontal-${height}.png`,
+      await scaled(lockupArt.png, lockupWidth(height), height),
     ]);
   }
   images.push(['public/favicon-16x16.png', await scaled(shield, 16, 16)]);

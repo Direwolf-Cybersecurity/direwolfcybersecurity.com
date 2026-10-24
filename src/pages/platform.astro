@@ -2,9 +2,12 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHeader from '../components/PageHeader.astro';
 import Section from '../components/Section.astro';
-import Card from '../components/Card.astro';
 import ComplianceStrip from '../components/ComplianceStrip.astro';
 import CallToAction from '../components/CallToAction.astro';
+import ImageSlot from '../components/ImageSlot.astro';
+import Icon from '../components/Icon.astro';
+import { hasImage } from '../data/images';
+import type { IconName } from '../data/icons';
 import { PLATFORM_LIVE, earlyAccessUrl, loginUrl, signupUrl } from '../config';
 
 // While the platform is not in service the description and lede use the future tense (claims
@@ -13,83 +16,100 @@ const description = PLATFORM_LIVE
   ? 'The Direwolf Platform is the web application behind every Direwolf service: buy licenses, download organization-bound installers, invite users, and see what the SOC did.'
   : 'The Direwolf Platform is the web application behind every Direwolf service: your administrators will use it to buy licenses, download organization-bound installers, invite users, and see what the SOC did.';
 
+// 25 words or fewer (rows W6 and A2).
 const lede = PLATFORM_LIVE
-  ? "The Direwolf Platform is the web application behind every Direwolf service. Your administrators use it to purchase licenses, download installers, invite users, and follow what the SOC is doing. A Direwolf analyst reviews the SOC's work from the same platform."
-  : "The Direwolf Platform is the web application behind every Direwolf service. Your administrators will use it to purchase licenses, download installers, invite users, and follow what the SOC is doing, and a Direwolf analyst will review the SOC's work from the same platform.";
+  ? 'Your administrators buy licenses, deploy sensors and see what the AI SOC did. Our security professionals monitor the SOC’s work from the same platform.'
+  : 'Your administrators will buy licenses, deploy sensors and see what the AI SOC did. Our security professionals will monitor the SOC’s work from the same platform.';
 
-const features = [
+const features: { icon: IconName; title: string; text: string }[] = [
   {
+    icon: 'layout-dashboard',
     title: 'Overview',
-    text: 'Open alerts by severity, sensors online, offline, or out of date, seat usage, and what the SOC did for you recently.',
+    text: 'Open alerts, sensor health, seat usage and recent SOC actions at a glance.',
   },
   {
+    icon: 'bell',
     title: 'Alerts',
-    text: 'A filterable list and a detail page for each alert with the timeline, a plain-English summary, analyst notes, the actions taken, and a button to report a false positive.',
+    text: 'Each alert with its timeline, a plain-English summary and the actions taken.',
   },
   {
+    icon: 'cpu',
     title: 'Sensors',
-    text: 'Inventory with health, last check-in, and version. Add a sensor by downloading an installer bound to your organization; decommission one when a device is retired.',
+    text: 'Health, last check-in and version, with installers bound to your organization.',
   },
   {
+    icon: 'user-plus',
     title: 'Users',
-    text: 'Invite colleagues, assign roles, see MFA status and active sessions, and remove people who have left.',
+    text: 'Invitations, roles, MFA status and active sessions.',
   },
   {
+    icon: 'scroll-text',
     title: 'Audit log',
-    text: 'Every login, change, and SOC action affecting your organization, filterable and exportable to CSV for your own records and assessments.',
+    text: 'Every login, change and SOC action.',
   },
   {
+    icon: 'settings',
     title: 'Settings and billing',
-    text: 'Organization profile, notification recipients, session timeout, sign-in banner text, and your licenses and payments.',
+    text: 'Notification recipients, session timeout, sign-in banner, licenses and payments.',
   },
 ];
 
-const architecture = [
+// Claims register rows H1 (Platform form) with H2 verbatim in the same item, S1-S7, H4/H5 (short
+// forms), H8 (short form). FedRAMP appears only in the Hosting item, never in a heading. Hosting
+// and Encryption keep their full approved wording and span the grid; every other item is one
+// sentence of 15 words or fewer.
+const security: { icon: IconName; title: string; text: string; wide?: boolean }[] = [
   {
+    icon: 'server',
     title: 'Hosting',
-    text: 'The platform is built to run entirely in AWS GovCloud (US), on FedRAMP High authorized infrastructure, with private networks, a web application firewall, and controlled egress between the internet and your data. It is not yet in service. Direwolf itself is not FedRAMP certified or authorized. FedRAMP certification applies to the AWS infrastructure we build on, not to the Direwolf Platform.',
+    text: 'The platform is built to run entirely in AWS GovCloud (US), on FedRAMP High authorized infrastructure, with private networks, a web application firewall, and controlled egress. It is not yet in service. Direwolf itself is not FedRAMP certified or authorized. FedRAMP certification applies to the AWS infrastructure we build on, not to the Direwolf Platform.',
+    wide: true,
   },
   {
+    icon: 'database',
     title: 'Tenant isolation',
-    text: 'Every record is tagged with its organization and separated at three layers: in the database, where row-level security, enforced for every query, keeps one organization’s data from being returned to another; in the application, which refuses to run a query without an organization in scope; and operationally, where sensor data is attributed through the endpoint-protection tenant created for your organization, never guessed from a hostname.',
+    text: 'Each organization is isolated in the database by PostgreSQL row-level security on every query.',
   },
   {
-    title: 'Identity and access',
-    text: 'Multi-factor authentication is required for every user, with an authenticator app or a passkey. Passwords must be at least 12 characters and are checked against known-breached lists. Accounts lock after five failed attempts. New users join by invitation and set up MFA before they see any data; there are no temporary passwords.',
+    icon: 'key-round',
+    title: 'Identity',
+    text: 'Multi-factor authentication is mandatory for every user, and new users join by invitation only.',
   },
   {
+    icon: 'timer',
     title: 'Sessions',
-    text: 'Sessions are held server-side, end after 15 minutes of inactivity and 12 hours in total, and sensitive actions such as downloading an installer require a fresh MFA check. Administrators can see active sessions and sign a user out everywhere.',
+    text: 'Sessions lock after 15 idle minutes, and privileged actions require a fresh MFA check.',
   },
   {
-    title: 'AI SOC guardrails',
-    text: 'AI triage is designed to run on Amazon Bedrock inside the same GovCloud boundary. Autonomous actions are limited by per-organization policies, rate limits, a list of hosts the AI may never isolate on its own, one-click undo, and a platform-wide switch that drops the AI to recommend-only. Every action is recorded with its reasoning.',
+    icon: 'brain-circuit',
+    title: 'AI SOC',
+    text: 'AI triage is designed to run on Amazon Bedrock inside the same GovCloud boundary.',
   },
   {
+    icon: 'scroll-text',
     title: 'Audit logging',
-    text: 'Every login, administrative change, SOC decision, and autonomous action is written to an append-only audit log that the application can add to but not change or delete. Each record is chained to the previous one so tampering is detectable. Logs are kept online for at least one year; a longer-term write-once archive (currently intended to be three years) is planned.',
+    text: 'Every administrative and security-relevant action goes to an append-only, hash-chained audit log.',
   },
   {
-    title: 'Encryption',
-    text: 'When the platform is in service, connections will use TLS 1.2 or later with a FIPS 140-validated security policy at the edge, and data at rest in databases, storage, queues, and secrets will be encrypted with customer-managed keys in AWS Key Management Service, whose hardware security modules are FIPS 140-validated. No secrets are stored in code.',
-  },
-  {
+    icon: 'git-pull-request',
     title: 'Operations',
-    text: 'Infrastructure is defined as code and changed only through reviewed pull requests. Container images and dependencies are scanned in CI before deployment.',
+    text: 'Infrastructure as code, reviewed in pull requests, with images and dependencies scanned in CI.',
+  },
+  {
+    icon: 'lock',
+    title: 'Encryption',
+    text: 'When the platform is in service, connections will use TLS 1.2 or later with a FIPS 140-validated security policy at the edge, and data at rest will be encrypted with customer-managed keys in AWS Key Management Service, whose hardware security modules are FIPS 140-validated.',
+    wide: true,
   },
 ];
+
+const withImage = hasImage('platform');
 ---
 
 <BaseLayout title="Platform" description={description}>
-  <PageHeader
-    eyebrow="The Direwolf Platform"
-    title="One place to buy, deploy, and see your security"
-    lede={lede}
-  />
-
-  <div>
+  <PageHeader eyebrow="The Direwolf Platform" title="Your security, in one place" lede={lede}>
     {PLATFORM_LIVE ? (
-      <div class="container-x flex flex-col gap-3 py-4 sm:flex-row">
+      <div class="mt-8 flex flex-col gap-3 sm:flex-row">
         <a href={signupUrl} class="btn btn-primary" rel="noopener noreferrer">
           Sign up
         </a>
@@ -98,65 +118,79 @@ const architecture = [
         </a>
       </div>
     ) : (
-      <div class="container-x flex flex-col gap-4 py-4 sm:flex-row sm:items-center">
+      <div class="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center">
         <a href={earlyAccessUrl} class="btn btn-primary">
           Request early access
         </a>
-        <p class="text-muted text-sm">
-          The Direwolf Platform is opening to early customers. Tell us about your organization and
-          we will be in touch.
-        </p>
+        <p class="text-muted text-sm">The Direwolf Platform is opening to early customers.</p>
       </div>
     )}
-  </div>
+  </PageHeader>
 
-  <ComplianceStrip />
-
-  <Section id="for-your-team" eyebrow="For your team" title="What your administrators see">
-    <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {features.map((feature) => (
-        <Card title={feature.title}>
-          <p>{feature.text}</p>
-        </Card>
-      ))}
-    </div>
-  </Section>
-
-  <Section id="screenshots" tone="surface" eyebrow="Screenshots" title="A look at the platform">
-    <div class="mt-10 grid gap-6 md:grid-cols-2">
-      {['Organization overview', 'Alert detail with the SOC summary'].map((label) => (
-        <figure class="card">
-          <div
-            class="border-line bg-bg flex aspect-video items-center justify-center rounded-lg border border-dashed"
-            role="img"
-            aria-label={`Placeholder for a screenshot: ${label}`}
+  <Section id="for-your-team">
+    <div class:list={['grid gap-12', withImage && 'lg:grid-cols-2 lg:items-center lg:gap-16']}>
+      <div>
+        <div class="max-w-2xl" data-reveal>
+          <p class="eyebrow">For your team</p>
+          <h2
+            id="for-your-team-heading"
+            class="mt-2 text-3xl font-semibold tracking-tight md:text-4xl"
           >
-            <span class="text-muted text-sm">Screenshot coming soon</span>
-          </div>
-          <figcaption class="text-muted mt-3 text-sm">{label}</figcaption>
-        </figure>
-      ))}
+            {PLATFORM_LIVE ? 'What your administrators see' : 'What your administrators will see'}
+          </h2>
+        </div>
+        <ul
+          class:list={['mt-10 grid gap-x-8 gap-y-8 sm:grid-cols-2', !withImage && 'lg:grid-cols-3']}
+          data-reveal="stagger"
+        >
+          {features.map((feature) => (
+            <li class="flex gap-4">
+              <span class="icon-tile">
+                <Icon name={feature.icon} class="h-5 w-5" />
+              </span>
+              <div>
+                <h3 class="font-semibold">{feature.title}</h3>
+                <p class="text-muted mt-1 text-sm leading-relaxed">{feature.text}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+      {withImage && <ImageSlot id="platform" />}
     </div>
-    <p class="text-muted mt-6 text-sm">Screenshots of the Platform will be added here.</p>
   </Section>
 
   <Section
     id="security"
+    tone="surface"
     eyebrow="How it is built"
-    title="Security architecture, in plain language"
-    lede="A summary of how the platform protects your data. The details will be documented in our system security plan and customer responsibility matrix, which we will make available to customers and their assessors."
+    title="Security, in plain language"
+    lede="The details will be documented in our system security plan and customer responsibility matrix, which we will make available to customers and their assessors."
   >
-    <dl class="mt-10 grid gap-6 md:grid-cols-2">
-      {architecture.map((item) => (
-        <div class="card">
-          <dt class="text-lg font-semibold">{item.title}</dt>
-          <dd class="text-muted mt-3 text-sm leading-relaxed">{item.text}</dd>
-        </div>
+    <ul class="mt-12 grid gap-4 md:grid-cols-2 md:gap-6 lg:grid-cols-3" data-reveal="stagger">
+      {security.map((item) => (
+        <li
+          class:list={[
+            'card flex flex-col gap-3 sm:flex-row sm:gap-4',
+            item.wide && 'md:col-span-2 lg:col-span-3',
+          ]}
+        >
+          <span class="icon-tile">
+            <Icon name={item.icon} class="h-5 w-5" />
+          </span>
+          <div>
+            <h3 class="font-semibold">{item.title}</h3>
+            <p class:list={['text-muted mt-1 text-sm leading-relaxed', item.wide && 'max-w-4xl']}>
+              {item.text}
+            </p>
+          </div>
+        </li>
       ))}
-    </dl>
+    </ul>
+    <ComplianceStrip class="mt-10" />
     <p class="text-muted mt-8 max-w-prose text-sm">
       This describes the platform as designed and built for launch. For the status of our compliance
-      program, and for exactly what we do and do not claim, see the{' '}
+      program, and exactly what we do and do not claim, see the{' '}
       <a href="/compliance/" class="link">
         Compliance
       </a>{' '}

@@ -1,4 +1,12 @@
 ---
+/*
+ * Heading font: Geist (OFL), self-hosted from the pinned @fontsource-variable/geist package and
+ * bundled under /_astro/ (CSP font-src 'self'). Only headings use it (src/styles/global.css); the
+ * Latin file is preloaded so headings do not reflow, and the other subsets load only if a page
+ * needs their characters (unicode-range).
+ */
+import '@fontsource-variable/geist/wght.css';
+import geistLatin from '@fontsource-variable/geist/files/geist-latin-wght-normal.woff2?url';
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
@@ -36,7 +44,7 @@ const robots = SITE_LAUNCHED && !noindex ? 'index, follow' : 'noindex, nofollow'
  * artwork in docs/brand/v2/ by scripts/generate-brand-assets.mjs. Open Graph needs an absolute URL.
  */
 const ogImage = new URL('/og-image.png', siteOrigin).href;
-const ogImageAlt = `${siteName} logo: a silver wolf in a dark shield with an electric-blue edge, with the tagline "${siteTagline}"`;
+const ogImageAlt = `${siteName} logo: a silver wolf in a dark shield with an electric-blue edge beside the name, with the tagline "${siteTagline}"`;
 
 /**
  * Content Security Policy, delivered as a <meta> because GitHub Pages cannot set response
@@ -83,6 +91,7 @@ const contentSecurityPolicy = [
     <meta http-equiv="Content-Security-Policy" content={contentSecurityPolicy} />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preload" href={geistLatin} as="font" type="font/woff2" crossorigin />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <meta name="robots" content={robots} />
@@ -95,8 +104,8 @@ const contentSecurityPolicy = [
     <link rel="manifest" href="/manifest.webmanifest" />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <meta name="color-scheme" content="light dark" />
-    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff" />
-    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0b1220" />
+    {/* The header is the near-black band in both schemes (src/components/Header.astro). */}
+    <meta name="theme-color" content="#05070d" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={siteName} />
     <meta property="og:title" content={fullTitle} />
@@ -124,5 +133,9 @@ const contentSecurityPolicy = [
       <slot />
     </main>
     <Footer />
+    {/* Scroll reveal, count-up and header state; bundled to a file under /_astro/ (no inline JS). */}
+    <script>
+      import '../scripts/motion';
+    </script>
   </body>
 </html>

@@ -1,8 +1,8 @@
 ---
 title: Acceptable Use Policy
 shortTitle: Acceptable use
-version: v2026.10.23
-effectiveDate: 2026-10-23
+version: v2026.10.24.2
+effectiveDate: 2026-10-24
 summary: What users of the Direwolf Platform and services may and may not do, the rules for security testing, and how to report abuse.
 status: published
 order: 30
@@ -12,7 +12,7 @@ import { securityEmail } from '../../config';
 
 ## 1. Purpose and scope
 
-This Acceptable Use Policy (the "AUP") applies to every organization and every individual who uses the Direwolf Platform at app.direwolfcybersecurity.com, the Direwolf services delivered through it, and the third-party software (currently SentinelOne and NinjaOne) that Direwolf resells and provisions through the Platform. It is part of the [Terms of Service](/legal/terms/). Capitalized terms have the meanings given there.
+This Acceptable Use Policy (the "AUP") applies to every organization and every individual who uses the Direwolf Platform at app.direwolfcybersecurity.com, the Direwolf services, whether delivered through the Platform or, like penetration testing, as a scoped engagement, and the third-party software (currently SentinelOne) that Direwolf resells and provisions through the Platform. It is part of the [Terms of Service](/legal/terms/). Capitalized terms have the meanings given there.
 
 The AUP exists to protect our customers, their endpoints and data, the Platform, and the people who run it. It also defines what "authorized use" of the Platform means, which matters because the Platform is a private computer system and unauthorized access to it is a crime under the Computer Fraud and Abuse Act (18 U.S.C. 1030) and Colorado law.
 
@@ -40,7 +40,7 @@ You may not, and may not allow anyone else to:
 2. **Misuse installers and sensors.** Install Direwolf-issued installers or tokens on devices you do not own or control; share or publish installers, site tokens or enrollment credentials; or enroll more Endpoints than your subscription allows and refuse to remove the excess.
 3. **Interfere with the service.** Disrupt, degrade or overload the Platform or the vendor clouds, including denial-of-service, excessive automated requests, or interfering with monitoring, logging, alerting or response actions, except as section 5 permits.
 4. **Circumvent controls.** Bypass or attempt to bypass authentication, multi-factor authentication, session controls, rate limits, tenant isolation, audit logging or any other security control of the Platform; or tamper with a sensor to hide activity from the SOC.
-5. **Use the services to harm others.** Use the Platform, its data or response actions to attack, probe, scan, isolate, surveil or interfere with any system or person you are not authorized to act upon; or use data from the Platform to stalk, harass or discriminate against anyone.
+5. **Use the services to harm others.** Use the Platform, its data, response actions or penetration testing to attack, probe, scan, isolate, surveil or interfere with any system or person you are not authorized to act upon, including by asking Direwolf to test a target your organization does not own and is not authorized to have tested; or use data from the Platform to stalk, harass or discriminate against anyone.
 6. **Upload Prohibited Data.** Place Controlled Unclassified Information, export-controlled technical data (ITAR or EAR), protected health information, payment card numbers or classified information in the Platform, including in alert notes, settings, support messages or uploads, unless an Order expressly approves the service for it (Terms of Service, section 9).
 7. **Misrepresent.** Impersonate another person or organization, misrepresent your authority to bind your organization or to act on an Endpoint, or provide false registration or billing information.
 8. **Reverse engineer or resell.** Copy, modify, reverse engineer, decompile, scrape or create derivative works of the Platform; resell, sublicense or provide the services or Third-Party Software to third parties; or use the Platform to build a competing product, except as the law permits notwithstanding these restrictions.
@@ -59,7 +59,11 @@ You may run security tests, red-team exercises, phishing simulations and malware
 
 ### 5.3 Testing Third-Party Software
 
-Testing of SentinelOne, NinjaOne or any other vendor's product or cloud is governed by that vendor's terms and vulnerability disclosure program, not by this AUP or our disclosure policy.
+Testing of SentinelOne or any other vendor's product or cloud is governed by that vendor's terms and vulnerability disclosure program, not by this AUP or our disclosure policy.
+
+### 5.4 Penetration testing by Direwolf
+
+When you engage Direwolf for a penetration test, Direwolf tests only under rules of engagement you have signed for that engagement and only the targets you have authorized in writing, as section 3.6 of the Terms of Service describes. List only targets your organization owns or is authorized by their owner to have tested, including any permission a hosting, cloud or other service provider requires, and include in a phishing simulation only your own staff's work email addresses, never personal accounts.
 
 ## 6. Reporting abuse and security problems
 

@@ -3,65 +3,96 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Section from '../components/Section.astro';
 import Card from '../components/Card.astro';
 import CallToAction from '../components/CallToAction.astro';
-import BrandLockup from '../components/BrandLockup.astro';
 import Experience from '../components/Experience.astro';
-import { launchServices } from '../data/services';
+import ImageSlot from '../components/ImageSlot.astro';
+import Icon from '../components/Icon.astro';
+import StatsBand from '../components/StatsBand.astro';
+import { services, roadmap } from '../data/services';
+import { hasImage } from '../data/images';
+import type { IconName } from '../data/icons';
 import { PLATFORM_LIVE, earlyAccessUrl, signupUrl } from '../config';
 
-const valueProps = [
+/*
+ * Home (owner direction 2026-10-24): an AI-driven managed security services provider for any
+ * small or mid-size business. Short copy, one idea per section, a visual element in each, and
+ * each idea said once: the monitoring line (row A2) appears in the hero subhead and the Respond
+ * step only. Every claim is in docs/claims-register.md (rows F1, F5, A1-A4, A6, A7, C1, C5,
+ * S-STAT-2, S-STAT-3, S-STAT-6, W6).
+ */
+
+// Without the owner's hero image the hero is a little shorter: text on the CSS glow backdrop.
+const heroMinHeight = hasImage('hero') ? 'lg:min-h-[38rem]' : 'lg:min-h-[30rem]';
+
+const proofPoints: { icon: IconName; text: string }[] = [
+  { icon: 'radar', text: 'AI triage on every endpoint alert' },
+  { icon: 'crosshair', text: 'Penetration tests with a written report' },
+  { icon: 'badge-check', text: 'Service-disabled veteran-owned' },
+];
+
+const steps: { icon: IconName; title: string; text: string }[] = [
   {
-    title: 'Always-on detection and response',
-    text: 'Every alert from your endpoints is triaged around the clock by our AI analyst. Confirmed threats are contained automatically under guardrails you control, and a human analyst reviews what the AI did.',
+    icon: 'scan-search',
+    title: 'Detect',
+    text: 'The EDR agent on each endpoint sends every alert to the Direwolf AI SOC.',
   },
   {
-    title: 'Built for organizations that answer to assessors',
-    text: 'We build the platform for organizations that answer to assessors, and we tell you plainly which responsibilities are ours and which remain yours. Our Compliance page says exactly where we stand.',
+    icon: 'brain-circuit',
+    title: 'Investigate',
+    text: 'AI enriches and triages each alert, with a verdict and a plain-English summary.',
   },
   {
-    title: 'Sized and priced for smaller teams',
-    // While the platform is not in service the dashboard is described in the future tense
-    // (claims register row W6).
-    text: PLATFORM_LIVE
-      ? 'Per-endpoint pricing, no hardware to buy, and a dashboard your own administrators can run: buy licenses, download installers, invite users, and see what happened.'
-      : 'Per-endpoint pricing, no hardware to buy, and a dashboard your own administrators will use to buy licenses, download installers, invite users, and see what happened.',
+    icon: 'shield-check',
+    title: 'Respond',
+    text: 'Confirmed threats are contained under guardrails you control, monitored by our security professionals.',
   },
 ];
 
-const steps = [
-  // Sign-up and card payment are not available while PLATFORM_LIVE is false (claims register
-  // rows W6 and P2), so the first step is then the early-access request.
-  PLATFORM_LIVE
-    ? {
-        title: 'Sign up and choose your services',
-        text: 'Create your account and your organization, then select the services and license counts you need. Pay by card, and your organization is provisioned as soon as the payment clears.',
-      }
-    : {
-        title: 'Request early access',
-        text: 'Tell us about your organization. When the platform opens to you, you will choose the services and license counts you need and pay by card.',
-      },
+const reasons: { icon: IconName; title: string; text: string }[] = [
   {
-    title: 'Deploy sensors',
-    text: 'Download installers bound to your organization and run them on your Windows, macOS, and Linux endpoints. Each sensor reports to your organization from its first check-in.',
+    icon: 'network',
+    title: 'One partner for detection, testing and compliance',
+    text: 'Managed detection and response, endpoint protection, penetration testing and compliance readiness from one provider.',
   },
   {
-    title: 'We watch, you stay informed',
-    text: 'The Direwolf AI SOC triages every alert, contains confirmed threats, and explains what happened in plain English. Your dashboard shows alerts, sensor health, and your own audit log.',
+    icon: 'wallet',
+    title: 'Priced for small business',
+    text: 'Per-endpoint pricing for managed detection and endpoint protection, with no hardware to buy.',
+  },
+  {
+    icon: 'badge-check',
+    title: 'Veteran-owned',
+    text: 'An SBA-certified Service-Disabled Veteran-Owned Small Business in Colorado Springs, Colorado.',
+  },
+  {
+    icon: 'landmark',
+    title: 'When your contracts raise the bar',
+    text: 'Compliance readiness for NIST SP 800-171, CMMC and similar frameworks when your contracts call for it.',
   },
 ];
 ---
 
 <BaseLayout title="Home">
-  <section aria-labelledby="hero-heading" class="py-16 md:py-24">
-    <div class="container-x grid items-center gap-12 lg:grid-cols-12">
-      <div class="max-w-3xl lg:col-span-7">
-        <p class="eyebrow">Managed security for small and mid-size organizations</p>
-        <h1 id="hero-heading" class="mt-3 text-4xl font-semibold tracking-tight md:text-6xl">
-          Security operations built for enterprises, sized for your organization.
+  <section
+    aria-labelledby="hero-heading"
+    class="dark-band glow-backdrop glow-backdrop-animated relative"
+  >
+    <div
+      class:list={[
+        'container-x relative z-10 pt-14 pb-10 md:pt-20 lg:flex lg:items-center lg:py-24',
+        heroMinHeight,
+      ]}
+    >
+      <div class="max-w-xl">
+        <p class="eyebrow accent-sweep">AI-driven managed security</p>
+        <h1
+          id="hero-heading"
+          class="mt-4 text-4xl font-semibold tracking-[-0.03em] text-balance md:text-5xl lg:text-6xl"
+        >
+          Enterprise-grade security, sized for your business.
         </h1>
         <p class="text-muted mt-6 text-lg md:text-xl">
-          Direwolf Cybersecurity runs an AI-operated security operations center with a human analyst
-          reviewing. Protect every endpoint, support your NIST SP 800-171 program, and get back to
-          work.
+          AI-driven detection and response, monitored by a team of security professionals. Built and
+          priced for small and mid-size businesses.
         </p>
         <div class="mt-8 flex flex-col gap-3 sm:flex-row">
           {PLATFORM_LIVE ? (
@@ -74,75 +105,100 @@ const steps = [
             </a>
           )}
           <a href="/services/" class="btn btn-secondary">
-            See our services
+            See services
           </a>
         </div>
-      </div>
-      {/*
-        The stacked lockup is designed for dark surfaces, so it appears only on this near-black
-        panel (the same in both color schemes); the header keeps the shield and the name as text.
-      */}
-      <div class="hidden lg:col-span-5 lg:block">
-        <BrandLockup width={320} class="aspect-square p-10" />
+        <ul class="mt-10 flex flex-col gap-3 text-sm sm:flex-row sm:flex-wrap sm:gap-x-6">
+          {proofPoints.map((point, index) => (
+            <li class="flex items-center gap-2">
+              <Icon name={point.icon} class="text-accent h-5 w-5" draw={(index + 1) as 1 | 2 | 3} />
+              <span>{point.text}</span>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
+    <ImageSlot id="hero" variant="backdrop" />
   </section>
 
-  <div class="border-line bg-surface border-y">
-    <div class="container-x py-4">
-      <p class="text-sm font-medium">
-        Where we stand on NIST SP 800-171, CMMC and hosting:{' '}
-        <a href="/compliance/" class="link">
-          see our Compliance page
-        </a>
-        .
-      </p>
-    </div>
-  </div>
+  <StatsBand />
 
-  <Section id="why" eyebrow="Why Direwolf" title="Security operations without the overhead">
-    <div class="mt-10 grid gap-6 md:grid-cols-3">
-      {valueProps.map((item) => (
-        <Card title={item.title}>
-          <p>{item.text}</p>
+  <Section id="services" eyebrow="Services" title="Four services. One security partner.">
+    <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4" data-reveal="stagger">
+      {services.map((service) => (
+        <Card
+          title={service.name}
+          href={`/services/#${service.id}`}
+          icon={service.icon}
+          titleClass="lg:min-h-[3.5rem]"
+        >
+          <p>{service.summary}</p>
         </Card>
       ))}
     </div>
+    <div class="mt-10 flex flex-col gap-3 text-sm sm:flex-row sm:items-center" data-reveal>
+      <p class="text-muted font-semibold">Roadmap, not yet available:</p>
+      <ul class="flex flex-wrap gap-2" aria-label="Roadmap">
+        {roadmap.map((item) => (
+          <li class="border-line text-muted rounded-full border px-3 py-1">{item.name}</li>
+        ))}
+      </ul>
+    </div>
   </Section>
 
-  <Section id="how" tone="surface" eyebrow="How it works" title="Up and running in three steps">
-    <ol class="mt-10 grid gap-6 md:grid-cols-3">
+  <Section
+    id="how-it-works"
+    tone="dark"
+    eyebrow="How it works"
+    title="From alert to action in three steps"
+  >
+    <ol class="mt-12 grid gap-6 md:grid-cols-3" data-reveal="stagger">
       {steps.map((step, index) => (
         <li class="card">
-          <p class="text-accent font-mono text-sm font-semibold">Step {index + 1}</p>
-          <h3 class="mt-2 text-lg font-semibold">{step.title}</h3>
-          <p class="text-muted mt-3 text-sm leading-relaxed">{step.text}</p>
+          <div class="flex items-center justify-between">
+            <span class="icon-tile">
+              <Icon name={step.icon} class="h-5 w-5" />
+            </span>
+            <span class="text-accent font-mono text-sm font-semibold" aria-hidden="true">
+              {String(index + 1).padStart(2, '0')}
+            </span>
+          </div>
+          <h3 class="mt-5 text-lg font-semibold">{step.title}</h3>
+          <p class="text-muted mt-2 text-sm leading-relaxed">{step.text}</p>
         </li>
       ))}
     </ol>
   </Section>
 
   <Section
-    id="services"
-    eyebrow="Services"
-    title="What we offer at launch"
-    lede="Four services, one platform, one bill. Everything we plan to add later is listed as roadmap, never as available."
+    id="why-direwolf"
+    tone="surface"
+    eyebrow="Why Direwolf"
+    title="Built for businesses like yours"
   >
-    <div class="mt-10 grid gap-6 sm:grid-cols-2">
-      {launchServices.map((service) => (
-        <Card title={service.name} href={`/services/#${service.id}`}>
-          <p>{service.summary}</p>
-        </Card>
+    <ul class="mt-12 grid gap-x-10 gap-y-10 sm:grid-cols-2" data-reveal="stagger">
+      {reasons.map((reason) => (
+        <li class="flex gap-4">
+          <span class="icon-tile">
+            <Icon name={reason.icon} class="h-5 w-5" />
+          </span>
+          <div>
+            <h3 class="text-lg font-semibold">{reason.title}</h3>
+            <p class="text-muted mt-1 leading-relaxed">{reason.text}</p>
+          </div>
+        </li>
       ))}
-    </div>
-    <p class="mt-8">
-      <a href="/services/#roadmap" class="link">
-        See what is on the roadmap
+    </ul>
+    <p class="mt-12 text-sm font-medium">
+      Where we stand on NIST SP 800-171, CMMC and hosting:{' '}
+      <a href="/compliance/" class="link">
+        see our Compliance page
       </a>
+      .
     </p>
   </Section>
 
-  <Experience variant="summary" tone="surface" />
+  <Experience variant="summary" />
 
   <CallToAction />
 </BaseLayout>

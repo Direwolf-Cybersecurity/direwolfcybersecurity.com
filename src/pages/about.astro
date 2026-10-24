@@ -4,40 +4,55 @@ import PageHeader from '../components/PageHeader.astro';
 import Section from '../components/Section.astro';
 import CallToAction from '../components/CallToAction.astro';
 import Experience from '../components/Experience.astro';
-import BrandLockup from '../components/BrandLockup.astro';
+import ImageSlot from '../components/ImageSlot.astro';
+import Icon from '../components/Icon.astro';
+import { hasImage } from '../data/images';
+import type { IconName } from '../data/icons';
 import { industries, hqLine, ownershipStatement, ownershipPhrase } from '../config';
 
-const description = `Direwolf Cybersecurity is ${ownershipPhrase} headquartered in Colorado Springs, Colorado, built to bring enterprise-grade security operations to small and mid-size organizations and government contractors.`;
-const lede = `Direwolf Cybersecurity is ${ownershipPhrase} headquartered in Colorado Springs, Colorado. We built the Direwolf Platform so that small and mid-size organizations can have the kind of security operations that large enterprises take for granted.`;
+// Claims register rows F1-F5, C1, C2 (one sentence each on About), A2 and H1 (pointer only, in the
+// "Regulated industries" section).
+const description = `Direwolf Cybersecurity is ${ownershipPhrase} headquartered in Colorado Springs, Colorado, bringing AI-driven detection and response, monitored by a team of security professionals, to small and mid-size businesses.`;
+
+const industryIcons: Record<(typeof industries)[number], IconName> = {
+  Healthcare: 'heart-pulse',
+  Manufacturing: 'factory',
+  Defense: 'shield',
+  Aerospace: 'plane',
+  Space: 'rocket',
+  Technology: 'cpu',
+};
+
+const withImage = hasImage('about');
 ---
 
 <BaseLayout title="About us" description={description}>
   <PageHeader
     eyebrow="About us"
-    title="Serious security for organizations that are not large enterprises"
-    lede={lede}
+    title="Why we built Direwolf"
+    lede="Most small businesses have no security team of their own, yet they face the same adversaries as everyone else."
   />
 
-  <Section id="mission" eyebrow="Our mission" title="Protection that does not depend on size">
-    <div class="mt-6 grid gap-12 lg:grid-cols-12 lg:items-start">
-      <div class="prose lg:col-span-7">
-        <p>
-          Most organizations that handle sensitive work are small. They have a handful of IT staff
-          at best, no security team, and the same adversaries as everyone else. Frameworks such as
-          NIST SP 800-171 ask them to monitor, respond, and keep evidence, on the budget of a small
-          business.
-        </p>
-        <p>
-          We started Direwolf to close that gap. By running security operations with AI, with a
-          human analyst reviewing its decisions, and by automating everything from purchase to
-          deployment, we can offer monitoring and response at a price a small organization can
-          carry, without cutting corners on the parts that matter.
-        </p>
+  <Section id="mission">
+    <div class:list={['grid gap-12', withImage && 'lg:grid-cols-2 lg:items-center lg:gap-16']}>
+      <div data-reveal>
+        <p class="eyebrow">Our mission</p>
+        <h2 id="mission-heading" class="mt-2 text-3xl font-semibold tracking-tight md:text-4xl">
+          Protection that does not depend on size
+        </h2>
+        <div class="prose mt-6 text-lg">
+          <p>
+            We built Direwolf Cybersecurity to give small and mid-size businesses the security
+            operations, endpoint protection, penetration testing and compliance support that large
+            enterprises take for granted.
+          </p>
+          <p>
+            AI-driven detection and response, monitored by a team of security professionals, lets us
+            offer that protection at a price a small business can carry.
+          </p>
+        </div>
       </div>
-      {/* The lockup is for dark surfaces only: on its near-black panel, wide screens only. */}
-      <div class="hidden lg:col-span-5 lg:block">
-        <BrandLockup width={240} class="ml-auto max-w-sm px-10 py-8" />
-      </div>
+      {withImage && <ImageSlot id="about" />}
     </div>
   </Section>
 
@@ -45,88 +60,82 @@ const lede = `Direwolf Cybersecurity is ${ownershipPhrase} headquartered in Colo
     id="who-we-are"
     tone="surface"
     eyebrow="Who we are"
-    title="Cyber professionals from regulated industries"
+    title="Cyber professionals from high-stakes industries"
+    lede="Our cyber professionals bring experience from healthcare, manufacturing, defense, aerospace, space and technology."
   >
-    <div class="prose mt-6">
-      <p>
-        Our team&rsquo;s experience comes from inside regulated and high-stakes environments. We
-        have worked in:
-      </p>
-    </div>
-    <ul class="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+    <ul
+      class="mt-10 grid grid-cols-2 gap-x-8 gap-y-6 sm:grid-cols-3"
+      aria-label="Industries"
+      data-reveal="stagger"
+    >
       {industries.map((industry) => (
-        <li class="card py-4 text-sm font-medium">{industry}</li>
+        <li class="flex items-center gap-3 font-medium">
+          <Icon name={industryIcons[industry]} class="text-accent h-6 w-6" />
+          {industry}
+        </li>
       ))}
     </ul>
-    <div class="prose mt-8">
-      <p>
-        That background shapes how we work. We document what we do, we assume an assessor will read
-        it, and we tell customers plainly what is in place and what is not.
-      </p>
-    </div>
   </Section>
 
-  <Section
-    id="government-contractors"
-    eyebrow="Government contracting"
-    title="A specialty in organizations held to a higher standard"
-  >
-    <div class="prose mt-6">
-      <p>
-        Our specialty is government contractors and subcontractors that must meet high compliance
-        standards: organizations with safeguarding requirements under DFARS and the Cybersecurity
-        Maturity Model Certification (CMMC) program. We understand what NIST SP 800-171 asks for, we
-        designed the Direwolf Platform around those requirements, and we are documenting the shared
-        responsibilities so that your system security plan and your assessment line up.
-      </p>
-      <p>
-        Direwolf itself is aligned to NIST SP 800-171 and pursuing CMMC Level 2 certification. See
-        our <a href="/compliance/">Compliance</a> page for the current status and exactly what we do
-        and do not claim.
-      </p>
-    </div>
-  </Section>
-
-  <Section
-    id="company"
-    tone="surface"
-    eyebrow="Company"
-    title="Service-disabled veteran-owned, Colorado-based"
-  >
-    <dl class="mt-8 grid gap-6 sm:grid-cols-2">
-      <div class="card">
-        <dt class="font-semibold">Headquarters</dt>
-        <dd class="text-muted mt-2 text-sm">{hqLine}</dd>
+  <Section id="regulated">
+    <div class="grid gap-8 lg:grid-cols-2 lg:items-start lg:gap-16" data-reveal>
+      <div>
+        <p class="eyebrow">Regulated industries</p>
+        <h2
+          id="regulated-heading"
+          class="mt-2 text-3xl font-semibold tracking-tight text-balance md:text-4xl"
+        >
+          Ready when your contracts raise the bar
+        </h2>
       </div>
-      <div class="card">
-        <dt class="font-semibold">Ownership</dt>
-        <dd class="text-muted mt-2 text-sm">
-          {ownershipStatement}. Certified by the U.S. Small Business Administration through its
-          Veteran Small Business Certification (VetCert) program.
-        </dd>
-      </div>
-      <div class="card">
-        <dt class="font-semibold">Hosting</dt>
-        <dd class="text-muted mt-2 text-sm">
-          Where the Direwolf Platform runs, and what that does and does not mean for your compliance
-          program, is explained on our{' '}
+      <div class="text-muted text-lg lg:pt-6">
+        <p>
+          For government contractors and other regulated businesses, we help with NIST SP 800-171,
+          CMMC and similar frameworks. Direwolf itself is aligned to NIST SP 800-171 and pursuing
+          CMMC Level 2 certification.
+        </p>
+        <p class="mt-4">
           <a href="/compliance/" class="link">
-            Compliance
+            See our Compliance page
           </a>{' '}
-          page.
-        </dd>
+          for the current status, where the Direwolf Platform runs, and exactly what we do and do
+          not claim.
+        </p>
       </div>
-      <div class="card">
-        <dt class="font-semibold">Equal opportunity employer</dt>
-        <dd class="text-muted mt-2 text-sm">
-          Direwolf Cybersecurity is an equal opportunity employer. We make employment decisions
-          without regard to race, color, religion, sex, sexual orientation, gender identity,
-          national origin, age, disability, veteran status, or any other characteristic protected by
-          law. Read our{' '}
+    </div>
+  </Section>
+
+  <Section id="company" tone="dark" eyebrow="Company" title="Veteran-owned, Colorado-based">
+    <dl class="mt-10 grid gap-8 md:grid-cols-3" data-reveal="stagger">
+      <div>
+        <dt class="flex items-center gap-3 font-semibold">
+          <span class="icon-tile">
+            <Icon name="map-pin" class="h-5 w-5" />
+          </span>
+          Headquarters
+        </dt>
+        <dd class="text-muted mt-2 pl-14 text-sm">{hqLine}</dd>
+      </div>
+      <div>
+        <dt class="flex items-center gap-3 font-semibold">
+          <span class="icon-tile">
+            <Icon name="badge-check" class="h-5 w-5" />
+          </span>
+          Ownership
+        </dt>
+        <dd class="text-muted mt-2 pl-14 text-sm">{ownershipStatement}</dd>
+      </div>
+      <div>
+        <dt class="flex items-center gap-3 font-semibold">
+          <span class="icon-tile">
+            <Icon name="users" class="h-5 w-5" />
+          </span>
+          Equal opportunity employer
+        </dt>
+        <dd class="text-muted mt-2 pl-14 text-sm">
           <a href="/legal/eeo/" class="link">
-            EEO statement
+            Read our EEO statement
           </a>
-          .
         </dd>
       </div>
     </dl>
@@ -136,6 +145,6 @@ const lede = `Direwolf Cybersecurity is ${ownershipPhrase} headquartered in Colo
 
   <CallToAction
     title="Want to talk to us?"
-    text="We are glad to discuss your environment, your compliance obligations, and whether Direwolf is the right fit."
+    text="We are glad to discuss your environment, your goals, and whether Direwolf is the right fit."
   />
 </BaseLayout>

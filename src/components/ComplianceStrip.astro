@@ -1,28 +1,35 @@
 ---
 /**
- * The approved compliance wording, and nothing else. Rendered on the Platform page only; Home,
- * Services and About link to /compliance/ instead (claims register row H1). Change the phrases
- * in src/config.ts only after updating docs/claims-register.md.
+ * The approved compliance wording, and nothing else. Rendered on the Platform page only, inside
+ * "How it is built" after the security cards (not under the hero, so the page leads with the
+ * product rather than with compliance); Home, Services and About link to /compliance/ instead
+ * (claims register row H1). Change the phrases in src/config.ts only after updating
+ * docs/claims-register.md. Each phrase is a chip, and the link follows the chips in the same
+ * wrapping row; the icon is decorative and is not a badge, seal or certification mark.
  */
+import Icon from './Icon.astro';
 import { complianceStrip } from '../config';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
 ---
 
-<div class="border-line bg-surface border-y">
-  <div class="container-x flex flex-col gap-3 py-4 md:flex-row md:items-center md:justify-between">
-    <ul class="flex flex-wrap gap-x-3 gap-y-1 text-sm font-medium" aria-label="Compliance posture">
-      {complianceStrip.map((item, index) => (
-        <li class="flex items-center gap-3">
-          {index > 0 && (
-            <span aria-hidden="true" class="text-muted">
-              &middot;
-            </span>
-          )}
-          <span>{item}</span>
-        </li>
-      ))}
-    </ul>
-    <a href="/compliance/" class="link text-sm">
+<ul
+  class:list={['flex flex-wrap items-center gap-2 text-sm font-medium', className]}
+  aria-label="Compliance posture"
+>
+  {complianceStrip.map((item) => (
+    <li class="border-line bg-bg inline-flex items-center gap-2 rounded-full border px-3 py-1.5">
+      <Icon name="shield" class="text-accent h-4 w-4" />
+      {item}
+    </li>
+  ))}
+  <li class="px-1 py-1.5">
+    <a href="/compliance/" class="link">
       What these statements mean
     </a>
-  </div>
-</div>
+  </li>
+</ul>

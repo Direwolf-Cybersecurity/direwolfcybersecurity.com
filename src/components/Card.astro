@@ -1,25 +1,53 @@
 ---
-/** A bordered card with an h3 title. Pass `href` to make the title a link. */
+/**
+ * A bordered card with an optional icon and an h3 title. With `href`, the title is a link whose
+ * hit area covers the whole card, a "Learn more" cue appears at the bottom, and the card lifts on
+ * hover and focus. Without `href` the card is static: it never lifts, so it does not look
+ * clickable. `titleClass` lets a grid give every title the same height (for example two lines
+ * from lg up), so the body text in a row of cards starts at the same height.
+ */
+import Icon from './Icon.astro';
+import type { IconName } from '../data/icons';
+
 interface Props {
   title: string;
   href?: string;
+  icon?: IconName;
   class?: string;
+  titleClass?: string;
 }
 
-const { title, href, class: className = '' } = Astro.props;
+const { title, href, icon, class: className = '', titleClass = '' } = Astro.props;
 ---
 
-<article class:list={['card flex flex-col', className]}>
-  <h3 class="text-lg font-semibold">
+<article class:list={['card relative flex flex-col', href && 'card-lift', className]}>
+  {icon && (
+    <span class="icon-tile mb-5">
+      <Icon name={icon} class="h-5 w-5" />
+    </span>
+  )}
+  <h3 class:list={['text-lg font-semibold', titleClass]}>
     {href ? (
-      <a href={href} class="text-fg hover:text-accent no-underline hover:underline">
+      <a
+        href={href}
+        class="text-fg hover:text-accent no-underline after:absolute after:inset-0 after:rounded-xl after:content-['']"
+      >
         {title}
       </a>
     ) : (
       title
     )}
   </h3>
-  <div class="text-muted mt-3 text-sm leading-relaxed">
+  <div class="text-muted mt-2 text-sm leading-relaxed">
     <slot />
   </div>
+  {href && (
+    <p
+      class="text-accent mt-auto flex items-center gap-1.5 pt-5 text-sm font-semibold"
+      aria-hidden="true"
+    >
+      Learn more
+      <Icon name="arrow-right" class="h-4 w-4" />
+    </p>
+  )}
 </article>

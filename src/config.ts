@@ -18,9 +18,15 @@
 export const SITE_LAUNCHED = true;
 
 export const siteName = 'Direwolf Cybersecurity';
-export const siteTagline = 'AI-run security operations for small and mid-size organizations';
+/**
+ * Positioning (owner direction 2026-10-24): an AI-driven managed security services provider
+ * (MSSP) for any small or mid-size business; government contractors are one audience among
+ * several. The tagline is also set on the social card (scripts/generate-brand-assets.mjs reads
+ * this exact line), so run `npm run brand:assets` after changing it. Claims register row F5.
+ */
+export const siteTagline = 'AI-driven managed security for small and mid-size businesses';
 export const siteDescription =
-  'Direwolf Cybersecurity provides AI-run security operations with human analyst review, managed endpoint protection, and NIST SP 800-171 / CMMC guidance for small and mid-size organizations and government contractors. An SBA-certified Service-Disabled Veteran-Owned Small Business headquartered in Colorado Springs, Colorado.';
+  'Direwolf Cybersecurity is a managed security services provider for small and mid-size businesses: AI-driven detection and response monitored by a team of security professionals, managed endpoint protection, penetration testing and compliance readiness. An SBA-certified Service-Disabled Veteran-Owned Small Business headquartered in Colorado Springs, Colorado.';
 
 /** Canonical origin of this site. Must match `site` in astro.config.mjs and public/CNAME. */
 export const siteOrigin = 'https://www.direwolfcybersecurity.com';

@@ -6,15 +6,15 @@
  * The prices charged at checkout live in Stripe and are managed from the platform
  * (PLAN.md section 14.4 in the platform repository), so keep the two in step.
  *
- * Product names stay vendor-neutral until the partner agreements are signed
- * (docs/claims-register.md rule 5, rows V1/V2). Do not add "licensed through Direwolf" or a
- * vendor name here before those rows flip.
+ * Product names stay vendor-neutral until the partner agreement is signed
+ * (docs/claims-register.md rule 5, row V1). Do not add "licensed through Direwolf" or a
+ * vendor name here before that row flips.
  */
 
 export type PriceModel = 'per-endpoint-month' | 'per-org-month' | 'one-time' | 'custom';
 
 export type ProductId =
-  'ai-soc' | 'endpoint-protection' | 'endpoint-management' | 'compliance-guidance';
+  'mdr' | 'endpoint-protection' | 'penetration-testing' | 'compliance-readiness';
 
 export interface Product {
   id: ProductId;
@@ -28,8 +28,8 @@ export interface Product {
 
 export const products: Product[] = [
   {
-    id: 'ai-soc',
-    name: 'Direwolf AI SOC',
+    id: 'mdr',
+    name: 'Managed detection and response',
     model: 'per-endpoint-month',
     priceUsd: null,
   },
@@ -40,14 +40,14 @@ export const products: Product[] = [
     priceUsd: null,
   },
   {
-    id: 'endpoint-management',
-    name: 'Endpoint management',
-    model: 'per-endpoint-month',
+    id: 'penetration-testing',
+    name: 'Penetration testing',
+    model: 'custom',
     priceUsd: null,
   },
   {
-    id: 'compliance-guidance',
-    name: 'NIST SP 800-171 / CMMC guidance',
+    id: 'compliance-readiness',
+    name: 'Compliance readiness',
     model: 'custom',
     priceUsd: null,
   },
