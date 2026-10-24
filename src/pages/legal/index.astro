@@ -1,0 +1,57 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import Section from '../../components/Section.astro';
+
+const docs = (await getCollection('legal')).sort((a, b) => a.data.order - b.data.order);
+const dateFormat = new Intl.DateTimeFormat('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+  timeZone: 'UTC',
+});
+---
+
+<BaseLayout
+  title="Legal"
+  description="Direwolf Cybersecurity legal documents: privacy policy, terms of service, acceptable use policy, cookie notice, accessibility statement, and EEO statement."
+>
+  <PageHeader
+    eyebrow="Legal"
+    title="Policies and notices"
+    lede="Every document is versioned. The Direwolf Platform records which version you accepted, and a changed document always gets a new version number and effective date."
+  />
+  <Section id="documents">
+    <ul class="grid gap-6 md:grid-cols-2">
+      {
+        docs.map((doc) => (
+          <li class="card">
+            <h2 class="text-lg font-semibold">
+              <a
+                href={`/legal/${doc.id}/`}
+                class="text-fg hover:text-accent no-underline hover:underline"
+              >
+                {doc.data.title}
+              </a>
+            </h2>
+            <p class="text-muted mt-2 text-sm">{doc.data.summary}</p>
+            <p class="text-muted mt-3 text-xs">
+              <code class="font-mono">{doc.data.version}</code>
+              <span aria-hidden="true"> &middot; </span>
+              Last updated
+              <time datetime={doc.data.effectiveDate.toISOString().slice(0, 10)}>
+                {dateFormat.format(doc.data.effectiveDate)}
+              </time>
+              {doc.data.status === 'draft' && (
+                <span>
+                  <span aria-hidden="true"> &middot; </span>Draft
+                </span>
+              )}
+            </p>
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+</BaseLayout>

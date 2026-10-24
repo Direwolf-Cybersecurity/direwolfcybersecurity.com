@@ -1,0 +1,151 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Section from '../components/Section.astro';
+import Card from '../components/Card.astro';
+import ComplianceStrip from '../components/ComplianceStrip.astro';
+import CallToAction from '../components/CallToAction.astro';
+import { loginUrl, signupUrl } from '../config';
+
+const description =
+  'The Direwolf Platform is the web application behind every Direwolf service: buy licenses, download organization-bound installers, invite users, and see what the SOC did.';
+
+const features = [
+  {
+    title: 'Overview',
+    text: 'Open alerts by severity, sensors online, offline, or out of date, seat usage, and what the SOC did for you recently.',
+  },
+  {
+    title: 'Alerts',
+    text: 'A filterable list and a detail page for each alert with the timeline, a plain-English summary, analyst notes, the actions taken, and a button to report a false positive.',
+  },
+  {
+    title: 'Sensors',
+    text: 'Inventory with health, last check-in, and version. Add a sensor by downloading an installer bound to your organization; decommission one when a device is retired.',
+  },
+  {
+    title: 'Users',
+    text: 'Invite colleagues, assign roles, see MFA status and active sessions, and remove people who have left.',
+  },
+  {
+    title: 'Audit log',
+    text: 'Every login, change, and SOC action affecting your organization, filterable and exportable to CSV for your own records and assessments.',
+  },
+  {
+    title: 'Settings and billing',
+    text: 'Organization profile, notification recipients, session timeout, sign-in banner text, and your licenses and payments.',
+  },
+];
+
+const architecture = [
+  {
+    title: 'Hosting',
+    text: 'The platform runs entirely in AWS GovCloud (US), on FedRAMP High authorized infrastructure, with private networks, a web application firewall, and controlled egress between the internet and your data. Direwolf itself is not FedRAMP certified or authorized. FedRAMP certification applies to the AWS infrastructure we build on, not to the Direwolf Platform.',
+  },
+  {
+    title: 'Tenant isolation',
+    text: 'Every record is tagged with its organization and separated at three layers: in the database, where row-level security, enforced for every query, keeps one organization’s data from being returned to another; in the application, which refuses to run a query without an organization in scope; and operationally, where sensor data is attributed through the endpoint-protection tenant created for your organization, never guessed from a hostname.',
+  },
+  {
+    title: 'Identity and access',
+    text: 'Multi-factor authentication is required for every user, with an authenticator app or a passkey. Passwords must be at least 12 characters and are checked against known-breached lists. Accounts lock after five failed attempts. New users join by invitation and set up MFA before they see any data; there are no temporary passwords.',
+  },
+  {
+    title: 'Sessions',
+    text: 'Sessions are held server-side, end after 15 minutes of inactivity and 12 hours in total, and sensitive actions such as downloading an installer require a fresh MFA check. Administrators can see active sessions and sign a user out everywhere.',
+  },
+  {
+    title: 'AI SOC guardrails',
+    text: 'AI triage runs on Amazon Bedrock inside the same GovCloud boundary. Autonomous actions are limited by per-organization policies, rate limits, a list of hosts the AI may never isolate on its own, one-click undo, and a platform-wide switch that drops the AI to recommend-only. Every action is recorded with its reasoning.',
+  },
+  {
+    title: 'Audit logging',
+    text: 'Every login, administrative change, SOC decision, and autonomous action is written to an append-only audit log that the application can add to but not change or delete. Each record is chained to the previous one so tampering is detectable. Logs are kept online for at least one year; a longer-term write-once archive (currently intended to be three years) is planned.',
+  },
+  {
+    title: 'Encryption',
+    text: 'Connections use TLS 1.2 or later with a FIPS 140-validated security policy at the edge. Data at rest in databases, storage, queues, and secrets is encrypted with customer-managed keys in AWS Key Management Service, whose hardware security modules are FIPS 140-validated. No secrets are stored in code.',
+  },
+  {
+    title: 'Operations',
+    text: 'Infrastructure is defined as code and changed only through reviewed pull requests. Container images and dependencies are scanned in CI before deployment.',
+  },
+];
+---
+
+<BaseLayout title="Platform" description={description}>
+  <PageHeader
+    eyebrow="The Direwolf Platform"
+    title="One place to buy, deploy, and see your security"
+    lede="The Direwolf Platform is the web application behind every Direwolf service. Your administrators use it to purchase licenses, download installers, invite users, and follow what the SOC is doing. A Direwolf analyst reviews the SOC's work from the same platform."
+  />
+
+  <div>
+    <div class="container-x flex flex-col gap-3 py-4 sm:flex-row">
+      <a href={signupUrl} class="btn btn-primary">Sign up</a>
+      <a href={loginUrl} class="btn btn-secondary">Log in</a>
+    </div>
+  </div>
+
+  <ComplianceStrip />
+
+  <Section id="for-your-team" eyebrow="For your team" title="What your administrators see">
+    <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        features.map((feature) => (
+          <Card title={feature.title}>
+            <p>{feature.text}</p>
+          </Card>
+        ))
+      }
+    </div>
+  </Section>
+
+  <Section id="screenshots" tone="surface" eyebrow="Screenshots" title="A look at the platform">
+    <div class="mt-10 grid gap-6 md:grid-cols-2">
+      {
+        ['Organization overview', 'Alert detail with the SOC summary'].map((label) => (
+          <figure class="card">
+            <div
+              class="border-line bg-bg flex aspect-video items-center justify-center rounded-lg border border-dashed"
+              role="img"
+              aria-label={`Placeholder for a screenshot: ${label}`}
+            >
+              <span class="text-muted text-sm">Screenshot coming soon</span>
+            </div>
+            <figcaption class="text-muted mt-3 text-sm">{label}</figcaption>
+          </figure>
+        ))
+      }
+    </div>
+    <p class="text-muted mt-6 text-sm">Screenshots will be added before launch.</p>
+  </Section>
+
+  <Section
+    id="security"
+    eyebrow="How it is built"
+    title="Security architecture, in plain language"
+    lede="A summary of how the platform protects your data. The details will be documented in our system security plan and customer responsibility matrix, which we will make available to customers and their assessors."
+  >
+    <dl class="mt-10 grid gap-6 md:grid-cols-2">
+      {
+        architecture.map((item) => (
+          <div class="card">
+            <dt class="text-lg font-semibold">{item.title}</dt>
+            <dd class="text-muted mt-3 text-sm leading-relaxed">{item.text}</dd>
+          </div>
+        ))
+      }
+    </dl>
+    <p class="text-muted mt-8 max-w-prose text-sm">
+      This describes the platform as designed and built for launch. For the status of our
+      compliance program, and for exactly what we do and do not claim, see the
+      <a href="/compliance/" class="link">Compliance</a> page.
+    </p>
+  </Section>
+
+  <CallToAction
+    title="See it for yourself."
+    text="Create an account to explore the dashboard. You are only charged when you buy licenses."
+  />
+</BaseLayout>

@@ -1,0 +1,27 @@
+---
+/** A bordered card with an h3 title. Pass `href` to make the title a link. */
+interface Props {
+  title: string;
+  href?: string;
+  class?: string;
+}
+
+const { title, href, class: className = '' } = Astro.props;
+---
+
+<article class:list={['card flex flex-col', className]}>
+  <h3 class="text-lg font-semibold">
+    {
+      href ? (
+        <a href={href} class="text-fg hover:text-accent no-underline hover:underline">
+          {title}
+        </a>
+      ) : (
+        title
+      )
+    }
+  </h3>
+  <div class="text-muted mt-3 text-sm leading-relaxed">
+    <slot />
+  </div>
+</article>

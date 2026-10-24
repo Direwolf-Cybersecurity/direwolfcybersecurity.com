@@ -1,0 +1,78 @@
+---
+title: Acceptable Use Policy
+shortTitle: Acceptable use
+version: v2026.10.23
+effectiveDate: 2026-10-23
+summary: What users of the Direwolf Platform and services may and may not do, the rules for security testing, and how to report abuse.
+status: draft
+order: 30
+---
+
+## 1. Purpose and scope
+
+This Acceptable Use Policy (the "AUP") applies to every organization and every individual who uses the Direwolf Platform at app.direwolfcybersecurity.com, the Direwolf services delivered through it, and the third-party software (currently SentinelOne and NinjaOne) that Direwolf resells and provisions through the Platform. It is part of the [Terms of Service](/legal/terms/). Capitalized terms have the meanings given there.
+
+The AUP exists to protect our customers, their endpoints and data, the Platform, and the people who run it. It also defines what "authorized use" of the Platform means, which matters because the Platform is a private computer system and unauthorized access to it is a crime under the Computer Fraud and Abuse Act (18 U.S.C. 1030) and Colorado law.
+
+## 2. Permitted use
+
+You may use the Platform and services:
+
+- for your own organization's security, on Endpoints your organization owns or is authorized to manage;
+- through accounts issued to named individuals in your organization, each protected by multi-factor authentication;
+- in accordance with the Terms of Service, your Order, the vendor terms for any Third-Party Software, and applicable law.
+
+## 3. Your responsibilities
+
+- **Authorized Endpoints only.** Install sensors, agents and installers only on devices your organization owns or has written authority to manage. Never install them on a device belonging to someone else, including a personal device, without that person's informed agreement and your organization's authority.
+- **Tell your people.** The services monitor activity on Endpoints and will take response actions on them. You are responsible for giving your own personnel whatever notice of monitoring your policies and applicable law require.
+- **Protect credentials.** Keep passwords, authenticator apps, passkeys, recovery codes, installer tokens and API credentials confidential. Do not share accounts. Remove Users who leave your organization promptly.
+- **Keep your Response Policy current.** Maintain the list of hosts the AI SOC may never isolate on its own and tag your critical systems, so that automatic containment does not take down something you cannot afford to lose.
+- **Report problems.** Tell us promptly at security@direwolfcybersecurity.com if you suspect an account, token or Endpoint enrolled in the Platform has been compromised, or if you find a security weakness in the Platform (see section 6).
+
+## 4. Prohibited conduct
+
+You may not, and may not allow anyone else to:
+
+1. **Access without authorization.** Access or attempt to access any account, organization, data, system or network that you are not authorized to access, including another customer's data, Direwolf's internal systems, or the vendor clouds behind the services beyond the access your subscription provides.
+2. **Misuse installers and sensors.** Install Direwolf-issued installers or tokens on devices you do not own or control; share or publish installers, site tokens or enrollment credentials; or enroll more Endpoints than your subscription allows and refuse to remove the excess.
+3. **Interfere with the service.** Disrupt, degrade or overload the Platform or the vendor clouds, including denial-of-service, excessive automated requests, or interfering with monitoring, logging, alerting or response actions, except as section 5 permits.
+4. **Circumvent controls.** Bypass or attempt to bypass authentication, multi-factor authentication, session controls, rate limits, tenant isolation, audit logging or any other security control of the Platform; or tamper with a sensor to hide activity from the SOC.
+5. **Use the services to harm others.** Use the Platform, its data or response actions to attack, probe, scan, isolate, surveil or interfere with any system or person you are not authorized to act upon; or use data from the Platform to stalk, harass or discriminate against anyone.
+6. **Upload Prohibited Data.** Place Controlled Unclassified Information, export-controlled technical data (ITAR or EAR), protected health information, payment card numbers or classified information in the Platform, including in alert notes, settings, support messages or uploads, unless an Order expressly approves the service for it (Terms of Service, section 9).
+7. **Misrepresent.** Impersonate another person or organization, misrepresent your authority to bind your organization or to act on an Endpoint, or provide false registration or billing information.
+8. **Reverse engineer or resell.** Copy, modify, reverse engineer, decompile, scrape or create derivative works of the Platform; resell, sublicense or provide the services or Third-Party Software to third parties; or use the Platform to build a competing product, except as the law permits notwithstanding these restrictions.
+9. **Break the law.** Use the Platform or services in violation of any law, including export control and sanctions law, computer crime law, privacy and employee-monitoring law, or the intellectual property rights of others.
+10. **Abuse support or disclosure channels.** Send unsolicited commercial messages through the contact form, or make vulnerability reports in bad faith.
+
+## 5. Security testing rules
+
+### 5.1 Testing the Platform
+
+Do not perform penetration tests, vulnerability scans, fuzzing or other security testing against the Platform, the website or Direwolf's infrastructure except in accordance with our [responsible disclosure policy](/security/). Good-faith research conducted in accordance with that policy is authorized and is exempt from the restrictions in section 4 that would otherwise interfere with it. Anything else requires our prior written agreement.
+
+### 5.2 Testing your own Endpoints
+
+You may run security tests, red-team exercises, phishing simulations and malware-sample tests (for example, the EICAR test file) on your own Endpoints. Be aware that the Direwolf AI SOC will see that activity and, under your Response Policy, may contain it automatically: killing processes, quarantining files and isolating hosts. To avoid that, tell us in advance through the Platform or by email, with the dates, hosts and expected activity, so the SOC can treat the exercise appropriately, or adjust your Response Policy for the duration of the test. We are not responsible for business interruption caused by containment of your own test activity that you did not tell us about.
+
+### 5.3 Testing Third-Party Software
+
+Testing of SentinelOne, NinjaOne or any other vendor's product or cloud is governed by that vendor's terms and vulnerability disclosure program, not by this AUP or our disclosure policy.
+
+## 6. Reporting abuse and security problems
+
+- **Abuse of the Platform** (for example, a Direwolf installer found on a device without authorization, suspected misuse of an account, or unsolicited messages that appear to come from Direwolf): email security@direwolfcybersecurity.com.
+- **Security vulnerabilities** in the Platform or website: follow our [responsible disclosure policy](/security/) and the contact details in [/.well-known/security.txt](/.well-known/security.txt).
+- **Suspected compromise** of your own account or Endpoints: email security@direwolfcybersecurity.com and, if you are an administrator, end the affected User's sessions from the Platform.
+
+Please do not include Prohibited Data, passwords or other secrets in a report. We acknowledge reports and keep reporters informed as described on the Security page.
+
+## 7. Monitoring and enforcement
+
+The Platform logs sign-ins, administrative changes, SOC decisions and response actions in an append-only audit log. Direwolf reviews those logs and other operational data to run and secure the service and to investigate suspected violations of this AUP. Your organization's administrators can see your organization's own log.
+
+If we believe this AUP has been violated, we may, depending on the seriousness of the violation: ask you to correct it; remove or disable the offending content, token or sensor; suspend the affected User, feature or organization; terminate the agreement as the Terms of Service provide; and report unlawful activity to law enforcement. We will tell you what we did and why, and give you an opportunity to respond, unless doing so would harm an investigation or other customers or is prohibited by law. We will cooperate with lawful requests from authorities as described in the Privacy Policy.
+
+## 8. Changes to this policy
+
+This AUP is versioned and is changed only by publishing a new version with a new effective date, with notice and re-acceptance as described in section 21 of the Terms of Service.

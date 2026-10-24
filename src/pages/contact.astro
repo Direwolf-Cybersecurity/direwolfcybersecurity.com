@@ -1,0 +1,86 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Section from '../components/Section.astro';
+import ContactForm from '../components/ContactForm.astro';
+import { contactEmail, securityEmail, phone, hqLine, streetAddress, loginUrl } from '../config';
+
+const description =
+  'Contact Direwolf Cybersecurity in Colorado Springs, Colorado: ask about our services, request a quote, or ask about our customer responsibility matrix for NIST SP 800-171.';
+const telHref = phone ? `tel:${phone.replace(/[^+\d]/g, '')}` : '';
+---
+
+<BaseLayout title="Contact" description={description}>
+  <PageHeader
+    eyebrow="Contact"
+    title="Talk to Direwolf"
+    lede="Tell us about your organization and what you need. We reply by email."
+  />
+
+  <Section id="contact">
+    <div class="grid gap-12 lg:grid-cols-3">
+      <div class="lg:col-span-2">
+        <h2 class="text-2xl font-semibold tracking-tight">Send us a message</h2>
+        <div class="mt-6 max-w-xl">
+          <ContactForm />
+        </div>
+      </div>
+
+      <aside aria-labelledby="contact-details">
+        <h2 id="contact-details" class="text-2xl font-semibold tracking-tight">
+          Other ways to reach us
+        </h2>
+        <dl class="mt-6 space-y-6 text-sm">
+          <div>
+            <dt class="font-semibold">Email</dt>
+            <dd class="mt-1"><a href={`mailto:${contactEmail}`} class="link">{contactEmail}</a></dd>
+          </div>
+          {
+            phone && (
+              <div>
+                <dt class="font-semibold">Phone</dt>
+                <dd class="mt-1">
+                  <a href={telHref} class="link">
+                    {phone}
+                  </a>
+                </dd>
+              </div>
+            )
+          }
+          <div>
+            <dt class="font-semibold">Headquarters</dt>
+            <dd class="text-muted mt-1">
+              <address class="not-italic">
+                {streetAddress && <span>{streetAddress}<br /></span>}
+                {hqLine}
+              </address>
+            </dd>
+          </div>
+          <div>
+            <dt class="font-semibold">Security researchers</dt>
+            <dd class="text-muted mt-1">
+              Found a vulnerability? Read our <a href="/security/" class="link"
+                >responsible disclosure policy</a
+              > and write to <a href={`mailto:${securityEmail}`} class="link">{securityEmail}</a>.
+            </dd>
+          </div>
+          <div>
+            <dt class="font-semibold">Assessors and customers</dt>
+            <dd class="text-muted mt-1">
+              To ask about our customer responsibility matrix for NIST SP 800-171, which we are
+              completing as controls are implemented, use the form and mention &ldquo;CRM&rdquo; in
+              your message.
+            </dd>
+          </div>
+          <div>
+            <dt class="font-semibold">Existing customers</dt>
+            <dd class="text-muted mt-1">
+              <a href={loginUrl} class="link">Log in to the Direwolf Platform</a> to manage your
+              organization.
+            </dd>
+          </div>
+        </dl>
+      </aside>
+    </div>
+  </Section>
+</BaseLayout>

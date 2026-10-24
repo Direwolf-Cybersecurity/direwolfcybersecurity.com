@@ -1,0 +1,123 @@
+---
+import { getCollection } from 'astro:content';
+import Logo from './Logo.astro';
+import { companyNav, trustNav } from '../data/navigation';
+import {
+  siteName,
+  siteTagline,
+  legalEntityName,
+  hqLine,
+  streetAddress,
+  contactEmail,
+  phone,
+  socials,
+  loginUrl,
+} from '../config';
+
+const legalDocs = (await getCollection('legal')).sort((a, b) => a.data.order - b.data.order);
+const year = new Date().getFullYear();
+const telHref = phone ? `tel:${phone.replace(/[^+\d]/g, '')}` : '';
+---
+
+<footer class="border-line bg-surface border-t">
+  <div class="container-x grid gap-10 py-12 sm:grid-cols-2 lg:grid-cols-4">
+    <div>
+      <a href="/" class="text-fg flex items-center gap-2 font-semibold no-underline">
+        <Logo class="text-accent h-7 w-7" />
+        <span>{siteName}</span>
+      </a>
+      <p class="text-muted mt-3 text-sm">{siteTagline}.</p>
+      <address class="text-muted mt-4 text-sm not-italic">
+        {streetAddress && <span>{streetAddress}<br /></span>}
+        {hqLine}<br />
+        <a href={`mailto:${contactEmail}`} class="link">{contactEmail}</a>
+        {
+          phone && (
+            <span>
+              <br />
+              <a href={telHref} class="link">
+                {phone}
+              </a>
+            </span>
+          )
+        }
+      </address>
+      <p class="text-muted mt-4 text-sm">Veteran-owned. An equal opportunity employer.</p>
+      {
+        socials.length > 0 && (
+          <ul class="mt-4 flex gap-4 text-sm" aria-label="Social profiles">
+            {socials.map((s) => (
+              <li>
+                <a href={s.url} class="link" rel="noopener">
+                  {s.name}
+                </a>
+              </li>
+            ))}
+          </ul>
+        )
+      }
+    </div>
+
+    <nav aria-labelledby="footer-company">
+      <h2 id="footer-company" class="text-sm font-semibold">Company</h2>
+      <ul class="mt-3 space-y-2 text-sm">
+        {
+          companyNav.map(({ label, href }) => (
+            <li>
+              <a href={href} class="text-muted hover:text-accent no-underline hover:underline">
+                {label}
+              </a>
+            </li>
+          ))
+        }
+        <li>
+          <a href={loginUrl} class="text-muted hover:text-accent no-underline hover:underline">
+            Log in to the platform
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <nav aria-labelledby="footer-legal">
+      <h2 id="footer-legal" class="text-sm font-semibold">Legal</h2>
+      <ul class="mt-3 space-y-2 text-sm">
+        {
+          legalDocs.map((doc) => (
+            <li>
+              <a
+                href={`/legal/${doc.id}/`}
+                class="text-muted hover:text-accent no-underline hover:underline"
+              >
+                {doc.data.shortTitle ?? doc.data.title}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <nav aria-labelledby="footer-trust">
+      <h2 id="footer-trust" class="text-sm font-semibold">Trust</h2>
+      <ul class="mt-3 space-y-2 text-sm">
+        {
+          trustNav.map(({ label, href }) => (
+            <li>
+              <a href={href} class="text-muted hover:text-accent no-underline hover:underline">
+                {label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+
+  <div class="border-line border-t">
+    <div
+      class="container-x text-muted flex flex-col gap-2 py-6 text-xs sm:flex-row sm:items-center sm:justify-between"
+    >
+      <p>&copy; {year} {legalEntityName}. All rights reserved.</p>
+      <p>{hqLine}</p>
+    </div>
+  </div>
+</footer>

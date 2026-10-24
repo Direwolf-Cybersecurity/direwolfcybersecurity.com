@@ -1,0 +1,244 @@
+---
+/**
+ * Contact form. With PUBLIC_CONTACT_ENDPOINT set, submissions are POSTed as JSON
+ * ({ name, email, company, message }) and the response status is announced. Without it,
+ * submitting opens the visitor's mail client with a pre-filled message. The "website" field
+ * is a honeypot: hidden from people, and a filled value makes the submission a silent no-op.
+ */
+import { contactEndpoint, contactEmail } from '../config';
+---
+
+<form
+  id="contact-form"
+  class="grid gap-5"
+  method="post"
+  action={contactEndpoint}
+  data-endpoint={contactEndpoint}
+  data-mailto={contactEmail}
+  novalidate
+>
+  <p class="text-muted text-sm">Required fields are marked with an asterisk (*).</p>
+
+  <div>
+    <label for="cf-name" class="block text-sm font-medium">
+      Name <span aria-hidden="true">*</span>
+    </label>
+    <input
+      id="cf-name"
+      name="name"
+      type="text"
+      autocomplete="name"
+      required
+      aria-required="true"
+      aria-describedby="cf-name-error"
+      class="field mt-1"
+    />
+    <p id="cf-name-error" class="text-danger mt-1 text-sm" data-error hidden></p>
+  </div>
+
+  <div>
+    <label for="cf-email" class="block text-sm font-medium">
+      Work email <span aria-hidden="true">*</span>
+    </label>
+    <input
+      id="cf-email"
+      name="email"
+      type="email"
+      autocomplete="email"
+      inputmode="email"
+      required
+      aria-required="true"
+      aria-describedby="cf-email-error"
+      class="field mt-1"
+    />
+    <p id="cf-email-error" class="text-danger mt-1 text-sm" data-error hidden></p>
+  </div>
+
+  <div>
+    <label for="cf-company" class="block text-sm font-medium">Company or organization</label>
+    <input id="cf-company" name="company" type="text" autocomplete="organization" class="field mt-1" />
+  </div>
+
+  <div>
+    <label for="cf-message" class="block text-sm font-medium">
+      How can we help? <span aria-hidden="true">*</span>
+    </label>
+    <textarea
+      id="cf-message"
+      name="message"
+      rows="6"
+      required
+      aria-required="true"
+      aria-describedby="cf-message-error cf-message-hint"
+      class="field mt-1"></textarea>
+    <p id="cf-message-hint" class="text-muted mt-1 text-sm">
+      Please do not include passwords, controlled unclassified information, or other sensitive
+      data.
+    </p>
+    <p id="cf-message-error" class="text-danger mt-1 text-sm" data-error hidden></p>
+  </div>
+
+  <div class="honeypot" aria-hidden="true">
+    <label for="cf-website">Leave this field empty</label>
+    <input id="cf-website" name="website" type="text" tabindex="-1" autocomplete="off" />
+  </div>
+
+  <p class="text-muted text-sm">
+    We use the details you provide only to reply to you. See our
+    <a href="/legal/privacy/" class="link">Privacy Policy</a>.
+  </p>
+
+  <div>
+    <button type="submit" class="btn btn-primary">Send message</button>
+  </div>
+
+  <p id="cf-status" class="text-sm" role="status" aria-live="polite"></p>
+</form>
+
+{
+  !contactEndpoint && (
+    <p class="text-muted mt-6 text-sm">
+      Our contact form is not connected to a mail service yet, so sending opens a pre-filled
+      message in your own email app. You can also write to us directly at
+      <a href={`mailto:${contactEmail}`} class="link">
+        {contactEmail}
+      </a>
+      .
+    </p>
+  )
+}
+
+<noscript>
+  <p class="text-muted mt-6 text-sm">
+    JavaScript is turned off in your browser. Please email us at
+    <a href={`mailto:${contactEmail}`} class="link">{contactEmail}</a>.
+  </p>
+</noscript>
+
+<style>
+  /* Off-screen, not display:none, so automated form fillers still see it. */
+  .honeypot {
+    position: absolute;
+    left: -10000px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+</style>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+
+  if (form) {
+    const status = form.querySelector<HTMLElement>('#cf-status');
+    const endpoint = form.dataset.endpoint;
+    const mailto = form.dataset.mailto ?? '';
+
+    const fields = ['name', 'email', 'message'] as const;
+
+    const messageFor = (input: HTMLInputElement | HTMLTextAreaElement): string => {
+      if (input.validity.valueMissing) return 'This field is required.';
+      if (input.validity.typeMismatch) return 'Enter a valid email address, like name@example.com.';
+      return input.validationMessage;
+    };
+
+    const setError = (name: string, message: string) => {
+      const input = form.elements.namedItem(name) as HTMLInputElement | HTMLTextAreaElement | null;
+      const error = document.getElementById(`cf-${name}-error`);
+      if (!input || !error) return;
+      if (message) {
+        error.textContent = message;
+        error.hidden = false;
+        input.setAttribute('aria-invalid', 'true');
+      } else {
+        error.textContent = '';
+        error.hidden = true;
+        input.removeAttribute('aria-invalid');
+      }
+    };
+
+    const announce = (text: string) => {
+      if (status) status.textContent = text;
+    };
+
+    const validate = (): boolean => {
+      let firstInvalid: HTMLElement | null = null;
+      for (const name of fields) {
+        const input = form.elements.namedItem(name) as HTMLInputElement | HTMLTextAreaElement;
+        const valid = input.checkValidity();
+        setError(name, valid ? '' : messageFor(input));
+        if (!valid && !firstInvalid) firstInvalid = input;
+      }
+      if (firstInvalid) {
+        firstInvalid.focus();
+        announce('Please fix the highlighted fields.');
+        return false;
+      }
+      return true;
+    };
+
+    for (const name of fields) {
+      const input = form.elements.namedItem(name) as HTMLInputElement | HTMLTextAreaElement;
+      input.addEventListener('input', () => {
+        if (input.getAttribute('aria-invalid') === 'true' && input.checkValidity()) setError(name, '');
+      });
+    }
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (!validate()) return;
+
+      const data = new FormData(form);
+      const payload = {
+        name: String(data.get('name') ?? '').trim(),
+        email: String(data.get('email') ?? '').trim(),
+        company: String(data.get('company') ?? '').trim(),
+        message: String(data.get('message') ?? '').trim(),
+      };
+
+      // Honeypot filled: behave as if it worked, do nothing.
+      if (String(data.get('website') ?? '').trim() !== '') {
+        announce('Thank you. Your message has been sent.');
+        form.reset();
+        return;
+      }
+
+      if (!endpoint) {
+        const subject = `Website inquiry from ${payload.name}`;
+        const body = [
+          `Name: ${payload.name}`,
+          `Email: ${payload.email}`,
+          payload.company ? `Company: ${payload.company}` : '',
+          '',
+          payload.message,
+        ]
+          .filter((line, index) => line !== '' || index === 3)
+          .join('\n');
+        announce('Opening your email app with a pre-filled message.');
+        window.location.href = `mailto:${mailto}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        return;
+      }
+
+      const button = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+      if (button) button.disabled = true;
+      announce('Sending your message.');
+      try {
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        announce('Thank you. Your message has been sent and we will reply by email.');
+        form.reset();
+      } catch {
+        announce(
+          `We could not send your message. Please email us directly at ${mailto} instead.`,
+        );
+      } finally {
+        if (button) button.disabled = false;
+      }
+    });
+  }
+</script>

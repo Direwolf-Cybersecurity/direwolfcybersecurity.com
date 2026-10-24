@@ -1,0 +1,44 @@
+---
+/**
+ * A page section with the standard container, optional eyebrow/heading/lede, and an
+ * optional tinted background. Headings are h2; nest Cards (h3) inside.
+ */
+interface Props {
+  id?: string;
+  eyebrow?: string;
+  title?: string;
+  lede?: string;
+  tone?: 'default' | 'surface';
+  class?: string;
+}
+
+const { id, eyebrow, title, lede, tone = 'default', class: className = '' } = Astro.props;
+const headingId = id && title ? `${id}-heading` : undefined;
+---
+
+<section
+  id={id}
+  aria-labelledby={headingId}
+  class:list={[
+    'py-14 md:py-20',
+    tone === 'surface' && 'bg-surface border-line border-y',
+    className,
+  ]}
+>
+  <div class="container-x">
+    {
+      (eyebrow || title || lede) && (
+        <div class="max-w-2xl">
+          {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+          {title && (
+            <h2 id={headingId} class="mt-2 text-3xl font-semibold tracking-tight">
+              {title}
+            </h2>
+          )}
+          {lede && <p class="text-muted mt-4 text-lg">{lede}</p>}
+        </div>
+      )
+    }
+    <slot />
+  </div>
+</section>

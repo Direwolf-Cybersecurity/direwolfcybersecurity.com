@@ -1,0 +1,114 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Section from '../components/Section.astro';
+import CallToAction from '../components/CallToAction.astro';
+import { industries, hqLine } from '../config';
+
+const description =
+  'Direwolf Cybersecurity is a veteran-owned company headquartered in Colorado Springs, Colorado, built to bring enterprise-grade security operations to small and mid-size organizations and government contractors.';
+---
+
+<BaseLayout title="About us" description={description}>
+  <PageHeader
+    eyebrow="About us"
+    title="Serious security for organizations that are not large enterprises"
+    lede="Direwolf Cybersecurity is a veteran-owned company headquartered in Colorado Springs, Colorado. We built the Direwolf Platform so that small and mid-size organizations can have the kind of security operations that large enterprises take for granted."
+  />
+
+  <Section id="mission" eyebrow="Our mission" title="Protection that does not depend on size">
+    <div class="prose mt-6">
+      <p>
+        Most organizations that handle sensitive work are small. They have a handful of IT staff at
+        best, no security team, and the same adversaries as everyone else. Frameworks such as NIST
+        SP 800-171 ask them to monitor, respond, and keep evidence, on the budget of a small
+        business.
+      </p>
+      <p>
+        We started Direwolf to close that gap. By running security operations with AI, with a
+        human analyst reviewing its decisions, and by automating everything from purchase to
+        deployment, we can offer monitoring and response at a price a small organization can
+        carry, without cutting corners on the parts that matter.
+      </p>
+    </div>
+  </Section>
+
+  <Section
+    id="who-we-are"
+    tone="surface"
+    eyebrow="Who we are"
+    title="Cyber professionals from regulated industries"
+  >
+    <div class="prose mt-6">
+      <p>
+        Our team&rsquo;s experience comes from inside regulated and high-stakes environments. We
+        have worked in:
+      </p>
+    </div>
+    <ul class="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      {industries.map((industry) => <li class="card py-4 text-sm font-medium">{industry}</li>)}
+    </ul>
+    <div class="prose mt-8">
+      <p>
+        That background shapes how we work. We document what we do, we assume an assessor will read
+        it, and we tell customers plainly what is in place and what is not.
+      </p>
+    </div>
+  </Section>
+
+  <Section
+    id="government-contractors"
+    eyebrow="Government contracting"
+    title="A specialty in organizations held to a higher standard"
+  >
+    <div class="prose mt-6">
+      <p>
+        Our specialty is government contractors and subcontractors that must meet high compliance
+        standards: organizations with safeguarding requirements under DFARS and the Cybersecurity
+        Maturity Model Certification (CMMC) program. We understand what NIST SP 800-171 asks for,
+        we designed the Direwolf Platform around those requirements, and we are documenting the
+        shared responsibilities so that your system security plan and your assessment line up.
+      </p>
+      <p>
+        Direwolf itself is aligned to NIST SP 800-171 and pursuing CMMC Level 2 certification. See
+        our <a href="/compliance/">Compliance</a> page for the current status and exactly what we
+        do and do not claim.
+      </p>
+    </div>
+  </Section>
+
+  <Section id="company" tone="surface" eyebrow="Company" title="Veteran-owned, Colorado-based">
+    <dl class="mt-8 grid gap-6 sm:grid-cols-2">
+      <div class="card">
+        <dt class="font-semibold">Headquarters</dt>
+        <dd class="text-muted mt-2 text-sm">{hqLine}</dd>
+      </div>
+      <div class="card">
+        <dt class="font-semibold">Ownership</dt>
+        <dd class="text-muted mt-2 text-sm">Veteran-owned.</dd>
+      </div>
+      <div class="card">
+        <dt class="font-semibold">Hosting</dt>
+        <dd class="text-muted mt-2 text-sm">
+          Where the Direwolf Platform runs, and what that does and does not mean for your
+          compliance program, is explained on our
+          <a href="/compliance/" class="link">Compliance</a> page.
+        </dd>
+      </div>
+      <div class="card">
+        <dt class="font-semibold">Equal opportunity employer</dt>
+        <dd class="text-muted mt-2 text-sm">
+          Direwolf Cybersecurity is an equal opportunity employer. We make employment decisions
+          without regard to race, color, religion, sex, sexual orientation, gender identity,
+          national origin, age, disability, veteran status, or any other characteristic protected
+          by law. Read our <a href="/legal/eeo/" class="link">EEO statement</a>.
+        </dd>
+      </div>
+    </dl>
+  </Section>
+
+  <CallToAction
+    title="Want to talk to us?"
+    text="We are glad to discuss your environment, your compliance obligations, and whether Direwolf is the right fit."
+  />
+</BaseLayout>

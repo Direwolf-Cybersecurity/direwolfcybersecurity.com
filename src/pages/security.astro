@@ -1,0 +1,229 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Section from '../components/Section.astro';
+import { SITE_LAUNCHED, securityEmail, siteOrigin, appUrl, securityTxtExpires } from '../config';
+
+const description =
+  'How to report a security vulnerability in the Direwolf Cybersecurity website or the Direwolf Platform, what is in scope, the rules for good-faith research, and what researchers can expect from us.';
+const siteHost = new URL(siteOrigin).host;
+const appHost = new URL(appUrl).host;
+const securityTxtUrl = `${siteOrigin}/.well-known/security.txt`;
+const expiresLabel = new Intl.DateTimeFormat('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+  timeZone: 'UTC',
+}).format(new Date(securityTxtExpires));
+
+/** Bump when this policy's wording changes; the platform may record acknowledgements of it. */
+const policyVersion = 'v2026.10.23';
+---
+
+<BaseLayout title="Security and responsible disclosure" description={description}>
+  <PageHeader
+    eyebrow="Security"
+    title="Responsible disclosure"
+    lede="If you believe you have found a security vulnerability in this website or in the Direwolf Platform, we want to hear from you. This page explains how to report it, what is in scope, how we treat good-faith research, and what to expect from us."
+  />
+
+  {!SITE_LAUNCHED && (
+    <div class="border-line border-b">
+      <div class="container-x py-4">
+        <p class="bg-accent-soft border-line max-w-prose rounded-xl border p-4 text-sm" role="note">
+          <strong>Draft for attorney review; not yet in effect.</strong> The safe-harbor wording
+          below follows published good-faith research norms and will be confirmed by counsel before
+          launch. Until the Direwolf Platform is live, only this website is in scope.
+        </p>
+      </div>
+    </div>
+  )}
+
+  <Section id="report" title="How to report">
+    <div class="prose mt-6">
+      <p>
+        Email <a href={`mailto:${securityEmail}`}>{securityEmail}</a>. Our contact details are also
+        published in machine-readable form at
+        <a href="/.well-known/security.txt">/.well-known/security.txt</a> (RFC 9116). Please do not
+        report vulnerabilities through the contact form, social media or a customer account.
+      </p>
+      <p>Please include:</p>
+      <ul>
+        <li>the affected URL, host or component, and the type of issue;</li>
+        <li>
+          step-by-step instructions to reproduce it, with any proof-of-concept code or requests;
+        </li>
+        <li>
+          the impact as you understand it, and any conditions required (for example a user role);
+        </li>
+        <li>
+          how you would like to be credited, if at all, and whether we may contact you with
+          questions.
+        </li>
+      </ul>
+      <p>
+        Please do not send customer data, personal information you encountered, credentials or
+        secrets; a description is enough. We do not yet publish a PGP key; if you need to send
+        something sensitive, ask us for a secure channel first.
+      </p>
+    </div>
+  </Section>
+
+  <Section id="scope" tone="surface" title="Scope">
+    <div class="prose mt-6">
+      <h3>In scope</h3>
+      <ul>
+        <li>
+          <code>{siteHost}</code>, this website, and its generated files such as{' '}
+          <code>robots.txt</code> and <code>security.txt</code>.
+        </li>
+        <li>
+          <code>{appHost}</code>, the Direwolf Platform: the web application, its API, and the
+          installers and tokens it issues.
+        </li>
+        <li>
+          Email sent from <code>direwolfcybersecurity.com</code> addresses, where the issue is in
+          our configuration.
+        </li>
+      </ul>
+      <h3>Out of scope</h3>
+      <ul>
+        <li>
+          Systems we use but do not operate: our hosting providers (GitHub for this website, Amazon
+          Web Services for the Platform), our payment processor (Stripe), and the SentinelOne and
+          NinjaOne products and clouds. Report those to the vendor's own program.
+        </li>
+        <li>
+          Our customers&rsquo; endpoints, networks and accounts. Those belong to our customers.
+        </li>
+        <li>Denial-of-service testing, resource exhaustion and high-rate automated scanning.</li>
+        <li>
+          Social engineering, phishing or physical attacks against Direwolf staff, customers or
+          facilities.
+        </li>
+        <li>
+          Findings that require an already-compromised account or device, or physical access to it.
+        </li>
+        <li>
+          Reports from automated tools without a demonstrated impact: missing best-practice headers
+          on pages with no sensitive actions, version disclosure, SPF or DMARC observations, and
+          similar. We still welcome them as a note, but they are not treated as vulnerabilities.
+        </li>
+      </ul>
+      <p>
+        The website is hosted separately from the Direwolf Platform and does not store customer
+        data. The Platform runs in AWS GovCloud (US); how it is built and protected is described on
+        the <a href="/platform/#security">Platform</a> page.
+      </p>
+    </div>
+  </Section>
+
+  <Section id="rules" title="Rules for researchers">
+    <div class="prose mt-6">
+      <p>To stay within this policy:</p>
+      <ul>
+        <li>
+          Test only against accounts and data you own or are explicitly authorized to test. Create
+          your own test accounts; do not use a customer&rsquo;s.
+        </li>
+        <li>
+          Do not access, modify, delete, download or retain data that is not yours. If you encounter
+          another organization&rsquo;s or person&rsquo;s data, stop, do not look further, and tell
+          us in your report.
+        </li>
+        <li>
+          Do not degrade the service: no denial of service, no high-rate automated scanning, no
+          spam, and no actions that would interrupt our customers&rsquo; security monitoring.
+        </li>
+        <li>Do not use social engineering, phishing or physical attacks.</li>
+        <li>
+          Take only the steps needed to demonstrate the issue. Prove a vulnerability exists; do not
+          exploit it further.
+        </li>
+        <li>
+          Give us reasonable time to fix the issue before disclosing it publicly. We ask for 90 days
+          from your report, or until the fix is released if sooner, and we will coordinate
+          disclosure with you.
+        </li>
+        <li>Do not demand payment as a condition of reporting or of withholding disclosure.</li>
+      </ul>
+    </div>
+  </Section>
+
+  <Section id="expect" tone="surface" title="What you can expect from us">
+    <div class="prose mt-6">
+      <ul>
+        <li>Acknowledgement of your report by email within five business days.</li>
+        <li>
+          An honest assessment of the issue, an estimate of when it will be fixed, and updates as we
+          make progress. We will tell you when the fix is released.
+        </li>
+        <li>Credit, if you would like it, once the issue is resolved.</li>
+        <li>
+          No legal action against you for research conducted in accordance with this policy (see the
+          safe harbor below).
+        </li>
+      </ul>
+      <p>
+        We do not currently run a paid bug bounty program and do not offer rewards. We treat every
+        good-faith report with the same care.
+      </p>
+    </div>
+  </Section>
+
+  <Section id="safe-harbor" title="Good-faith research (safe harbor)">
+    <div class="prose mt-6">
+      <p>
+        If you make a good-faith effort to comply with this policy during your security research, we
+        consider your research authorized under the Computer Fraud and Abuse Act (18 U.S.C. 1030)
+        and applicable state computer-crime law, exempt from the anti-circumvention provisions of
+        the Digital Millennium Copyright Act (17 U.S.C. 1201), and exempt from restrictions in our{' '}
+        <a href="/legal/terms/">Terms of Service</a> and
+        <a href="/legal/acceptable-use/">Acceptable Use Policy</a> that would interfere with it. We
+        will not pursue or support legal action against you for research conducted in accordance
+        with this policy.
+      </p>
+      <p>
+        This authorization applies only to systems in scope above and does not extend to systems
+        operated by others, including our vendors and our customers. It does not authorize
+        accessing, retaining or disclosing personal information or customer data, disrupting the
+        service, or any activity outside the rules above. If you are unsure whether something is
+        covered, ask us at <a href={`mailto:${securityEmail}`}>{securityEmail}</a> before you
+        proceed.
+      </p>
+      <p>
+        This statement reflects the U.S. Department of Justice&rsquo;s policy of declining to
+        prosecute good-faith security research and the safe-harbor norms published by the security
+        research community. It is our policy, not legal advice to you.
+      </p>
+    </div>
+  </Section>
+
+  <Section id="security-txt" tone="surface" title="security.txt">
+    <div class="prose mt-6">
+      <p>
+        We publish our disclosure contact in the RFC 9116 format at
+        <a href="/.well-known/security.txt">{securityTxtUrl}</a>. The file lists the contact address
+        and this page, is renewed at least yearly (the current <code>Expires</code> date is
+        {expiresLabel}), and the Platform will serve the same file at
+        <code>{appHost}/.well-known/security.txt</code>.
+      </p>
+    </div>
+  </Section>
+
+  <Section id="protection" title="How the Platform is protected">
+    <div class="prose mt-6">
+      <p>
+        For how the Direwolf Platform is built and protected, see the
+        <a href="/platform/#security">Platform</a> page. For our compliance posture, including
+        exactly what we do and do not claim, see <a href="/compliance/">Compliance</a>. Customers
+        and their assessors can ask about our customer responsibility matrix, which we are
+        completing as controls are implemented, through the <a href="/contact/">contact page</a>.
+      </p>
+      <p class="text-muted text-sm">
+        Policy version <code>{policyVersion}</code>. Changes to this policy are published with a new
+        version.
+      </p>
+    </div>
+  </Section>
+</BaseLayout>

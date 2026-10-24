@@ -1,0 +1,117 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Section from '../components/Section.astro';
+
+const description =
+  'Where Direwolf Cybersecurity stands on NIST SP 800-171 and CMMC Level 2, where the Direwolf Platform is hosted and how its data is encrypted, and what we do not claim.';
+
+/** Update when this page is re-checked against docs/claims-register.md. */
+const lastReviewed = { iso: '2026-10-23', label: 'October 23, 2026' };
+
+const posture = [
+  {
+    claim: 'Aligned to NIST SP 800-171',
+    meaning:
+      'We have mapped NIST SP 800-171 (Revision 2, as used by CMMC Level 2) to the Direwolf Platform and to our company practices, and we are building the system security plan, control matrix with evidence, and plan of action and milestones that an assessment requires. "Aligned" means we implement the requirements as we understand them and keep evidence of it. It is not a third-party certification.',
+  },
+  {
+    claim: 'Pursuing CMMC Level 2',
+    meaning:
+      'Direwolf is preparing for a CMMC Level 2 assessment. In July 2026 the Department of War suspended the requirement for third-party (C3PAO) Level 2 assessments while it reviews the CMMC program; self-assessment requirements remain in force. We will update this page when our status changes. Until an assessment is complete and recorded, we do not describe Direwolf as CMMC certified.',
+  },
+  {
+    claim: 'Hosted on AWS GovCloud (US)',
+    meaning:
+      'The Direwolf Platform runs in AWS GovCloud (US). AWS states that AWS GovCloud (US) is FedRAMP Certified at Class D (formerly the FedRAMP High baseline), so the infrastructure beneath our platform carries that certification. Direwolf itself is not FedRAMP certified or authorized. FedRAMP certification applies to the AWS infrastructure we build on, not to the Direwolf Platform.',
+  },
+  {
+    claim: 'FIPS 140-validated TLS and key management',
+    meaning:
+      'Data in transit is protected with TLS 1.2 or higher, terminated with a FIPS 140-validated cryptographic module (AWS-LC, CMVP certificate #4631). Data at rest (databases, object storage, queues, secrets and logs) is encrypted with customer-managed keys held in AWS KMS hardware security modules validated to FIPS 140-3 Level 3 (CMVP certificate #4884), with automatic key rotation. We make no FIPS claim about any other component.',
+  },
+];
+
+const notClaimed = [
+  'Direwolf is not FedRAMP authorized. Our infrastructure provider’s authorization is not ours.',
+  'Direwolf is not yet CMMC certified.',
+  'We do not hold SOC 2 or ISO/IEC 27001 attestations.',
+  // Veteran-owned status: the site says "veteran-owned" only (claims register row F1).
+  // CLAUDE.md records the owner's statement that the business is SBA VetCert-certified
+  // (SDVOSB); the register row must carry the certificate reference before any page says so,
+  // and until then the page neither claims nor disclaims the certification.
+  'Our compliance guidance is not legal advice and does not replace an assessment of your own organization by an authorized assessor.',
+];
+---
+
+<BaseLayout title="Compliance" description={description}>
+  <PageHeader
+    eyebrow="Compliance"
+    title="What we claim, what we are pursuing, and what we do not claim"
+    lede="Compliance statements are easy to make and hard to back up. This page says precisely where Direwolf stands, and it changes when our status changes."
+  />
+
+  <Section id="posture" title="Our posture">
+    <dl class="mt-8 grid gap-6 md:grid-cols-2">
+      {posture.map((item) => (
+        <div class="card">
+          <dt class="text-lg font-semibold">{item.claim}</dt>
+          <dd class="text-muted mt-3 text-sm leading-relaxed">{item.meaning}</dd>
+        </div>
+      ))}
+    </dl>
+  </Section>
+
+  <Section id="shared-responsibility" tone="surface" title="Shared responsibility">
+    <div class="prose mt-6">
+      <p>
+        When you use Direwolf, three parties share the security of the service. AWS is responsible
+        for the physical and virtual infrastructure of GovCloud and for the FIPS-validated
+        cryptographic modules we rely on. Direwolf is responsible for everything inside the platform
+        boundary: tenant isolation, identity and multi-factor authentication, session controls,
+        audit logging, configuration and vulnerability management, encryption configuration,
+        incident handling for the platform, and the guardrails around the AI SOC. You remain
+        responsible for your own people and endpoints: who gets an account and which role, removing
+        leavers promptly, protecting MFA devices, installing sensors only on endpoints you own,
+        reviewing your organization&rsquo;s audit log, acting on notifications, and the
+        organizational policies that no technology provides. Our customer responsibility matrix,
+        which we are completing as controls are implemented, will spell this out requirement by
+        requirement.
+      </p>
+    </div>
+    <p class="mt-8">
+      <a href="/contact/" class="btn btn-secondary">
+        Ask about the customer responsibility matrix
+      </a>
+    </p>
+  </Section>
+
+  <Section id="cui" title="A note on controlled unclassified information (CUI)">
+    <div class="prose mt-6">
+      <p>
+        At launch, the Direwolf Platform handles security protection data: alerts, sensor inventory,
+        triage notes, and your users&rsquo; accounts. It is not designed to store, process, or
+        transmit CUI, and customers should not place CUI in alert notes, settings, or support
+        messages. A cloud service that stores, processes, or transmits CUI is subject to additional
+        federal authorization requirements that do not apply to the security protection data we
+        handle today. A CUI document repository is on our roadmap and would be subject to those
+        requirements before release.
+      </p>
+    </div>
+  </Section>
+
+  <Section id="not-claimed" tone="surface" title="What we do not claim">
+    <ul class="prose mt-6 list-disc space-y-2 pl-6">
+      {notClaimed.map((item) => (
+        <li>{item}</li>
+      ))}
+    </ul>
+  </Section>
+
+  <div class="container-x py-8">
+    <p class="text-muted text-sm">
+      Last reviewed <time datetime={lastReviewed.iso}>{lastReviewed.label}</time>. Every statement
+      on this site is checked against our internal claims register before it is published.
+    </p>
+  </div>
+</BaseLayout>

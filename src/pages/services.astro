@@ -1,0 +1,99 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Section from '../components/Section.astro';
+import CallToAction from '../components/CallToAction.astro';
+import { launchServices, roadmap } from '../data/services';
+import { getProduct, formatPrice } from '../data/pricing';
+
+const description =
+  'Direwolf services at launch: the Direwolf AI SOC, managed endpoint protection, endpoint management, and NIST SP 800-171 / CMMC compliance guidance. Later services are listed as roadmap.';
+---
+
+<BaseLayout title="Services" description={description}>
+  <PageHeader
+    eyebrow="Services"
+    title="What Direwolf does for you"
+    lede="Four services available at launch, all delivered through the Direwolf Platform. Everything else we are building is listed, clearly, as roadmap."
+  />
+
+  <nav aria-label="On this page" class="border-line border-b">
+    <div class="container-x flex flex-wrap gap-x-6 gap-y-2 py-3 text-sm">
+      {
+        launchServices.map((service) => (
+          <a href={`#${service.id}`} class="link">
+            {service.name}
+          </a>
+        ))
+      }
+      <a href="#roadmap" class="link">Roadmap</a>
+    </div>
+  </nav>
+
+  {
+    launchServices.map((service, index) => {
+      const product = getProduct(service.productId);
+      return (
+        <Section
+          id={service.id}
+          title={service.name}
+          lede={service.description}
+          tone={index % 2 === 1 ? 'surface' : 'default'}
+        >
+          <div class="mt-10 grid gap-8 lg:grid-cols-3">
+            <div>
+              <h3 class="font-semibold">What you get</h3>
+              <ul class="text-muted mt-3 list-disc space-y-2 pl-5 text-sm leading-relaxed">
+                {service.whatYouGet.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <h3 class="font-semibold">Who it is for</h3>
+              <ul class="text-muted mt-3 list-disc space-y-2 pl-5 text-sm leading-relaxed">
+                {service.whoItIsFor.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+            </div>
+            <div class="card self-start">
+              <h3 class="font-semibold">Pricing</h3>
+              <p class="mt-3 text-lg font-semibold">{formatPrice(product)}</p>
+              {product.note && <p class="text-muted mt-1 text-sm">{product.note}</p>}
+              <p class="text-muted mt-3 text-sm">
+                {product.priceUsd === null
+                  ? 'Pricing is being finalized. Tell us about your organization and we will send a quote.'
+                  : 'Plus applicable taxes. Manage license counts from your dashboard at any time.'}
+              </p>
+              <a href="/contact/" class="btn btn-secondary mt-5">Contact us</a>
+            </div>
+          </div>
+          {service.footnote && <p class="text-muted mt-8 max-w-prose text-xs">{service.footnote}</p>}
+        </Section>
+      );
+    })
+  }
+
+  <Section
+    id="roadmap"
+    eyebrow="Roadmap"
+    title="Coming later: not yet available"
+    lede="These are services we plan to build after launch. They are not available today, and plans can change. We will update this page when a service is released."
+    tone="surface"
+  >
+    <ul class="mt-10 grid gap-6 md:grid-cols-2">
+      {
+        roadmap.map((item) => (
+          <li class="card">
+            <p class="eyebrow">Roadmap</p>
+            <h3 class="mt-1 text-lg font-semibold">{item.name}</h3>
+            <p class="text-muted mt-3 text-sm leading-relaxed">{item.summary}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+
+  <CallToAction />
+</BaseLayout>

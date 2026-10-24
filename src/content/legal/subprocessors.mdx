@@ -1,0 +1,43 @@
+---
+title: Subprocessors
+version: v2026.10.23
+effectiveDate: 2026-10-23
+summary: The service providers that process customer data on Direwolf's behalf, what each one does, where it processes data, and how we tell you about changes.
+status: draft
+order: 70
+---
+
+## What this list is
+
+A subprocessor is a company Direwolf uses to process customer data on its behalf in order to deliver the Direwolf Platform and services. Each one is bound by a contract that limits its use of the data and requires appropriate security, which is how we meet Colorado's requirement to flow reasonable-security obligations down to service providers (C.R.S. 6-1-713.5). This list is incorporated into our [Terms of Service](/legal/terms/) and described in our [Privacy Policy](/legal/privacy/).
+
+This list describes the subprocessors Direwolf will use when the Platform launches. Agreements with the endpoint-software vendors are being put in place; see the [Compliance](/compliance/) page for the current status of our program.
+
+## Platform subprocessors
+
+| Subprocessor                                      | What it does for Direwolf                                                                                                                                                                                                                                                                     | Data it processes                                                                                                                                                                                                                                                                           | Location                                                                                                                                                                                                                           |
+| ------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Amazon Web Services, Inc.** (AWS GovCloud (US)) | Hosts the Platform: compute, databases, object storage, queues, key management, secrets, logging and monitoring, transactional email delivery (Amazon SES), and AI model inference (Amazon Bedrock) for the Direwolf AI SOC                                                                   | All Platform data: account, organization, billing contact, security data from your endpoints, audit and consent records, email notifications                                                                                                                                                | United States: AWS GovCloud (US-West), with backups in AWS GovCloud (US-East). AI inference runs inside the same AWS GovCloud (US) boundary; AWS states Bedrock content is not used to train models or shared with model providers |
+| **Stripe, Inc.**                                  | Payment processing, invoicing, subscription billing, renewal reminders and the self-service billing portal                                                                                                                                                                                    | Billing contact name and email, billing address, payment card details (entered directly with Stripe; Direwolf never sees or stores card numbers), subscription and invoice history, acceptance of terms at checkout                                                                         | United States                                                                                                                                                                                                                      |
+| **SentinelOne, Inc.**                             | Endpoint protection platform whose licenses Direwolf resells. Direwolf provisions a dedicated SentinelOne site for your organization and reads alerts, agent inventory and process timelines from it; the Direwolf AI SOC sends response actions (kill, quarantine, isolate, reconnect) to it | Security data from your endpoints: alerts and detections, hostnames and device identifiers, operating system and software details, process names and command lines, file names and hashes, network addresses, signed-in usernames. Your endpoints send this to SentinelOne's cloud directly | United States [data-residency option to be confirmed with the vendor before publication]                                                                                                                                           |
+| **NinjaOne, LLC**                                 | Endpoint management platform whose licenses Direwolf resells. Direwolf provisions a NinjaOne organization for you, issues an installer bound to it, and reads device inventory and management data from it                                                                                    | Device inventory, operating system and software details, patch status, management and automation records. Your endpoints send this to NinjaOne's cloud directly                                                                                                                             | United States [data-residency option to be confirmed with the vendor before publication]                                                                                                                                           |
+
+SentinelOne and NinjaOne have two roles. They are Direwolf's subprocessors for the data Direwolf's connectors read from and write to their clouds, and they are your direct licensors under their own end user license agreements, which you accept when you buy their products through the Platform. Their own privacy terms govern their use of the data your endpoints send them, including any de-identified "system data" or "usage data" their terms permit them to keep.
+
+## Website service provider
+
+| Provider         | What it does                                                                                                                  | Data it processes                                                                                                                          | Location      |
+| ---------------- | ----------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ------------- |
+| **GitHub, Inc.** | Hosts this website ([www.direwolfcybersecurity.com](https://www.direwolfcybersecurity.com/)) as a static site on GitHub Pages | GitHub logs the IP address of each visitor for security purposes. Direwolf does not receive those logs. No customer data is on the website | United States |
+
+This website is hosted separately from the Direwolf Platform and does not store customer data.
+
+## What is not on this list
+
+Direwolf does not use analytics, advertising, marketing-automation, customer-support chat or third-party AI services that would receive customer or visitor data. If we add a provider in one of these categories, it will appear here first.
+
+## Changes to this list
+
+When we intend to add or replace a subprocessor that will process customer data, we will update this page with a new version and email the administrators of every customer organization at least 30 days before the new subprocessor begins processing, except where a change is needed urgently to address a security or legal risk, in which case we will notify you as soon as we reasonably can. If you have a reasonable, security-based objection to a new subprocessor, you may tell us within that period; if we cannot address the objection, you may terminate the affected subscription before the change takes effect and receive a refund of prepaid fees for the unused remainder of the term.
+
+Questions about this list: privacy@direwolfcybersecurity.com.

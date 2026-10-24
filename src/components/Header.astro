@@ -1,0 +1,94 @@
+---
+import Logo from './Logo.astro';
+import { primaryNav, isCurrent } from '../data/navigation';
+import { siteName, loginUrl, signupUrl } from '../config';
+
+const pathname = Astro.url.pathname;
+---
+
+<header class="border-line bg-bg border-b">
+  <div class="container-x flex flex-wrap items-center justify-between gap-x-6 gap-y-4 py-4">
+    <a href="/" class="text-fg flex items-center gap-2 text-lg font-semibold tracking-tight no-underline">
+      <Logo class="text-accent h-8 w-8" />
+      <span>{siteName}</span>
+    </a>
+
+    <button
+      id="menu-toggle"
+      type="button"
+      class="btn btn-secondary md:hidden"
+      aria-expanded="false"
+      aria-controls="site-menu"
+    >
+      <span data-label>Menu</span>
+    </button>
+
+    <div
+      id="site-menu"
+      class="data-open:flex hidden basis-full flex-col gap-4 md:flex md:basis-auto md:flex-row md:items-center md:gap-8"
+    >
+      <nav aria-label="Primary">
+        <ul class="flex flex-col gap-1 md:flex-row md:gap-6">
+          {
+            primaryNav.map(({ label, href }) => (
+              <li>
+                <a
+                  href={href}
+                  aria-current={isCurrent(href, pathname) ? 'page' : undefined}
+                  class="text-fg hover:text-accent aria-[current=page]:text-accent block rounded-md px-2 py-2 text-sm font-medium no-underline aria-[current=page]:font-semibold"
+                >
+                  {label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+      <div class="flex flex-col gap-3 sm:flex-row">
+        <a href={loginUrl} class="btn btn-secondary">Log in</a>
+        <a href={signupUrl} class="btn btn-primary">Sign up</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<noscript>
+  <style>
+    #site-menu {
+      display: flex;
+    }
+    #menu-toggle {
+      display: none;
+    }
+  </style>
+</noscript>
+
+<script>
+  const toggle = document.getElementById('menu-toggle');
+  const menu = document.getElementById('site-menu');
+  const label = toggle?.querySelector<HTMLElement>('[data-label]');
+
+  if (toggle && menu) {
+    const setOpen = (open: boolean) => {
+      toggle.setAttribute('aria-expanded', String(open));
+      if (open) menu.setAttribute('data-open', '');
+      else menu.removeAttribute('data-open');
+      if (label) label.textContent = open ? 'Close' : 'Menu';
+    };
+
+    toggle.addEventListener('click', () => {
+      setOpen(toggle.getAttribute('aria-expanded') !== 'true');
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+
+    window.matchMedia('(min-width: 768px)').addEventListener('change', (event) => {
+      if (event.matches) setOpen(false);
+    });
+  }
+</script>

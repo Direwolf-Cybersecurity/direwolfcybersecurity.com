@@ -1,0 +1,186 @@
+@import 'tailwindcss';
+
+/*
+ * Design tokens. One accent color, system font stack, light and dark by
+ * prefers-color-scheme. Every text/background pair below meets WCAG 2.1 AA (4.5:1),
+ * and form-control borders meet the 3:1 non-text requirement. Keep it that way:
+ * `npm run a11y` checks contrast in both schemes.
+ */
+:root {
+  color-scheme: light dark;
+  --bg: #ffffff;
+  --surface: #f5f7fa;
+  --fg: #101828;
+  --muted: #475467; /* 7.0:1 on --bg, 6.4:1 on --surface */
+  --line: #d9dfe7; /* decorative borders */
+  --line-strong: #667085; /* form controls, 4.6:1 on --bg */
+  --accent: #1d4ed8; /* links and accent text, 6.3:1 on --bg */
+  --accent-solid: #1d4ed8; /* buttons */
+  --on-accent: #ffffff; /* 6.3:1 on --accent-solid */
+  --accent-soft: #e8eefc; /* tints behind accent text, 5.7:1 */
+  --focus: #1d4ed8;
+  --danger: #b42318; /* form errors, 6.4:1 on --bg */
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0b1220;
+    --surface: #121b2e;
+    --fg: #e6eaf2;
+    --muted: #aab6c9; /* 8.6:1 on --bg */
+    --line: #273349;
+    --line-strong: #8e9bb0; /* 5.5:1 on --bg */
+    --accent: #9cc0ff; /* 9.4:1 on --bg */
+    --accent-solid: #6ea1ff;
+    --on-accent: #0b1220; /* 6.6:1 on --accent-solid */
+    --accent-soft: #172446;
+    --focus: #9cc0ff;
+    --danger: #ff8a7a; /* 7.0:1 on --bg */
+  }
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-accent: var(--accent);
+  --color-accent-solid: var(--accent-solid);
+  --color-on-accent: var(--on-accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-focus: var(--focus);
+  --color-danger: var(--danger);
+  --font-sans:
+    ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    'Noto Sans', 'Liberation Sans', sans-serif;
+  --font-mono:
+    ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', 'Courier New', monospace;
+}
+
+@layer base {
+  html {
+    font-family: var(--font-sans);
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--bg);
+    color: var(--fg);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background-color: var(--accent-soft);
+    color: var(--fg);
+  }
+
+  /* Reduced motion: no smooth scrolling, no transitions, no animations. */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  .container-x {
+    @apply mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .skip-link {
+    @apply bg-accent-solid text-on-accent fixed top-2 left-2 z-50 -translate-y-24 rounded-md px-4 py-2 text-sm font-semibold focus:translate-y-0;
+  }
+
+  .btn {
+    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-md border px-5 py-2.5 text-sm font-semibold no-underline transition-colors;
+  }
+  .btn-primary {
+    @apply bg-accent-solid border-accent-solid text-on-accent hover:opacity-90;
+  }
+  .btn-secondary {
+    @apply border-line-strong text-fg hover:bg-surface bg-transparent;
+  }
+
+  .card {
+    @apply border-line bg-surface rounded-xl border p-6;
+  }
+
+  .eyebrow {
+    @apply text-accent text-xs font-semibold tracking-wide uppercase;
+  }
+
+  .link {
+    @apply text-accent underline decoration-1 underline-offset-4 hover:decoration-2;
+  }
+
+  .field {
+    @apply border-line-strong bg-bg text-fg w-full rounded-md border px-3 py-2.5;
+  }
+
+  /* Long-form text (legal documents, policy pages). */
+  .prose {
+    @apply text-fg max-w-prose;
+  }
+  .prose > :where(p, ul, ol, blockquote, table, pre, dl) {
+    @apply mt-4 mb-4;
+  }
+  .prose :where(h2) {
+    @apply mt-10 mb-3 text-2xl font-semibold tracking-tight;
+  }
+  .prose :where(h3) {
+    @apply mt-8 mb-2 text-xl font-semibold;
+  }
+  .prose :where(h4) {
+    @apply mt-6 mb-2 text-base font-semibold;
+  }
+  .prose :where(ul) {
+    @apply list-disc pl-6;
+  }
+  .prose :where(ol) {
+    @apply list-decimal pl-6;
+  }
+  .prose :where(li) {
+    @apply my-1;
+  }
+  .prose :where(a) {
+    @apply text-accent underline decoration-1 underline-offset-4 hover:decoration-2;
+  }
+  .prose :where(strong) {
+    @apply font-semibold;
+  }
+  .prose :where(code) {
+    @apply bg-surface rounded px-1 py-0.5 font-mono text-[0.9em];
+  }
+  .prose :where(table) {
+    @apply w-full border-collapse text-sm;
+  }
+  .prose :where(th, td) {
+    @apply border-line border px-3 py-2 text-left align-top;
+  }
+  .prose :where(th) {
+    @apply bg-surface font-semibold;
+  }
+  .prose :where(blockquote) {
+    @apply border-line-strong text-muted border-l-4 pl-4;
+  }
+  .prose :where(hr) {
+    @apply border-line my-8;
+  }
+}

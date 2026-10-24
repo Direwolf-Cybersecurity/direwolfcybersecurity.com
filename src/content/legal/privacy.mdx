@@ -1,0 +1,193 @@
+---
+title: Privacy Policy
+version: v2026.10.23
+effectiveDate: 2026-10-23
+summary: How Direwolf Cybersecurity collects, uses, shares and protects personal information on this website and in the Direwolf Platform, and the choices and rights you have.
+status: draft
+order: 10
+---
+
+## 1. Who we are and what this policy covers
+
+This Privacy Policy is issued by Direwolf Cybersecurity ("Direwolf", "we", "us"), a company headquartered in Colorado Springs, Colorado. [Legal entity type and business mailing address to be confirmed before publication.]
+
+It covers two things:
+
+- **This website**, [www.direwolfcybersecurity.com](https://www.direwolfcybersecurity.com/) (the "Website"), which is a public marketing site.
+- **The Direwolf Platform**, app.direwolfcybersecurity.com (the "Platform"), the web application through which customer organizations buy and manage Direwolf services, and through which Direwolf delivers them.
+
+The Website is hosted separately from the Platform and does not store customer data. The Platform's hosting and security are described in section 9 and on our [Compliance](/compliance/) page.
+
+Direwolf provides services to organizations, not to individuals. When you use the Platform as a member of a customer organization, that organization decides why and how the Platform processes information about its people and its endpoints, and Direwolf processes that information on the organization's behalf under our [Terms of Service](/legal/terms/). Section 13 explains what that means for your requests.
+
+## 2. In short
+
+- We collect only what we need to respond to you, to run and secure the Platform, to bill customers, and to meet our legal obligations.
+- We do not sell personal information, and we do not use it for advertising.
+- This Website sets no non-essential cookies (today, no cookies at all) and uses no analytics, tracking pixels or third-party scripts. The Platform uses strictly necessary cookies only. See our [Cookie Notice](/legal/cookies/).
+- Customer data is stored in the United States, in AWS GovCloud (US).
+- The AI that analyzes security alerts runs inside the same AWS GovCloud (US) environment. Your alert data is not sent to third-party AI services and is not used to train models.
+- Our subprocessors are listed on the [Subprocessors](/legal/subprocessors/) page.
+
+## 3. Information we collect
+
+### 3.1 On this Website
+
+**Hosting logs.** The Website is served by GitHub Pages. GitHub states that when a GitHub Pages site is visited, the visitor's IP address is logged and stored by GitHub for security purposes. Direwolf does not receive or keep these logs. GitHub's handling of that information is described in GitHub's own privacy statement.
+
+**Contact form.** If you use the [contact form](/contact/), we receive the name, work email address, company or organization name (optional) and message you enter. Depending on how the form is configured at the time, your message is either sent to our contact mailbox through a Direwolf-operated endpoint and our email provider, or composed in your own email application for you to send. We use these details only to reply to you.
+
+**Email you send us.** If you email one of the addresses on this Website, we receive your email address and whatever you include in the message.
+
+**Nothing else.** The Website sets no non-essential cookies (today, no cookies at all), uses no analytics or advertising technology, embeds no third-party content and loads no third-party scripts or fonts. We do not collect information about your activity on this Website.
+
+### 3.2 In the Direwolf Platform
+
+| Category                                | Examples                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | Source                                                                |
+| --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------- |
+| **Account data**                        | Name, work email address, hashed password, multi-factor authentication enrollment (authenticator app identifiers or passkey public keys, never the private key), recovery codes (hashed), role, organization membership, sign-in history, active sessions, IP address and browser information at sign-in                                                                                                                                                                                                                                         | You, or the administrator who invites you                             |
+| **Organization data**                   | Organization name, administrator contacts, notification recipients, industry, settings (session timeout, sign-in notice text, response policy), approved-software lists and other context the organization gives us so the SOC can triage alerts well                                                                                                                                                                                                                                                                                            | Your organization's administrators                                    |
+| **Billing data**                        | Billing contact name and email, billing address, subscription and invoice history, the brand, last four digits and expiry of a payment card, and payment status. Full card numbers are handled by our payment processor and never reach Direwolf                                                                                                                                                                                                                                                                                                 | Your organization's administrators and our payment processor          |
+| **Security data from your endpoints**   | Alerts, detections and their timelines from the endpoint protection and endpoint management products installed on your organization's devices: hostnames, device identifiers, operating system and software inventory, patch status, process names and command lines, file names and hashes, network addresses, the user account signed in on the device at the time of an event, and the verdicts, summaries and response actions the Direwolf SOC records about them. This is "Security Protection Data" in the vocabulary of the CMMC program | Sensors on your organization's endpoints, through the vendors' clouds |
+| **Platform activity and audit records** | Every sign-in, administrative change, SOC decision and response action affecting your organization, with the acting user or system, a timestamp and the reason where one was given                                                                                                                                                                                                                                                                                                                                                               | Generated by the Platform                                             |
+| **Consent records**                     | Which version of the Terms of Service, Acceptable Use Policy and Privacy Policy you accepted, when, from which IP address and browser, and your acknowledgement of the sign-in notice                                                                                                                                                                                                                                                                                                                                                            | Generated when you accept or acknowledge                              |
+| **Support communications**              | Messages you send us about the service, including analyst notes exchanged about an alert                                                                                                                                                                                                                                                                                                                                                                                                                                                         | You                                                                   |
+
+Account data and audit records may describe individual people (you and your colleagues). Security data describes devices, and incidentally the people using them, for example the username signed in when a threat was detected.
+
+### 3.3 Information we ask you not to give us
+
+The Platform is not approved to receive Controlled Unclassified Information (CUI), export-controlled technical data (ITAR or EAR), protected health information (PHI), payment card numbers or classified information. Please do not place such information in alert notes, settings, support messages or the Website contact form. Our [Terms of Service](/legal/terms/) and [Acceptable Use Policy](/legal/acceptable-use/) explain this restriction. If you believe you have sent us such information by mistake, tell us and we will work with you to remove it.
+
+## 4. How we use information
+
+| Purpose                                                                                                                                                          | Information used                                            | Legal basis, where one is required by applicable law                                |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| Respond to your inquiry                                                                                                                                          | Contact form and email details                              | Our legitimate interest in answering you; your consent when you contact us          |
+| Provide the Platform: authenticate you, show your organization its data, deliver the services it bought                                                          | Account, organization, security and activity data           | Performance of our contract with your organization                                  |
+| Run the Direwolf AI SOC: triage alerts, contain confirmed threats under your organization's response policy, notify administrators, support human analyst review | Security data, organization data                            | Performance of our contract with your organization                                  |
+| Secure the Platform and our customers: detect abuse, enforce the Acceptable Use Policy, investigate incidents, keep audit records                                | All categories                                              | Performance of our contract; our legitimate interest in security; legal obligations |
+| Bill and collect fees                                                                                                                                            | Billing data, organization data                             | Performance of our contract; legal obligations (tax and accounting)                 |
+| Communicate about the service: security notices, incident notifications, invoices, changes to these documents                                                    | Account and billing contacts                                | Performance of our contract; legal obligations                                      |
+| Improve the service: measure how often the AI's verdicts agree with analyst decisions, tune triage prompts and suppression rules, fix bugs                       | Security and activity data, de-identified wherever possible | Our legitimate interest in an accurate service                                      |
+| Meet legal obligations and respond to lawful requests                                                                                                            | As required                                                 | Legal obligations                                                                   |
+
+We do not sell personal information, do not share it for cross-context behavioral advertising, do not use it for targeted advertising, and do not use it to make automated decisions that produce legal or similarly significant effects about individuals. The AI SOC makes automated decisions about **threats on devices**, not about people, and every decision is recorded, reviewable by a Direwolf analyst and reversible by your organization.
+
+**Marketing email.** We do not send marketing email at this time. If we ever do, we will ask for your consent separately, include our postal address and an unsubscribe link in every message, and honor opt-outs promptly, as the CAN-SPAM Act requires. We will never bundle marketing consent with acceptance of our Terms.
+
+## 5. AI processing
+
+The Direwolf AI SOC uses a large language model to analyze security alerts. AI analysis runs on Amazon Bedrock inside the same AWS GovCloud (US) boundary as the rest of the Platform. Your alert data is not sent to third-party AI services and is not used to train models. Amazon Web Services states that content processed through Amazon Bedrock is not used to improve the underlying models and is not shared with model providers.
+
+Every automated verdict is labeled as automated in the Platform ("Direwolf SOC (automated)"). A Direwolf analyst reviews the AI's decisions and takes every case it cannot decide.
+
+## 6. How we share information
+
+We share personal information only as described here.
+
+**Subprocessors.** Service providers that process information on our behalf, under contracts that limit their use of it and require appropriate security. The current list, with what each one does for us and where it processes data, is on the [Subprocessors](/legal/subprocessors/) page. In summary: Amazon Web Services (hosting, storage, email delivery and AI inference in AWS GovCloud (US)); Stripe (payment processing and subscription billing); SentinelOne and NinjaOne (the endpoint protection and endpoint management products whose licenses Direwolf resells, which receive data from your endpoints directly); and GitHub (hosting of this Website only).
+
+**Third-party software vendors.** When your organization buys a resold product such as SentinelOne or NinjaOne, that vendor also has a direct relationship with your organization under its own end user license agreement, and your endpoints send data to the vendor's cloud directly. The vendor's privacy terms govern its own use of that data, including any de-identified "system data" or "usage data" the vendor's terms permit it to keep.
+
+**Your organization.** Administrators of your organization can see your account details, role, MFA status, active sessions and the audit records of your actions in the Platform. That is part of how organizations meet their own security obligations.
+
+**Professional advisers.** Lawyers, accountants and insurers, under confidentiality obligations, when needed.
+
+**Legal requirements.** When we believe in good faith that disclosure is required by law, regulation, subpoena or court order, or is necessary to protect the rights, property or safety of Direwolf, our customers or others. We will tell your organization about a legal demand for its data before complying, unless we are legally prohibited from doing so.
+
+**Business transfers.** If Direwolf is involved in a merger, acquisition, financing or sale of assets, personal information may be transferred as part of that transaction, subject to this policy and to notice to affected customers.
+
+We do not share personal information with anyone else, and we never sell it.
+
+## 7. Where information is stored
+
+Customer data is stored in the United States, in AWS GovCloud (US-West), with backups in AWS GovCloud (US-East). Our services call AWS only through FIPS endpoints, and customer data does not leave the AWS GovCloud (US) boundary except to the endpoint protection or endpoint management vendor's cloud that your sensors already report to, and to our payment processor for billing.
+
+Contact form messages and email are held in our business email and support systems in the United States.
+
+Our services are offered in the United States and are not directed to persons in the European Economic Area, the United Kingdom or other jurisdictions outside the United States. If you contact us from elsewhere, your information will be transferred to and processed in the United States.
+
+## 8. How long we keep information
+
+| Information                               | Retention                                                                                                                                                                                                        |
+| ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Contact form messages and email inquiries | Until your inquiry is resolved, then up to [24 months], unless you become a customer                                                                                                                             |
+| Account data                              | For as long as your account exists. Deactivated accounts are retained (not deleted) so that audit records remain attributable, then removed with the organization's data                                         |
+| Organization, billing and security data   | For the life of your organization's subscription, then deleted within [30 days] after the organization's account is closed, except as noted below                                                                |
+| Audit records                             | For at least one year online, with a longer-term write-once archive planned (currently intended to be three years); these periods are part of our planned retention schedule and will be confirmed before launch |
+| Consent records                           | For the life of the customer relationship plus the limitation period for contract claims under Colorado law                                                                                                      |
+| Backups                                   | Encrypted backups expire on a rolling schedule of [35 days]; deleted data disappears from backups as they expire                                                                                                 |
+| Billing and tax records                   | As long as tax and accounting law requires, typically seven years                                                                                                                                                |
+
+Where we keep information after an account closes, we keep it only for the purpose that requires it (for example, legal obligations or evidence of what was agreed), and we protect it the same way.
+
+## 9. How we protect information
+
+In plain language, this is how the Platform protects your data. A fuller description is on our [Platform](/platform/#security) page, and our compliance status, including what we do and do not claim, is on our [Compliance](/compliance/) page.
+
+- **Hosting.** The Platform runs in AWS GovCloud (US), with customer data stored in the United States.
+- **Encryption.** Data in transit is protected with TLS 1.2 or higher, and data at rest (databases, object storage, queues, secrets and logs) is encrypted with customer-managed keys in AWS Key Management Service, with automatic key rotation. The FIPS 140 validation details for these components are on our [Compliance](/compliance/) page.
+- **Multi-factor authentication** is mandatory for every user: an authenticator app or a passkey, plus recovery codes. Direwolf staff must use a passkey or hardware security key.
+- **Tenant isolation.** Each customer organization is isolated at the database layer with PostgreSQL row-level security, enforced for every query, in addition to application-level permission checks.
+- **Audit logging.** Every administrative and security-relevant action is written to an append-only audit log with a tamper-evident hash chain. Organization administrators can review their own organization's log.
+- **Sessions and accounts.** Sessions lock after 15 minutes of inactivity and expire after 12 hours; accounts lock after five failed sign-ins; a system-use notice is shown at sign-in; users can see and end their active sessions.
+- **Privileged actions** (downloading installers, inviting users, changing MFA, platform administration) require a fresh MFA assertion, and Direwolf staff access to customer data is logged with the reason.
+- **Passwords.** Onboarding is by invitation only, with no shared or temporary passwords. Passwords must be at least 12 characters and are screened against a breached-password list.
+- **Operations.** Infrastructure is defined as code, reviewed in pull requests and deployed by digest; images and dependencies are scanned in CI.
+
+This Website, by contrast, is a static site that holds no customer data and sets no non-essential cookies (today, no cookies at all); it is served over HTTPS and has a minimal attack surface.
+
+No system is perfectly secure. If we confirm a security incident affecting your organization's data on Direwolf-controlled systems, we will notify your organization's administrators without undue delay and in any event within 72 hours of confirming it, and we will notify affected individuals and regulators ourselves where the law requires us to (including under Colorado's breach notification law, C.R.S. 6-1-716).
+
+## 10. Cookies, tracking and signals
+
+This Website sets no non-essential cookies and, today, no cookies at all. The Platform sets strictly necessary cookies only (a session cookie and a request-protection cookie), so no consent banner is shown. Details are in our [Cookie Notice](/legal/cookies/).
+
+We do not track visitors across third-party websites, we allow no third parties to collect information about your online activity over time and across sites through our Website or Platform, and we do not engage in targeted advertising or sell personal data. Because there is nothing to opt out of, we do not respond to browser "Do Not Track" signals or universal opt-out mechanisms such as Global Privacy Control; your choice is already honored.
+
+## 11. Your rights and choices
+
+### 11.1 Everyone
+
+You can ask us to tell you what personal information we hold about you, to correct it, to delete it, or to give you a copy in a portable format. You can also ask questions about this policy. Write to privacy@direwolfcybersecurity.com or use the [contact form](/contact/). We will verify that you are who you say you are before acting, and we will respond within 45 days. If a request concerns data we process on behalf of your organization, see section 13.
+
+Platform users can see and change their own account details, MFA methods and active sessions in the Platform at any time.
+
+### 11.2 Colorado residents
+
+The Colorado Privacy Act (C.R.S. 6-1-1301 and following) gives Colorado residents acting in an individual or household context the right to confirm whether a controller is processing their personal data and to access it; to correct inaccuracies; to delete personal data; to obtain a portable copy; and to opt out of targeted advertising, the sale of personal data, and profiling in furtherance of decisions that produce legal or similarly significant effects. Direwolf does not engage in targeted advertising, sale or such profiling.
+
+Direwolf may not currently meet the thresholds that make the Colorado Privacy Act apply to it, and the Act does not cover individuals acting in a commercial or employment context, which describes most people who use our Platform. We honor the rights above for Colorado residents regardless. To exercise them, contact us as described in 11.1. We will respond within 45 days, and may extend once by a further 45 days when reasonably necessary, telling you why. If we decline a request, we will tell you the reason, and you may appeal by replying to our decision with "Appeal" in the subject line; we will respond to the appeal within 45 days and, if we deny it, we will tell you how to contact the Colorado Attorney General. We will not discriminate against you for exercising your rights.
+
+### 11.3 California residents
+
+**California Online Privacy Protection Act disclosures.** The categories of personal information we collect are listed in section 3, and the categories of third parties with whom it may be shared are in section 6. You may review and request changes to your personal information as described in 11.1. We notify you of material changes to this policy as described in section 14. Section 10 describes how we respond to Do Not Track signals and whether third parties collect information about your online activities over time and across sites (they do not). The effective date of this policy is shown at the top of the page.
+
+**California Consumer Privacy Act.** Direwolf does not currently meet the revenue or data-volume thresholds that define a "business" under the CCPA. If that changes, we will add the notices the CCPA requires. In the meantime, California residents may make access, correction, deletion and portability requests as described in 11.1, and we do not sell or share personal information as the CCPA defines those terms.
+
+### 11.4 Other states
+
+Residents of other states with comprehensive privacy laws may exercise the rights in 11.1 in the same way. Most of these laws, like Colorado's, exclude individuals acting in a commercial or employment context; we honor the requests regardless.
+
+## 12. Children
+
+The Website and Platform are for organizations and their adult personnel. No one under 18 may create a Platform account, and the Website is not directed to children under 13. We do not knowingly collect personal information from children. If you believe a child has provided us personal information, contact us and we will delete it.
+
+## 13. Your organization's role
+
+When you use the Platform as a member of a customer organization, your organization is the controller of the personal information processed in its account, and Direwolf is its processor (or service provider). Your organization's administrators decide who has accounts, what role they hold, which endpoints have sensors, and how long the organization keeps its account. If you want to exercise rights over data your organization controls, please contact your organization's administrator first; we will support them in responding, and if you contact us directly we will refer your request to them unless the law requires us to act ourselves.
+
+The data that sensors collect from your organization's devices is collected under your organization's authority and its own policies about monitoring. Your organization is responsible for telling its people about that monitoring in the way its policies and applicable law require.
+
+## 14. Changes to this policy
+
+This policy is versioned. The version number and effective date appear at the top of the page, and a changed policy is always published as a new version; we never edit a published version in place. If we make a material change, we will notify Platform organizations' administrators by email and ask Platform users to review and accept the new version at their next sign-in. The Platform records which version each user accepted. Earlier versions are available on request.
+
+## 15. Contact
+
+Privacy questions and requests: privacy@direwolfcybersecurity.com
+
+Security vulnerability reports: security@direwolfcybersecurity.com (see [Security and responsible disclosure](/security/))
+
+Postal address: Direwolf Cybersecurity, Colorado Springs, Colorado [business mailing address to be added before publication]

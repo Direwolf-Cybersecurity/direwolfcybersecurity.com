@@ -1,0 +1,89 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from './BaseLayout.astro';
+import { SITE_LAUNCHED, privacyEmail } from '../config';
+
+interface Props {
+  entry: CollectionEntry<'legal'>;
+}
+
+const { entry } = Astro.props;
+const { title, version, effectiveDate, summary, status } = entry.data;
+
+const dateFormat = new Intl.DateTimeFormat('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+  timeZone: 'UTC',
+});
+const effectiveLabel = dateFormat.format(effectiveDate);
+const effectiveIso = effectiveDate.toISOString().slice(0, 10);
+
+/**
+ * Every legal document is a draft until an attorney has reviewed it and the site has
+ * launched. The notice is shown while SITE_LAUNCHED is false, and afterwards for any
+ * document still marked `status: draft` (a draft must never appear to be in effect).
+ */
+const showDraftNotice = !SITE_LAUNCHED || status === 'draft';
+---
+
+<BaseLayout title={title} description={summary}>
+  <div class="container-x py-12 md:py-16">
+    <p class="text-muted text-sm">
+      <a href="/legal/" class="link">
+        Legal
+      </a>
+      <span aria-hidden="true"> / </span>
+      <span class="sr-only">, current page: </span>
+      {title}
+    </p>
+    <h1 class="mt-3 text-4xl font-semibold tracking-tight">{title}</h1>
+    <p class="text-muted mt-4 max-w-prose text-lg">{summary}</p>
+
+    <dl class="border-line text-muted mt-6 flex flex-wrap gap-x-8 gap-y-2 border-y py-3 text-sm">
+      <div class="flex gap-2">
+        <dt class="font-medium">Version</dt>
+        <dd>
+          <code class="font-mono">{version}</code>
+        </dd>
+      </div>
+      <div class="flex gap-2">
+        <dt class="font-medium">Last updated</dt>
+        <dd>
+          <time datetime={effectiveIso}>{effectiveLabel}</time>
+        </dd>
+      </div>
+      <div class="flex gap-2">
+        <dt class="font-medium">Status</dt>
+        <dd>{status === 'published' ? 'In effect' : 'Draft'}</dd>
+      </div>
+    </dl>
+
+    {showDraftNotice && (
+      <div
+        class="bg-accent-soft border-line mt-6 max-w-prose rounded-xl border p-4 text-sm"
+        role="note"
+        aria-label="Draft notice"
+      >
+        <p>
+          <strong>Draft for attorney review; not yet in effect.</strong> This document has not been
+          reviewed by an attorney and does not bind anyone. Text in [square brackets] marks a
+          decision still to be made. The version that takes effect will carry a new version number
+          and effective date.
+        </p>
+      </div>
+    )}
+
+    <article class="prose mt-8">
+      <slot />
+    </article>
+
+    <p class="text-muted mt-12 max-w-prose text-sm">
+      Questions about this document? Write to{' '}
+      <a href={`mailto:${privacyEmail}`} class="link">
+        {privacyEmail}
+      </a>
+      .
+    </p>
+  </div>
+</BaseLayout>

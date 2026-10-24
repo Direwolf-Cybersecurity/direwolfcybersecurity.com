@@ -20,7 +20,16 @@ the site and platform fit together.
   `docs/claims-register.md` with its status (true today / planned / pursuing) and evidence.
   Never write "certified", "authorized", "compliant" or "FedRAMP" about Direwolf unless the
   register says it is true today. Hosting is described as "AWS GovCloud (US), FedRAMP High
-  authorized infrastructure". Say "veteran-owned" only; no SDVOSB/VOSB certification claim.
+  authorized infrastructure". **Owner facts (2026-10-23):** the business is an SBA
+  VetCert-certified Service-Disabled Veteran-Owned Small Business (SDVOSB), so the site may
+  say "Service-Disabled Veteran-Owned Small Business (SDVOSB), SBA certified"; keep the
+  certificate reference in the claims register and follow SBA's logo-usage rules if the
+  VetCert mark is shown. Legal entity name: "Direwolf Cybersecurity" (entity type to be
+  confirmed; do not append LLC/Inc. until confirmed). Business mailing address: not yet
+  available; keep the placeholder "Colorado Springs, Colorado" and a TODO. No attorney has
+  reviewed the legal pages yet: that review is a launch gate in docs/launch-runbook.md.
+  Domain registrar: Namecheap (DNS instructions must use Namecheap's Advanced DNS record
+  format: Type, Host, Value, TTL).
   Do not invent names, numbers, customers, certifications, or testimonials.
 - **Legal pages** are drafts for attorney review, versioned `vYYYY.MM.DD` in their
   frontmatter and shown with "Last updated"; the platform records which version a user

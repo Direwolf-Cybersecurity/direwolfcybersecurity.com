@@ -1,0 +1,18 @@
+---
+/** Title block for secondary pages. */
+interface Props {
+  eyebrow?: string;
+  title: string;
+  lede?: string;
+}
+
+const { eyebrow, title, lede } = Astro.props;
+---
+
+<div class="border-line border-b">
+  <div class="container-x py-12 md:py-16">
+    {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+    <h1 class="mt-2 text-4xl font-semibold tracking-tight md:text-5xl">{title}</h1>
+    {lede && <p class="text-muted mt-4 max-w-2xl text-lg">{lede}</p>}
+  </div>
+</div>
