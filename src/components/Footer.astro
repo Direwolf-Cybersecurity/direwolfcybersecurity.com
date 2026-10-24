@@ -1,7 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import { Image } from 'astro:assets';
-import shield from '../assets/brand/direwolf-shield.png';
+import BrandShield from './BrandShield.astro';
 import veteranBadge from '../assets/brand/veteran-owned-badge.png';
 import { companyNav, trustNav } from '../data/navigation';
 import {
@@ -35,14 +35,7 @@ const telHref = phone ? `tel:${phone.replace(/[^+\d]/g, '')}` : '';
   <div class="container-x grid gap-10 py-12 sm:grid-cols-2 lg:grid-cols-4">
     <div>
       <a href="/" class="text-fg flex items-center gap-2 font-semibold no-underline">
-        <Image
-          src={shield}
-          alt=""
-          width={32}
-          height={32}
-          densities={[1.5, 2, 3]}
-          class="h-8 w-8 shrink-0"
-        />
+        <BrandShield size={32} class="h-8 w-8 shrink-0" />
         <span>{siteName}</span>
       </a>
       <p class="text-muted mt-3 text-sm">{siteTagline}.</p>

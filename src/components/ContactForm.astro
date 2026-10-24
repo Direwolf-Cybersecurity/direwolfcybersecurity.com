@@ -114,7 +114,7 @@ import { contactEndpoint, contactEmail } from '../config';
   </div>
 
   <p class="text-muted text-sm">
-    We use the details you provide only to reply to you. See our
+    We use the details you provide only to reply to you. See our{' '}
     <a href="/legal/privacy/" class="link">
       Privacy Policy
     </a>
@@ -133,7 +133,7 @@ import { contactEndpoint, contactEmail } from '../config';
 {!contactEndpoint && (
   <p class="text-muted mt-6 text-sm">
     Our contact form is not connected to a mail service yet, so sending opens a pre-filled message
-    in your own email app. You can also write to us directly at
+    in your own email app. You can also write to us directly at{' '}
     <a href={`mailto:${contactEmail}`} class="link">
       {contactEmail}
     </a>
@@ -143,7 +143,7 @@ import { contactEndpoint, contactEmail } from '../config';
 
 <noscript>
   <p class="text-muted mt-6 text-sm">
-    JavaScript is turned off in your browser. Please email us at
+    JavaScript is turned off in your browser. Please email us at{' '}
     <a href={`mailto:${contactEmail}`} class="link">
       {contactEmail}
     </a>

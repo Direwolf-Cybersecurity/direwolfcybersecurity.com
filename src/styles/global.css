@@ -1,29 +1,37 @@
 @import 'tailwindcss';
 
 /*
- * Design tokens. Accent colors follow the owner's shield logo (src/assets/brand/): navy
- * #092a57 and cyan #39d6f3. Light scheme: navy for solid buttons, a lighter logo blue for links
- * and accent text (cyan is too light for text on white). Dark scheme: cyan for links and
- * buttons. System font stack, light and dark by prefers-color-scheme. Every text/background
- * pair below meets WCAG 2.1 AA (4.5:1), and form-control borders meet the 3:1 non-text
- * requirement. Keep it that way: `npm run a11y` checks contrast in both schemes.
+ * Design tokens. Accent colors follow the owner's 2026-10-24 artwork (docs/brand/v2/: a silver
+ * wolf in a near-black shield with an electric-blue edge) and match the platform app
+ * (direwolf-platform, frontend/src/index.css). Light scheme: the deep electric blue
+ * oklch(0.5 0.168 256) for links, accent text and solid buttons (white text), with the
+ * platform's dark navy focus ring. Dark scheme: the bright electric blue oklch(0.66 0.18 250)
+ * for links and buttons (near-black button text), with a lighter tint of it for the focus ring.
+ * The art's own electric blue (#0184f7) is only 3.7:1 on white, so it is used for glow and
+ * decoration, never for text. System font stack, light and dark by prefers-color-scheme. Every
+ * text/background pair below meets WCAG 2.1 AA (4.5:1), and form-control borders and focus
+ * rings meet the 3:1 non-text requirement. Keep it that way: `npm run a11y` checks contrast in
+ * both schemes.
  */
 :root {
   color-scheme: light dark;
-  /* Brand surfaces, the same in both schemes (the dark hero panel, the social card). */
-  --brand-navy: #092a57; /* white 14.2:1, cyan 8.2:1 */
-  --brand-cyan: #39d6f3;
+  /*
+   * Brand surfaces, the same in both schemes: the near-black panel behind the stacked lockup
+   * (.brand-panel), the icon tiles and the social card (scripts/generate-brand-assets.mjs).
+   */
+  --brand-panel: #05070d; /* the shield's near-black field (the platform's --brand-panel) */
+  --brand-blue: #0184f7; /* the art's electric blue, for the panel's glow edge only */
   --bg: #ffffff;
   --surface: #f5f7fa;
   --fg: #101828;
   --muted: #475467; /* 7.0:1 on --bg, 6.4:1 on --surface */
   --line: #d9dfe7; /* decorative borders */
   --line-strong: #667085; /* form controls, 4.6:1 on --bg */
-  --accent: #0b5cad; /* links and accent text, 6.7:1 on --bg, 6.2:1 on --surface */
-  --accent-solid: #092a57; /* buttons: the logo navy */
-  --on-accent: #ffffff; /* 14.2:1 on --accent-solid */
-  --accent-soft: #e6f0fa; /* tints behind accent text, 5.8:1 */
-  --focus: #0b5cad; /* 6.7:1 on --bg */
+  --accent: #0560c0; /* oklch(0.5 0.168 256): 6.1:1 on --bg, 5.7:1 on --surface */
+  --accent-solid: #0560c0; /* buttons */
+  --on-accent: #ffffff; /* 6.1:1 on --accent-solid */
+  --accent-soft: #e8f1fc; /* tint behind text: --accent 5.4:1, --fg 15.6:1, --muted 6.7:1 */
+  --focus: #012756; /* oklch(0.28 0.094 256): 14.7:1 on --bg, 13.7:1 on --surface */
   --danger: #b42318; /* form errors, 6.4:1 on --bg */
 }
 
@@ -35,18 +43,18 @@
     --muted: #aab6c9; /* 8.6:1 on --bg */
     --line: #273349;
     --line-strong: #8e9bb0; /* 5.5:1 on --bg */
-    --accent: #39d6f3; /* the logo cyan: 10.8:1 on --bg, 9.9:1 on --surface */
-    --accent-solid: #39d6f3;
-    --on-accent: #092a57; /* the logo navy: 8.2:1 on --accent-solid */
-    --accent-soft: #0e2a47; /* 8.4:1 behind --accent */
-    --focus: #39d6f3;
+    --accent: #1795fa; /* oklch(0.66 0.18 250): 6.0:1 on --bg, 5.5:1 on --surface */
+    --accent-solid: #1795fa;
+    --on-accent: #05070d; /* 6.4:1 on --accent-solid */
+    --accent-soft: #0c2240; /* tint behind text: --accent 5.1:1, --fg 13.2:1, --muted 7.8:1 */
+    --focus: #89c4fb; /* oklch(0.8 0.1 248): 10.1:1 on --bg, 9.3:1 on --surface */
     --danger: #ff8a7a; /* 7.0:1 on --bg */
   }
 }
 
 @theme inline {
-  --color-brand-navy: var(--brand-navy);
-  --color-brand-cyan: var(--brand-cyan);
+  --color-brand-panel: var(--brand-panel);
+  --color-brand-blue: var(--brand-blue);
   --color-bg: var(--bg);
   --color-surface: var(--surface);
   --color-fg: var(--fg);
@@ -127,6 +135,19 @@
 
   .card {
     @apply border-line bg-surface rounded-xl border p-6;
+  }
+
+  /*
+   * The near-black panel behind the owner's artwork (src/components/BrandLockup.astro), the same
+   * in both schemes, with a subtle electric-blue glow at its edge. Decorative: the border and the
+   * glow carry no information, and the image on the panel has its own alt text.
+   */
+  .brand-panel {
+    @apply bg-brand-panel rounded-2xl border;
+    border-color: color-mix(in srgb, var(--brand-blue) 45%, transparent);
+    box-shadow:
+      0 0 28px -6px color-mix(in srgb, var(--brand-blue) 55%, transparent),
+      inset 0 0 36px -8px color-mix(in srgb, var(--brand-blue) 30%, transparent);
   }
 
   .eyebrow {

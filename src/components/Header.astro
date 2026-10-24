@@ -1,13 +1,12 @@
 ---
-import { Image } from 'astro:assets';
-import shield from '../assets/brand/direwolf-shield.png';
+import BrandShield from './BrandShield.astro';
 import { primaryNav, isCurrent } from '../data/navigation';
 import { siteName, PLATFORM_LIVE, earlyAccessUrl, loginUrl, signupUrl } from '../config';
 
 /**
  * The brand link is the owner's shield logo plus the company name as text: the text keeps the name
- * readable and high-contrast in both schemes (the silver wordmark image is for dark surfaces
- * only), so the image itself is decorative (alt="").
+ * readable and high-contrast in both schemes (the stacked lockup, with the name in silver and
+ * blue, is for dark surfaces only), so the image itself is decorative (alt="").
  *
  * Calls to action: "Log in" and "Sign up" while the platform is in service (PLATFORM_LIVE),
  * otherwise a single "Request early access" link to the contact form.
@@ -25,15 +24,7 @@ const pathname = Astro.url.pathname;
       href="/"
       class="text-fg flex items-center gap-2 text-lg font-semibold tracking-tight no-underline"
     >
-      <Image
-        src={shield}
-        alt=""
-        width={36}
-        height={36}
-        densities={[1.5, 2, 3]}
-        loading="eager"
-        class="h-9 w-9 shrink-0"
-      />
+      <BrandShield size={36} loading="eager" class="h-9 w-9 shrink-0" />
       <span>{siteName}</span>
     </a>
 

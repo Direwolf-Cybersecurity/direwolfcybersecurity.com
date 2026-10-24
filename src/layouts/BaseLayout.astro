@@ -33,10 +33,10 @@ const robots = SITE_LAUNCHED && !noindex ? 'index, follow' : 'noindex, nofollow'
 
 /**
  * Social card: public/og-image.png (1200 x 630), generated with the favicons from the owner's
- * shield logo by scripts/generate-brand-assets.mjs. Open Graph needs an absolute URL.
+ * artwork in docs/brand/v2/ by scripts/generate-brand-assets.mjs. Open Graph needs an absolute URL.
  */
 const ogImage = new URL('/og-image.png', siteOrigin).href;
-const ogImageAlt = `${siteName} logo: a wolf in a navy shield, with the tagline "${siteTagline}"`;
+const ogImageAlt = `${siteName} logo: a silver wolf in a dark shield with an electric-blue edge, with the tagline "${siteTagline}"`;
 
 /**
  * Content Security Policy, delivered as a <meta> because GitHub Pages cannot set response

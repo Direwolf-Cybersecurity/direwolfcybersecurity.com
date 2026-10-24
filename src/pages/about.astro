@@ -4,6 +4,7 @@ import PageHeader from '../components/PageHeader.astro';
 import Section from '../components/Section.astro';
 import CallToAction from '../components/CallToAction.astro';
 import Experience from '../components/Experience.astro';
+import BrandLockup from '../components/BrandLockup.astro';
 import { industries, hqLine, ownershipStatement, ownershipPhrase } from '../config';
 
 const description = `Direwolf Cybersecurity is ${ownershipPhrase} headquartered in Colorado Springs, Colorado, built to bring enterprise-grade security operations to small and mid-size organizations and government contractors.`;
@@ -18,19 +19,25 @@ const lede = `Direwolf Cybersecurity is ${ownershipPhrase} headquartered in Colo
   />
 
   <Section id="mission" eyebrow="Our mission" title="Protection that does not depend on size">
-    <div class="prose mt-6">
-      <p>
-        Most organizations that handle sensitive work are small. They have a handful of IT staff at
-        best, no security team, and the same adversaries as everyone else. Frameworks such as NIST
-        SP 800-171 ask them to monitor, respond, and keep evidence, on the budget of a small
-        business.
-      </p>
-      <p>
-        We started Direwolf to close that gap. By running security operations with AI, with a human
-        analyst reviewing its decisions, and by automating everything from purchase to deployment,
-        we can offer monitoring and response at a price a small organization can carry, without
-        cutting corners on the parts that matter.
-      </p>
+    <div class="mt-6 grid gap-12 lg:grid-cols-12 lg:items-start">
+      <div class="prose lg:col-span-7">
+        <p>
+          Most organizations that handle sensitive work are small. They have a handful of IT staff
+          at best, no security team, and the same adversaries as everyone else. Frameworks such as
+          NIST SP 800-171 ask them to monitor, respond, and keep evidence, on the budget of a small
+          business.
+        </p>
+        <p>
+          We started Direwolf to close that gap. By running security operations with AI, with a
+          human analyst reviewing its decisions, and by automating everything from purchase to
+          deployment, we can offer monitoring and response at a price a small organization can
+          carry, without cutting corners on the parts that matter.
+        </p>
+      </div>
+      {/* The lockup is for dark surfaces only: on its near-black panel, wide screens only. */}
+      <div class="hidden lg:col-span-5 lg:block">
+        <BrandLockup width={240} class="ml-auto max-w-sm px-10 py-8" />
+      </div>
     </div>
   </Section>
 
@@ -102,7 +109,7 @@ const lede = `Direwolf Cybersecurity is ${ownershipPhrase} headquartered in Colo
         <dt class="font-semibold">Hosting</dt>
         <dd class="text-muted mt-2 text-sm">
           Where the Direwolf Platform runs, and what that does and does not mean for your compliance
-          program, is explained on our
+          program, is explained on our{' '}
           <a href="/compliance/" class="link">
             Compliance
           </a>{' '}

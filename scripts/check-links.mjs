@@ -1,7 +1,8 @@
 // Internal link check over the built site in dist/ (CLAUDE.md, "Definition of done").
 //
-// For every HTML page it collects href/src/action attributes and checks that each internal
-// URL resolves to a file in dist/ (directory-format pages, generated text files, assets) and
+// For every HTML page it collects href/src/action attributes and every srcset candidate (the
+// logo copies in the header, footer and brand panels are served through srcset) and checks that
+// each internal URL resolves to a file in dist/ (directory-format pages, generated text files, assets) and
 // that any #fragment names an element id in the target page. External links are counted but
 // not fetched, so the check is deterministic and works offline. The Open Graph image
 // (<meta property="og:image">) is checked the same way. Exit code 1 on any failure.
@@ -169,6 +170,13 @@ async function main() {
 
     const values = [
       ...[...html.matchAll(/\s(?:href|src|action)=["']([^"']*)["']/g)].map((m) => m[1]),
+      // srcset="a.png 72w, b.png 144w": the URL of each candidate (the part before its descriptor).
+      ...[...html.matchAll(/\ssrcset=["']([^"']*)["']/g)].flatMap((m) =>
+        m[1]
+          .split(',')
+          .map((candidate) => candidate.trim().split(/\s+/)[0])
+          .filter(Boolean),
+      ),
       ...[...html.matchAll(/<meta\s+property=["']og:image["']\s+content=["']([^"']*)["']/g)].map(
         (m) => m[1],
       ),

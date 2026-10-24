@@ -1,13 +1,12 @@
 ---
-import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Section from '../components/Section.astro';
 import Card from '../components/Card.astro';
 import CallToAction from '../components/CallToAction.astro';
+import BrandLockup from '../components/BrandLockup.astro';
 import Experience from '../components/Experience.astro';
 import { launchServices } from '../data/services';
-import { PLATFORM_LIVE, earlyAccessUrl, signupUrl, siteName } from '../config';
-import wordmark from '../assets/brand/direwolf-wordmark.png';
+import { PLATFORM_LIVE, earlyAccessUrl, signupUrl } from '../config';
 
 const valueProps = [
   {
@@ -80,20 +79,11 @@ const steps = [
         </div>
       </div>
       {/*
-        The silver wordmark has too little contrast on white, so it appears only on this navy
+        The stacked lockup is designed for dark surfaces, so it appears only on this near-black
         panel (the same in both color schemes); the header keeps the shield and the name as text.
       */}
       <div class="hidden lg:col-span-5 lg:block">
-        <div class="bg-brand-navy border-line flex aspect-[4/3] items-center justify-center rounded-2xl border p-10">
-          <Image
-            src={wordmark}
-            alt={siteName}
-            width={268}
-            height={132}
-            loading="eager"
-            class="h-auto w-full max-w-[268px]"
-          />
-        </div>
+        <BrandLockup width={320} class="aspect-square p-10" />
       </div>
     </div>
   </section>
@@ -101,7 +91,7 @@ const steps = [
   <div class="border-line bg-surface border-y">
     <div class="container-x py-4">
       <p class="text-sm font-medium">
-        Where we stand on NIST SP 800-171, CMMC and hosting:
+        Where we stand on NIST SP 800-171, CMMC and hosting:{' '}
         <a href="/compliance/" class="link">
           see our Compliance page
         </a>

@@ -1,0 +1,43 @@
+---
+import lockup320 from '../assets/brand/direwolf-logo-stacked-320.png';
+import lockup640 from '../assets/brand/direwolf-logo-stacked-640.png';
+import { siteName } from '../config';
+
+/**
+ * The owner's stacked lockup (the shield above "DIREWOLF" and "CYBERSECURITY") on its near-black
+ * panel with a blue glow edge (`.brand-panel` in src/styles/global.css). The art is designed for
+ * dark surfaces (silver and electric blue on transparency), so it never appears without the panel,
+ * and the panel is the same in both color schemes. The two copies are generated from docs/brand/v2/
+ * by `npm run brand:assets` (palette PNGs, served as they are); the browser picks the 320 px copy
+ * at 1x and the 640 px copy on high-density screens.
+ *
+ * Lazy by default: both placements are hidden below the lg breakpoint, and a hidden lazy image is
+ * never fetched, so phones do not download it.
+ */
+interface Props {
+  /** Largest rendered width of the lockup: 320 px (Home hero) or 240 px (About). */
+  width?: 320 | 240;
+  loading?: 'eager' | 'lazy';
+  class?: string;
+}
+
+const { width = 320, loading = 'lazy', class: className } = Astro.props;
+const height = Math.round((width * lockup320.height) / lockup320.width);
+const srcset = [lockup320, lockup640].map((copy) => `${copy.src} ${copy.width}w`).join(', ');
+// Static class names so Tailwind generates them (max-w-80 = 20rem = 320 px, max-w-60 = 240 px).
+const maxWidth = width === 320 ? 'max-w-80' : 'max-w-60';
+---
+
+<div class:list={['brand-panel flex items-center justify-center', className]}>
+  <img
+    src={lockup320.src}
+    srcset={srcset}
+    sizes={`${width}px`}
+    alt={siteName}
+    width={width}
+    height={height}
+    loading={loading}
+    decoding="async"
+    class:list={['h-auto w-full', maxWidth]}
+  />
+</div>

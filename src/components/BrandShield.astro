@@ -1,0 +1,35 @@
+---
+import shield72 from '../assets/brand/direwolf-shield-72.png';
+import shield144 from '../assets/brand/direwolf-shield-144.png';
+import shield288 from '../assets/brand/direwolf-shield-288.png';
+
+/**
+ * The owner's shield logo, decorative (alt="") because every placement sits beside the company
+ * name as text. The three copies are generated from docs/brand/v2/ by `npm run brand:assets`
+ * (palette PNGs, already optimized, so they are served as they are rather than re-encoded): the
+ * browser picks the smallest that covers `size` at the screen's density (2x to 8x of the 36 px
+ * header mark).
+ */
+interface Props {
+  /** Rendered edge in CSS pixels. */
+  size: number;
+  loading?: 'eager' | 'lazy';
+  class?: string;
+}
+
+const { size, loading = 'lazy', class: className } = Astro.props;
+const copies = [shield72, shield144, shield288];
+const srcset = copies.map((copy) => `${copy.src} ${copy.width}w`).join(', ');
+---
+
+<img
+  src={shield72.src}
+  srcset={srcset}
+  sizes={`${size}px`}
+  alt=""
+  width={size}
+  height={size}
+  loading={loading}
+  decoding="async"
+  class={className}
+/>

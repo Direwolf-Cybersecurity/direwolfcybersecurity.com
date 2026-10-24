@@ -38,7 +38,7 @@ const dateFormat = new Intl.DateTimeFormat('en-US', {
           <p class="text-muted mt-3 text-xs">
             <code class="font-mono">{doc.data.version}</code>
             <span aria-hidden="true"> &middot; </span>
-            Last updated
+            Last updated{' '}
             <time datetime={doc.data.effectiveDate.toISOString().slice(0, 10)}>
               {dateFormat.format(doc.data.effectiveDate)}
             </time>
