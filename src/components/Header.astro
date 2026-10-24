@@ -1,9 +1,17 @@
 ---
-import Logo from './Logo.astro';
+import { Image } from 'astro:assets';
+import shield from '../assets/brand/direwolf-shield.png';
 import { primaryNav, isCurrent } from '../data/navigation';
-import { siteName, loginUrl, signupUrl } from '../config';
+import { siteName, PLATFORM_LIVE, earlyAccessUrl, loginUrl, signupUrl } from '../config';
 
 /**
+ * The brand link is the owner's shield logo plus the company name as text: the text keeps the name
+ * readable and high-contrast in both schemes (the silver wordmark image is for dark surfaces
+ * only), so the image itself is decorative (alt="").
+ *
+ * Calls to action: "Log in" and "Sign up" while the platform is in service (PLATFORM_LIVE),
+ * otherwise a single "Request early access" link to the contact form.
+ *
  * Without JavaScript the toggle cannot work: public/noscript.css, loaded by BaseLayout.astro in a
  * <noscript>, hides #menu-toggle and keeps #site-menu open. It is a file rather than an inline
  * <style> so the Content Security Policy's style-src 'self' allows it.
@@ -17,7 +25,15 @@ const pathname = Astro.url.pathname;
       href="/"
       class="text-fg flex items-center gap-2 text-lg font-semibold tracking-tight no-underline"
     >
-      <Logo class="text-accent h-8 w-8" />
+      <Image
+        src={shield}
+        alt=""
+        width={36}
+        height={36}
+        densities={[1.5, 2, 3]}
+        loading="eager"
+        class="h-9 w-9 shrink-0"
+      />
       <span>{siteName}</span>
     </a>
 
@@ -51,12 +67,20 @@ const pathname = Astro.url.pathname;
         </ul>
       </nav>
       <div class="flex flex-col gap-3 sm:flex-row">
-        <a href={loginUrl} class="btn btn-secondary" rel="noopener noreferrer">
-          Log in
-        </a>
-        <a href={signupUrl} class="btn btn-primary" rel="noopener noreferrer">
-          Sign up
-        </a>
+        {PLATFORM_LIVE ? (
+          <>
+            <a href={loginUrl} class="btn btn-secondary" rel="noopener noreferrer">
+              Log in
+            </a>
+            <a href={signupUrl} class="btn btn-primary" rel="noopener noreferrer">
+              Sign up
+            </a>
+          </>
+        ) : (
+          <a href={earlyAccessUrl} class="btn btn-primary">
+            Request early access
+          </a>
+        )}
       </div>
     </div>
   </div>

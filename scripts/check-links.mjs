@@ -3,7 +3,17 @@
 // For every HTML page it collects href/src/action attributes and checks that each internal
 // URL resolves to a file in dist/ (directory-format pages, generated text files, assets) and
 // that any #fragment names an element id in the target page. External links are counted but
-// not fetched, so the check is deterministic and works offline. Exit code 1 on any failure.
+// not fetched, so the check is deterministic and works offline. The Open Graph image
+// (<meta property="og:image">) is checked the same way. Exit code 1 on any failure.
+//
+// Two more assertions:
+// - While `PLATFORM_LIVE` in src/config.ts is false (the platform is not in service), no href,
+//   src or action may point to the platform host (app.direwolfcybersecurity.com, or the host of
+//   PUBLIC_APP_URL when set): every such call to action must be "Request early access".
+// - Every image in dist/_astro/ is referenced by a built page or stylesheet, so an image that
+//   no page shows (such as an organization logo imported without permission,
+//   src/data/engagements.ts) is never published. astro.config.mjs prunes them; this catches a
+//   regression.
 
 import { readdir, readFile, stat } from 'node:fs/promises';
 import path from 'node:path';
@@ -18,6 +28,26 @@ const siteOrigins = new Set([
   'https://www.direwolfcybersecurity.com',
   'https://direwolfcybersecurity.com',
 ]);
+
+/** The platform's hosts: the production default and PUBLIC_APP_URL's host, when set. */
+const platformHosts = new Set(['app.direwolfcybersecurity.com']);
+try {
+  if (process.env.PUBLIC_APP_URL) platformHosts.add(new URL(process.env.PUBLIC_APP_URL).host);
+} catch {
+  // Not a URL: src/config.ts would not produce links from it either.
+}
+
+/**
+ * PLATFORM_LIVE from src/config.ts, read the way .github/workflows/deploy.yml reads
+ * SITE_LAUNCHED (the exact `export const PLATFORM_LIVE = …;` line).
+ * @returns {Promise<boolean>}
+ */
+async function platformLive() {
+  const config = await readFile(path.join(root, 'src', 'config.ts'), 'utf8');
+  const match = config.match(/^export const PLATFORM_LIVE = (true|false);$/m);
+  if (!match) throw new Error('src/config.ts: no `export const PLATFORM_LIVE = true|false;` line');
+  return match[1] === 'true';
+}
 
 /**
  * @param {string} dir
@@ -118,11 +148,16 @@ async function main() {
     process.exit(1);
   }
 
-  const files = (await walk(dist)).filter((f) => f.endsWith('.html'));
+  const allFiles = await walk(dist);
+  const files = allFiles.filter((f) => f.endsWith('.html'));
+  const live = await platformLive();
   /** @type {string[]} */
   const failures = [];
+  /** @type {string[]} Text of every page and stylesheet, for the unreferenced-image check. */
+  const corpus = [];
   let internalCount = 0;
   let externalCount = 0;
+  let platformLinkCount = 0;
 
   for (const file of files) {
     const rel = path.relative(dist, file).split(path.sep).join('/');
@@ -130,9 +165,32 @@ async function main() {
       ? `/${rel.slice(0, -'index.html'.length)}`
       : `/${rel}`;
     const html = await readFile(file, 'utf8');
+    corpus.push(html);
 
-    for (const match of html.matchAll(/\s(?:href|src|action)=["']([^"']*)["']/g)) {
-      const link = classify(pagePath, match[1]);
+    const values = [
+      ...[...html.matchAll(/\s(?:href|src|action)=["']([^"']*)["']/g)].map((m) => m[1]),
+      ...[...html.matchAll(/<meta\s+property=["']og:image["']\s+content=["']([^"']*)["']/g)].map(
+        (m) => m[1],
+      ),
+    ];
+    for (const value of values) {
+      try {
+        const host = new URL(value, `https://www.direwolfcybersecurity.com${pagePath}`).host;
+        if (platformHosts.has(host)) {
+          platformLinkCount += 1;
+          if (!live) {
+            failures.push(
+              `${pagePath}: links to the platform (${value}) while PLATFORM_LIVE is false in src/config.ts`,
+            );
+          }
+        }
+      } catch {
+        // Unparseable values are left to classify() below.
+      }
+    }
+
+    for (const value of values) {
+      const link = classify(pagePath, value);
       if (link.kind === 'skip') continue;
       if (link.kind === 'external') {
         externalCount += 1;
@@ -141,15 +199,31 @@ async function main() {
       internalCount += 1;
       const target = await resolveTarget(link.path ?? '/');
       if (!target) {
-        failures.push(`${pagePath}: broken link to ${match[1]}`);
+        failures.push(`${pagePath}: broken link to ${value}`);
         continue;
       }
       if (link.fragment && target.endsWith('.html')) {
         const ids = await idsIn(target);
         if (!ids.has(decodeURIComponent(link.fragment))) {
-          failures.push(`${pagePath}: missing anchor #${link.fragment} in ${match[1]}`);
+          failures.push(`${pagePath}: missing anchor #${link.fragment} in ${value}`);
         }
       }
+    }
+  }
+
+  // Every image Astro emitted must be shown somewhere (pages, or stylesheets via url()).
+  for (const file of allFiles.filter((f) => f.endsWith('.css'))) {
+    corpus.push(await readFile(file, 'utf8'));
+  }
+  const pageText = corpus.join('\n');
+  const assetsDir = path.join(dist, '_astro');
+  for (const file of allFiles) {
+    if (path.dirname(file) !== assetsDir || !/\.(png|jpe?g|gif|webp|avif|svg)$/i.test(file)) {
+      continue;
+    }
+    const name = path.basename(file);
+    if (!pageText.includes(`/_astro/${name}`)) {
+      failures.push(`unreferenced image published: _astro/${name} (no page shows it)`);
     }
   }
 
@@ -166,6 +240,11 @@ async function main() {
 
   console.log(
     `Checked ${files.length} pages: ${internalCount} internal links, ${externalCount} external links (not fetched).`,
+  );
+  console.log(
+    live
+      ? `PLATFORM_LIVE is true: ${platformLinkCount} links to the platform (${[...platformHosts].join(', ')}).`
+      : `PLATFORM_LIVE is false: no links to the platform (${[...platformHosts].join(', ')}) allowed.`,
   );
   if (failures.length > 0) {
     console.error(`\n${failures.length} problem(s):`);

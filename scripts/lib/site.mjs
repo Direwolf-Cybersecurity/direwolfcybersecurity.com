@@ -24,6 +24,7 @@ export const contentTypes = {
   '.txt': 'text/plain; charset=utf-8',
   '.xml': 'application/xml',
   '.json': 'application/json',
+  '.webmanifest': 'application/manifest+json',
   '.woff2': 'font/woff2',
 };
 

@@ -1,9 +1,14 @@
 ---
 /**
  * Contact form. With PUBLIC_CONTACT_ENDPOINT set, submissions are POSTed as JSON
- * ({ name, email, company, message }) and the response status is announced. Without it,
- * submitting opens the visitor's mail client with a pre-filled message. The "website" field
- * is a honeypot: hidden from people, and a filled value makes the submission a silent no-op.
+ * ({ name, email, company, topic, message }) and the response status is announced. Without it,
+ * submitting opens the visitor's mail client with a pre-filled message whose subject names the
+ * topic. The "website" field is a honeypot: hidden from people, and a filled value makes the
+ * submission a silent no-op.
+ *
+ * Topic: `?topic=<value>` in the page URL preselects a matching option, so "Request early
+ * access" links (`earlyAccessUrl` in src/config.ts, `/contact/?topic=early-access`) open the
+ * form ready for that request. Without JavaScript the topic stays at its default.
  */
 import { contactEndpoint, contactEmail } from '../config';
 ---
@@ -65,6 +70,23 @@ import { contactEndpoint, contactEmail } from '../config';
       autocomplete="organization"
       class="field mt-1"
     />
+  </div>
+
+  <div>
+    <label for="cf-topic" class="block text-sm font-medium">
+      Topic
+    </label>
+    <select id="cf-topic" name="topic" class="field mt-1">
+      <option value="general" data-subject="Website inquiry" selected>
+        General question
+      </option>
+      <option value="services" data-subject="Services inquiry">
+        Services and pricing
+      </option>
+      <option value="early-access" data-subject="Early access request">
+        Early access to the Direwolf Platform
+      </option>
+    </select>
   </div>
 
   <div>
@@ -151,6 +173,17 @@ import { contactEndpoint, contactEmail } from '../config';
 
     const fields = ['name', 'email', 'message'] as const;
 
+    // Preselect the topic named in the page URL (?topic=early-access), if it is one of the options.
+    const topic = form.elements.namedItem('topic') as HTMLSelectElement | null;
+    const requestedTopic = new URLSearchParams(window.location.search).get('topic');
+    if (topic && requestedTopic) {
+      const option = Array.from(topic.options).find((o) => o.value === requestedTopic);
+      if (option) {
+        topic.value = option.value;
+        option.defaultSelected = true; // keeps the topic after form.reset()
+      }
+    }
+
     const messageFor = (input: HTMLInputElement | HTMLTextAreaElement): string => {
       if (input.validity.valueMissing) return 'This field is required.';
       if (input.validity.typeMismatch) return 'Enter a valid email address, like name@example.com.';
@@ -209,8 +242,12 @@ import { contactEndpoint, contactEmail } from '../config';
         name: String(data.get('name') ?? '').trim(),
         email: String(data.get('email') ?? '').trim(),
         company: String(data.get('company') ?? '').trim(),
+        topic: String(data.get('topic') ?? 'general'),
         message: String(data.get('message') ?? '').trim(),
       };
+      const selectedTopic = topic?.selectedOptions[0];
+      const topicLabel = selectedTopic?.textContent?.trim() ?? '';
+      const subjectPrefix = selectedTopic?.dataset.subject ?? 'Website inquiry';
 
       // Honeypot filled: behave as if it worked, do nothing.
       if (String(data.get('website') ?? '').trim() !== '') {
@@ -220,15 +257,16 @@ import { contactEndpoint, contactEmail } from '../config';
       }
 
       if (!endpoint) {
-        const subject = `Website inquiry from ${payload.name}`;
+        const subject = `${subjectPrefix} from ${payload.name}`;
         const body = [
           `Name: ${payload.name}`,
           `Email: ${payload.email}`,
           payload.company ? `Company: ${payload.company}` : '',
+          topicLabel ? `Topic: ${topicLabel}` : '',
           '',
           payload.message,
         ]
-          .filter((line, index) => line !== '' || index === 3)
+          .filter((line, index) => line !== '' || index === 4)
           .join('\n');
         announce('Opening your email app with a pre-filled message.');
         window.location.href = `mailto:${mailto}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;

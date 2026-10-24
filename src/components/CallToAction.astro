@@ -1,5 +1,10 @@
 ---
-import { signupUrl } from '../config';
+/**
+ * Closing call to action. While the platform is not in service (PLATFORM_LIVE is false) the
+ * primary button is "Request early access" (claims register row W6) instead of "Sign up", and
+ * the default text says the platform is opening to early customers.
+ */
+import { PLATFORM_LIVE, earlyAccessUrl, signupUrl } from '../config';
 
 interface Props {
   title?: string;
@@ -8,7 +13,9 @@ interface Props {
 
 const {
   title = 'Ready when you are.',
-  text = 'Create your account, choose the services you need, and deploy sensors from your dashboard. Prefer to talk first? We are happy to.',
+  text = PLATFORM_LIVE
+    ? 'Create your account, choose the services you need, and deploy sensors from your dashboard. Prefer to talk first? We are happy to.'
+    : 'The Direwolf Platform is opening to early customers. Request early access, or contact us to talk through your environment first.',
 } = Astro.props;
 ---
 
@@ -22,9 +29,15 @@ const {
         <p class="text-muted mt-2">{text}</p>
       </div>
       <div class="flex flex-col gap-3 sm:flex-row">
-        <a href={signupUrl} class="btn btn-primary" rel="noopener noreferrer">
-          Sign up
-        </a>
+        {PLATFORM_LIVE ? (
+          <a href={signupUrl} class="btn btn-primary" rel="noopener noreferrer">
+            Sign up
+          </a>
+        ) : (
+          <a href={earlyAccessUrl} class="btn btn-primary">
+            Request early access
+          </a>
+        )}
         <a href="/contact/" class="btn btn-secondary">
           Contact us
         </a>

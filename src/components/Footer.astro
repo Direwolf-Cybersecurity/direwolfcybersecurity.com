@@ -1,6 +1,8 @@
 ---
 import { getCollection } from 'astro:content';
-import Logo from './Logo.astro';
+import { Image } from 'astro:assets';
+import shield from '../assets/brand/direwolf-shield.png';
+import veteranBadge from '../assets/brand/veteran-owned-badge.png';
 import { companyNav, trustNav } from '../data/navigation';
 import {
   siteName,
@@ -12,8 +14,17 @@ import {
   contactEmail,
   phone,
   socials,
+  PLATFORM_LIVE,
+  earlyAccessUrl,
   loginUrl,
 } from '../config';
+
+/**
+ * The veteran-owned badge is a generic "Veteran Owned Business" graphic, not the SBA VetCert
+ * icon (claims register row F7): it sits only beside the ownership statement (row F1), never
+ * beside a product, price or call to action. Showing SBA's own icon instead requires the rules
+ * in docs/launch-runbook.md, "Logo use".
+ */
 
 const legalDocs = (await getCollection('legal')).sort((a, b) => a.data.order - b.data.order);
 const year = new Date().getFullYear();
@@ -24,7 +35,14 @@ const telHref = phone ? `tel:${phone.replace(/[^+\d]/g, '')}` : '';
   <div class="container-x grid gap-10 py-12 sm:grid-cols-2 lg:grid-cols-4">
     <div>
       <a href="/" class="text-fg flex items-center gap-2 font-semibold no-underline">
-        <Logo class="text-accent h-7 w-7" />
+        <Image
+          src={shield}
+          alt=""
+          width={32}
+          height={32}
+          densities={[1.5, 2, 3]}
+          class="h-8 w-8 shrink-0"
+        />
         <span>{siteName}</span>
       </a>
       <p class="text-muted mt-3 text-sm">{siteTagline}.</p>
@@ -49,7 +67,17 @@ const telHref = phone ? `tel:${phone.replace(/[^+\d]/g, '')}` : '';
           </span>
         )}
       </address>
-      <p class="text-muted mt-4 text-sm">{ownershipStatement}. An equal opportunity employer.</p>
+      <div class="mt-4 flex items-center gap-3">
+        <Image
+          src={veteranBadge}
+          alt="Veteran Owned Business"
+          width={43}
+          height={56}
+          densities={[1.5, 2, 3]}
+          class="h-14 w-auto shrink-0"
+        />
+        <p class="text-muted text-sm">{ownershipStatement}. An equal opportunity employer.</p>
+      </div>
       {socials.length > 0 && (
         <ul class="mt-4 flex gap-4 text-sm" aria-label="Social profiles">
           {socials.map((s) => (
@@ -76,13 +104,22 @@ const telHref = phone ? `tel:${phone.replace(/[^+\d]/g, '')}` : '';
           </li>
         ))}
         <li>
-          <a
-            href={loginUrl}
-            class="text-muted hover:text-accent no-underline hover:underline"
-            rel="noopener noreferrer"
-          >
-            Log in to the platform
-          </a>
+          {PLATFORM_LIVE ? (
+            <a
+              href={loginUrl}
+              class="text-muted hover:text-accent no-underline hover:underline"
+              rel="noopener noreferrer"
+            >
+              Log in to the platform
+            </a>
+          ) : (
+            <a
+              href={earlyAccessUrl}
+              class="text-muted hover:text-accent no-underline hover:underline"
+            >
+              Request early access
+            </a>
+          )}
         </li>
       </ul>
     </nav>

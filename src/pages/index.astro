@@ -1,10 +1,13 @@
 ---
+import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Section from '../components/Section.astro';
 import Card from '../components/Card.astro';
 import CallToAction from '../components/CallToAction.astro';
+import Experience from '../components/Experience.astro';
 import { launchServices } from '../data/services';
-import { signupUrl } from '../config';
+import { PLATFORM_LIVE, earlyAccessUrl, signupUrl, siteName } from '../config';
+import wordmark from '../assets/brand/direwolf-wordmark.png';
 
 const valueProps = [
   {
@@ -17,15 +20,26 @@ const valueProps = [
   },
   {
     title: 'Sized and priced for smaller teams',
-    text: 'Per-endpoint pricing, no hardware to buy, and a dashboard your own administrators can run: buy licenses, download installers, invite users, and see what happened.',
+    // While the platform is not in service the dashboard is described in the future tense
+    // (claims register row W6).
+    text: PLATFORM_LIVE
+      ? 'Per-endpoint pricing, no hardware to buy, and a dashboard your own administrators can run: buy licenses, download installers, invite users, and see what happened.'
+      : 'Per-endpoint pricing, no hardware to buy, and a dashboard your own administrators will use to buy licenses, download installers, invite users, and see what happened.',
   },
 ];
 
 const steps = [
-  {
-    title: 'Sign up and choose your services',
-    text: 'Create your account and your organization, then select the services and license counts you need. Pay by card, and your organization is provisioned as soon as the payment clears.',
-  },
+  // Sign-up and card payment are not available while PLATFORM_LIVE is false (claims register
+  // rows W6 and P2), so the first step is then the early-access request.
+  PLATFORM_LIVE
+    ? {
+        title: 'Sign up and choose your services',
+        text: 'Create your account and your organization, then select the services and license counts you need. Pay by card, and your organization is provisioned as soon as the payment clears.',
+      }
+    : {
+        title: 'Request early access',
+        text: 'Tell us about your organization. When the platform opens to you, you will choose the services and license counts you need and pay by card.',
+      },
   {
     title: 'Deploy sensors',
     text: 'Download installers bound to your organization and run them on your Windows, macOS, and Linux endpoints. Each sensor reports to your organization from its first check-in.',
@@ -39,8 +53,8 @@ const steps = [
 
 <BaseLayout title="Home">
   <section aria-labelledby="hero-heading" class="py-16 md:py-24">
-    <div class="container-x">
-      <div class="max-w-3xl">
+    <div class="container-x grid items-center gap-12 lg:grid-cols-12">
+      <div class="max-w-3xl lg:col-span-7">
         <p class="eyebrow">Managed security for small and mid-size organizations</p>
         <h1 id="hero-heading" class="mt-3 text-4xl font-semibold tracking-tight md:text-6xl">
           Security operations built for enterprises, sized for your organization.
@@ -51,12 +65,34 @@ const steps = [
           work.
         </p>
         <div class="mt-8 flex flex-col gap-3 sm:flex-row">
-          <a href={signupUrl} class="btn btn-primary" rel="noopener noreferrer">
-            Get started
-          </a>
+          {PLATFORM_LIVE ? (
+            <a href={signupUrl} class="btn btn-primary" rel="noopener noreferrer">
+              Get started
+            </a>
+          ) : (
+            <a href={earlyAccessUrl} class="btn btn-primary">
+              Request early access
+            </a>
+          )}
           <a href="/services/" class="btn btn-secondary">
             See our services
           </a>
+        </div>
+      </div>
+      {/*
+        The silver wordmark has too little contrast on white, so it appears only on this navy
+        panel (the same in both color schemes); the header keeps the shield and the name as text.
+      */}
+      <div class="hidden lg:col-span-5 lg:block">
+        <div class="bg-brand-navy border-line flex aspect-[4/3] items-center justify-center rounded-2xl border p-10">
+          <Image
+            src={wordmark}
+            alt={siteName}
+            width={268}
+            height={132}
+            loading="eager"
+            class="h-auto w-full max-w-[268px]"
+          />
         </div>
       </div>
     </div>
@@ -115,6 +151,8 @@ const steps = [
       </a>
     </p>
   </Section>
+
+  <Experience variant="summary" tone="surface" />
 
   <CallToAction />
 </BaseLayout>

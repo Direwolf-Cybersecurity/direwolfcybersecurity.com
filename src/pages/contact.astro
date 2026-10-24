@@ -3,7 +3,16 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHeader from '../components/PageHeader.astro';
 import Section from '../components/Section.astro';
 import ContactForm from '../components/ContactForm.astro';
-import { contactEmail, securityEmail, phone, hqLine, streetAddress, loginUrl } from '../config';
+import {
+  contactEmail,
+  securityEmail,
+  phone,
+  hqLine,
+  streetAddress,
+  PLATFORM_LIVE,
+  earlyAccessUrl,
+  loginUrl,
+} from '../config';
 
 const description =
   'Contact Direwolf Cybersecurity in Colorado Springs, Colorado: ask about our services, request a quote, or ask about our customer responsibility matrix for NIST SP 800-171.';
@@ -85,15 +94,28 @@ const telHref = phone ? `tel:${phone.replace(/[^+\d]/g, '')}` : '';
               your message.
             </dd>
           </div>
-          <div>
-            <dt class="font-semibold">Existing customers</dt>
-            <dd class="text-muted mt-1">
-              <a href={loginUrl} class="link" rel="noopener noreferrer">
-                Log in to the Direwolf Platform
-              </a>{' '}
-              to manage your organization.
-            </dd>
-          </div>
+          {PLATFORM_LIVE ? (
+            <div>
+              <dt class="font-semibold">Existing customers</dt>
+              <dd class="text-muted mt-1">
+                <a href={loginUrl} class="link" rel="noopener noreferrer">
+                  Log in to the Direwolf Platform
+                </a>{' '}
+                to manage your organization.
+              </dd>
+            </div>
+          ) : (
+            <div>
+              <dt class="font-semibold">Early access</dt>
+              <dd class="text-muted mt-1">
+                The Direwolf Platform is opening to early customers.{' '}
+                <a href={earlyAccessUrl} class="link">
+                  Request early access
+                </a>{' '}
+                with the form, and tell us about your organization.
+              </dd>
+            </div>
+          )}
         </dl>
       </aside>
     </div>

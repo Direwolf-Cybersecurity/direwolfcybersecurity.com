@@ -1,24 +1,29 @@
 @import 'tailwindcss';
 
 /*
- * Design tokens. One accent color, system font stack, light and dark by
- * prefers-color-scheme. Every text/background pair below meets WCAG 2.1 AA (4.5:1),
- * and form-control borders meet the 3:1 non-text requirement. Keep it that way:
- * `npm run a11y` checks contrast in both schemes.
+ * Design tokens. Accent colors follow the owner's shield logo (src/assets/brand/): navy
+ * #092a57 and cyan #39d6f3. Light scheme: navy for solid buttons, a lighter logo blue for links
+ * and accent text (cyan is too light for text on white). Dark scheme: cyan for links and
+ * buttons. System font stack, light and dark by prefers-color-scheme. Every text/background
+ * pair below meets WCAG 2.1 AA (4.5:1), and form-control borders meet the 3:1 non-text
+ * requirement. Keep it that way: `npm run a11y` checks contrast in both schemes.
  */
 :root {
   color-scheme: light dark;
+  /* Brand surfaces, the same in both schemes (the dark hero panel, the social card). */
+  --brand-navy: #092a57; /* white 14.2:1, cyan 8.2:1 */
+  --brand-cyan: #39d6f3;
   --bg: #ffffff;
   --surface: #f5f7fa;
   --fg: #101828;
   --muted: #475467; /* 7.0:1 on --bg, 6.4:1 on --surface */
   --line: #d9dfe7; /* decorative borders */
   --line-strong: #667085; /* form controls, 4.6:1 on --bg */
-  --accent: #1d4ed8; /* links and accent text, 6.3:1 on --bg */
-  --accent-solid: #1d4ed8; /* buttons */
-  --on-accent: #ffffff; /* 6.3:1 on --accent-solid */
-  --accent-soft: #e8eefc; /* tints behind accent text, 5.7:1 */
-  --focus: #1d4ed8;
+  --accent: #0b5cad; /* links and accent text, 6.7:1 on --bg, 6.2:1 on --surface */
+  --accent-solid: #092a57; /* buttons: the logo navy */
+  --on-accent: #ffffff; /* 14.2:1 on --accent-solid */
+  --accent-soft: #e6f0fa; /* tints behind accent text, 5.8:1 */
+  --focus: #0b5cad; /* 6.7:1 on --bg */
   --danger: #b42318; /* form errors, 6.4:1 on --bg */
 }
 
@@ -30,16 +35,18 @@
     --muted: #aab6c9; /* 8.6:1 on --bg */
     --line: #273349;
     --line-strong: #8e9bb0; /* 5.5:1 on --bg */
-    --accent: #9cc0ff; /* 9.4:1 on --bg */
-    --accent-solid: #6ea1ff;
-    --on-accent: #0b1220; /* 6.6:1 on --accent-solid */
-    --accent-soft: #172446;
-    --focus: #9cc0ff;
+    --accent: #39d6f3; /* the logo cyan: 10.8:1 on --bg, 9.9:1 on --surface */
+    --accent-solid: #39d6f3;
+    --on-accent: #092a57; /* the logo navy: 8.2:1 on --accent-solid */
+    --accent-soft: #0e2a47; /* 8.4:1 behind --accent */
+    --focus: #39d6f3;
     --danger: #ff8a7a; /* 7.0:1 on --bg */
   }
 }
 
 @theme inline {
+  --color-brand-navy: var(--brand-navy);
+  --color-brand-cyan: var(--brand-cyan);
   --color-bg: var(--bg);
   --color-surface: var(--surface);
   --color-fg: var(--fg);

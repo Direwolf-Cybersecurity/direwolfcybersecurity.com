@@ -49,6 +49,9 @@ jobs:
 
       - name: Internal links and fragments over dist/
         run: npm run links
+        env:
+          # The check also fails on links to this host while PLATFORM_LIVE is false.
+          PUBLIC_APP_URL: ${{ vars.PUBLIC_APP_URL }}
 
       - name: Accessibility (axe-core, WCAG 2.1 A/AA, light and dark, phone width)
         # scripts/a11y.mjs drives the Edge or Chrome build preinstalled on ubuntu-latest through

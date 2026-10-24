@@ -5,10 +5,17 @@ import Section from '../components/Section.astro';
 import Card from '../components/Card.astro';
 import ComplianceStrip from '../components/ComplianceStrip.astro';
 import CallToAction from '../components/CallToAction.astro';
-import { loginUrl, signupUrl } from '../config';
+import { PLATFORM_LIVE, earlyAccessUrl, loginUrl, signupUrl } from '../config';
 
-const description =
-  'The Direwolf Platform is the web application behind every Direwolf service: buy licenses, download organization-bound installers, invite users, and see what the SOC did.';
+// While the platform is not in service the description and lede use the future tense (claims
+// register row W6); the present-tense forms return when PLATFORM_LIVE is true.
+const description = PLATFORM_LIVE
+  ? 'The Direwolf Platform is the web application behind every Direwolf service: buy licenses, download organization-bound installers, invite users, and see what the SOC did.'
+  : 'The Direwolf Platform is the web application behind every Direwolf service: your administrators will use it to buy licenses, download organization-bound installers, invite users, and see what the SOC did.';
+
+const lede = PLATFORM_LIVE
+  ? "The Direwolf Platform is the web application behind every Direwolf service. Your administrators use it to purchase licenses, download installers, invite users, and follow what the SOC is doing. A Direwolf analyst reviews the SOC's work from the same platform."
+  : "The Direwolf Platform is the web application behind every Direwolf service. Your administrators will use it to purchase licenses, download installers, invite users, and follow what the SOC is doing, and a Direwolf analyst will review the SOC's work from the same platform.";
 
 const features = [
   {
@@ -77,18 +84,30 @@ const architecture = [
   <PageHeader
     eyebrow="The Direwolf Platform"
     title="One place to buy, deploy, and see your security"
-    lede="The Direwolf Platform is the web application behind every Direwolf service. Your administrators use it to purchase licenses, download installers, invite users, and follow what the SOC is doing. A Direwolf analyst reviews the SOC's work from the same platform."
+    lede={lede}
   />
 
   <div>
-    <div class="container-x flex flex-col gap-3 py-4 sm:flex-row">
-      <a href={signupUrl} class="btn btn-primary" rel="noopener noreferrer">
-        Sign up
-      </a>
-      <a href={loginUrl} class="btn btn-secondary" rel="noopener noreferrer">
-        Log in
-      </a>
-    </div>
+    {PLATFORM_LIVE ? (
+      <div class="container-x flex flex-col gap-3 py-4 sm:flex-row">
+        <a href={signupUrl} class="btn btn-primary" rel="noopener noreferrer">
+          Sign up
+        </a>
+        <a href={loginUrl} class="btn btn-secondary" rel="noopener noreferrer">
+          Log in
+        </a>
+      </div>
+    ) : (
+      <div class="container-x flex flex-col gap-4 py-4 sm:flex-row sm:items-center">
+        <a href={earlyAccessUrl} class="btn btn-primary">
+          Request early access
+        </a>
+        <p class="text-muted text-sm">
+          The Direwolf Platform is opening to early customers. Tell us about your organization and
+          we will be in touch.
+        </p>
+      </div>
+    )}
   </div>
 
   <ComplianceStrip />
@@ -145,8 +164,15 @@ const architecture = [
     </p>
   </Section>
 
-  <CallToAction
-    title="See it for yourself."
-    text="Create an account to explore the dashboard. You are only charged when you buy licenses."
-  />
+  {PLATFORM_LIVE ? (
+    <CallToAction
+      title="See it for yourself."
+      text="Create an account to explore the dashboard. You are only charged when you buy licenses."
+    />
+  ) : (
+    <CallToAction
+      title="Be among the first to use it."
+      text="The Direwolf Platform is opening to early customers. Tell us about your organization and we will be in touch."
+    />
+  )}
 </BaseLayout>

@@ -19,10 +19,10 @@ npm run dev        # http://localhost:4321
 
 Build-time variables (copy `.env.example` to `.env`; CI reads them from repository variables):
 
-| Variable                  | Purpose                                                                                                 |
-| ------------------------- | ------------------------------------------------------------------------------------------------------- |
-| `PUBLIC_APP_URL`          | Where "Log in" and "Sign up" point. Default `https://app.direwolfcybersecurity.com`.                    |
-| `PUBLIC_CONTACT_ENDPOINT` | Optional. The contact form POSTs JSON here; when unset it falls back to opening the visitor's mail app. |
+| Variable                  | Purpose                                                                                                                                |
+| ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `PUBLIC_APP_URL`          | Where "Log in" and "Sign up" point once `PLATFORM_LIVE` is `true` in `src/config.ts`. Default `https://app.direwolfcybersecurity.com`. |
+| `PUBLIC_CONTACT_ENDPOINT` | Optional. The contact form POSTs JSON here; when unset it falls back to opening the visitor's mail app.                                |
 
 ## Verify (definition of done)
 
@@ -32,7 +32,7 @@ Build-time variables (copy `.env.example` to `.env`; CI reads them from reposito
 | `npm run check`        | `astro check`: TypeScript and template diagnostics                                                                                                                                                                                                                                                                                     |
 | `npm run lint`         | ESLint with the Astro and jsx-a11y (strict) rules                                                                                                                                                                                                                                                                                      |
 | `npm run format:check` | Prettier. `npm run format` rewrites the files.                                                                                                                                                                                                                                                                                         |
-| `npm run links`        | Every internal link, asset and `#fragment` in `dist/` resolves                                                                                                                                                                                                                                                                         |
+| `npm run links`        | Every internal link, asset, `#fragment` and the Open Graph image in `dist/` resolves; no page links to the platform host while `PLATFORM_LIVE` is `false`; every image in `dist/_astro/` is shown by some page                                                                                                                         |
 | `npm run a11y`         | axe-core WCAG 2.1 A/AA over every built page, light and dark, phone width. Needs Edge or Chrome installed, or `A11Y_BROWSER_PATH=<browser>`.                                                                                                                                                                                           |
 | `npm run csp`          | Every page carries the Content Security Policy and referrer meta, has no inline script or style, and links out with `rel="noopener noreferrer"`; each page then loads in the same browser as `a11y` with zero CSP violations or console errors, and the mobile menu, contact-form validation and no-JavaScript fallback are exercised. |
 
@@ -45,11 +45,15 @@ Build-time variables (copy `.env.example` to `.env`; CI reads them from reposito
 src/pages/        home, services, platform, about, contact, compliance, security, legal/*
 src/components/   header, footer, nav, hero, cards, forms, legal layout
 src/content/      legal documents (MDX with versioned frontmatter)
-src/data/         navigation, services, pricing
-src/config.ts     site constants: launch flag, names, ownership statement, mailboxes, HQ line
-public/           favicon, CNAME, noscript.css; robots.txt, sitemap and security.txt are generated
-scripts/          check-links.mjs, a11y.mjs, check-csp.mjs, lib/site.mjs (shared by a11y and csp)
-docs/             claims-register.md, claims-research.md, legal-research.md,
+src/data/         navigation, services, pricing, engagements (Experience section)
+src/assets/       brand/ (owner's shield, wordmark, veteran-owned badge); engagements/ is gitignored
+                  (other organizations' logos stay local until permission is filed; none committed)
+src/config.ts     site constants: launch and platform flags, names, ownership statement, mailboxes, HQ line
+public/           favicons, web manifest, og-image.png (generated by `npm run brand:assets`), CNAME,
+                  noscript.css; robots.txt, sitemap and security.txt are generated at build
+scripts/          check-links.mjs, a11y.mjs, check-csp.mjs, lib/site.mjs (shared by a11y and csp),
+                  generate-brand-assets.mjs (favicons and social card from the shield, with sharp)
+docs/             claims-register.md, claims-research.md, logo-use-research.md, legal-research.md,
                   legal-requirements-checklist.md, platform-consent-spec.md, launch-runbook.md
 .github/workflows ci.yml (build, check, lint, format, links, a11y, csp), deploy.yml (GitHub Pages)
 ```
@@ -69,7 +73,10 @@ The site **launched on 2026-10-23** at the owner's direction. `SITE_LAUNCHED` in
 The launch went ahead with three gates still open, now tracked as post-launch items in
 [docs/launch-runbook.md](docs/launch-runbook.md) ("Launch record"): attorney review of the legal
 pages (G1), the business mailing address (G2), and the SBA VetCert certificate filed under
-`docs/evidence/` (G3). Setting the flag back to `false` stops further publishes and restores
+`docs/evidence/` (G3). Two more were added on 2026-10-24: the owner's confirmation of each
+Experience-section entry (G18; the section stays off until it is recorded) and the source and
+commercial-use licence of the veteran-owned badge artwork (G19). Setting the flag back to `false`
+stops further publishes and restores
 `noindex`; it does not take down what is already on Pages.
 
 GitHub Pages cannot set response headers, so the Content Security Policy and the referrer policy

@@ -1,0 +1,82 @@
+---
+/**
+ * "Experience": organizations our team has supported (claims register rows E1-E6; data and the
+ * rules for logos in src/data/engagements.ts). Home shows the summary with a link to About;
+ * About shows the full version, with each entry's note (such as a later name) and the
+ * identification note as a paragraph.
+ *
+ * Only entries whose owner confirmation is recorded (`ownerConfirmed`, launch-runbook gate G18)
+ * are listed, and the section renders nothing while there are none, as on 2026-10-24.
+ *
+ * A card shows the organization's logo only when its `logoApproved` is true (the mark owner's
+ * written permission is on file); otherwise it shows the name in text, in a card of the same
+ * size. Approved logos sit on a white plate so dark marks stay visible in the dark scheme, and
+ * are grayscale until the card is hovered or holds focus.
+ */
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
+import Section from './Section.astro';
+import { shownEngagements } from '../data/engagements';
+
+interface Props {
+  /** `summary` (Home) links to the About page; `full` (About) is the complete version. */
+  variant?: 'summary' | 'full';
+  tone?: 'default' | 'surface';
+}
+
+const { variant = 'summary', tone = 'default' } = Astro.props;
+
+/** Logos render 48 px tall; the width follows each file's aspect ratio. */
+const logoHeight = 48;
+const logoWidth = (logo: ImageMetadata) => Math.round((logo.width * logoHeight) / logo.height);
+
+const identification =
+  'Names identify the organizations only; listing them does not mean that any of them endorses Direwolf Cybersecurity or its services.';
+---
+
+{shownEngagements.length > 0 && (
+  <Section
+    id="experience"
+    tone={tone}
+    eyebrow="Our team"
+    title="Experience"
+    lede="Our team has supported programs and organizations including:"
+  >
+    <ul class="mt-10 grid grid-cols-2 gap-4 md:grid-cols-3">
+      {shownEngagements.map((engagement) => (
+        <li class="card group flex min-h-32 flex-col items-center justify-center gap-2 p-4 text-center">
+          {engagement.logoApproved ? (
+            <div class="flex h-20 w-full items-center justify-center rounded-lg bg-white px-3">
+              <Image
+                src={engagement.logo}
+                alt={engagement.alt}
+                width={logoWidth(engagement.logo)}
+                height={logoHeight}
+                densities={[1.5, 2]}
+                class="h-12 w-auto max-w-full object-contain grayscale transition group-focus-within:grayscale-0 group-hover:grayscale-0"
+              />
+            </div>
+          ) : (
+            <span class="text-fg text-base leading-snug font-semibold">{engagement.name}</span>
+          )}
+          {variant === 'full' && engagement.note && (
+            <span class="text-muted text-xs">{engagement.note}</span>
+          )}
+        </li>
+      ))}
+    </ul>
+
+    {variant === 'summary' ? (
+      <p class="text-muted mt-6 max-w-prose text-sm">
+        {identification}{' '}
+        <a href="/about/#experience" class="link">
+          More about our team
+        </a>
+      </p>
+    ) : (
+      <div class="prose mt-8">
+        <p class="text-muted text-sm">{identification}</p>
+      </div>
+    )}
+  </Section>
+)}

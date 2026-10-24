@@ -23,3 +23,10 @@ reports/
 # editor and OS files
 .DS_Store
 .idea/
+
+# Other organizations' logos for the Experience section (claims register rows E1-E6). This
+# repository is public, so no logo is committed without the mark owner's written permission:
+# the files the owner supplied stay in local or private storage only. Commit a logo in the same
+# change that sets its entry's `logoApproved: true`, by adding an exception line below, e.g.
+# !src/assets/engagements/<file>.png
+src/assets/engagements/*

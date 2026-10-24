@@ -81,8 +81,24 @@ export const phone: string | undefined = undefined;
 export const socials: { name: string; url: string }[] = [];
 
 /**
- * Where "Log in" and "Sign up" point. Override at build time with PUBLIC_APP_URL
- * (for example to a staging platform). Always an absolute origin without a trailing slash.
+ * Platform switch. `false` until the Direwolf Platform is in service at PUBLIC_APP_URL (it has no
+ * DNS record yet; claims register rows H1 and W6). While `false`, every "Log in" / "Sign up" call
+ * to action (header, footer, Home hero, the call-to-action band, the Platform and Contact pages)
+ * becomes a single "Request early access" link to `earlyAccessUrl`, the Platform page says the
+ * platform is opening to early customers, the platform origin is left out of the Content Security
+ * Policy, and `npm run links` fails if any built page links to the platform host. Set it to `true`
+ * the day the platform serves sign-in, and the Log in / Sign up links return.
+ * scripts/check-links.mjs greps for this exact line, so keep its form.
+ */
+export const PLATFORM_LIVE = false;
+
+/** Where "Request early access" points while PLATFORM_LIVE is false (preselects the form topic). */
+export const earlyAccessUrl = '/contact/?topic=early-access';
+
+/**
+ * Where "Log in" and "Sign up" point once PLATFORM_LIVE is true. Override at build time with
+ * PUBLIC_APP_URL (for example to a staging platform). Always an absolute origin without a
+ * trailing slash.
  */
 export const appUrl = (
   import.meta.env.PUBLIC_APP_URL || 'https://app.direwolfcybersecurity.com'

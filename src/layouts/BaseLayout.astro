@@ -9,6 +9,7 @@ import {
   siteTagline,
   siteDescription,
   siteOrigin,
+  PLATFORM_LIVE,
   appUrl,
   contactEndpoint,
 } from '../config';
@@ -31,13 +32,20 @@ const canonical = new URL(canonicalPath, siteOrigin).href;
 const robots = SITE_LAUNCHED && !noindex ? 'index, follow' : 'noindex, nofollow';
 
 /**
+ * Social card: public/og-image.png (1200 x 630), generated with the favicons from the owner's
+ * shield logo by scripts/generate-brand-assets.mjs. Open Graph needs an absolute URL.
+ */
+const ogImage = new URL('/og-image.png', siteOrigin).href;
+const ogImageAlt = `${siteName} logo: a wolf in a navy shield, with the tagline "${siteTagline}"`;
+
+/**
  * Content Security Policy, delivered as a <meta> because GitHub Pages cannot set response
  * headers. It must stay the first thing in <head> after the charset, before any script or
  * stylesheet. Everything is self-hosted: Astro bundles every <script> and <style> into files
  * under /_astro/ (astro.config.mjs keeps them from being inlined) and the no-JavaScript menu
  * fallback is public/noscript.css, so no 'unsafe-inline' or hash sources are needed. The only
- * other origins are the platform (PUBLIC_APP_URL) and the contact endpoint
- * (PUBLIC_CONTACT_ENDPOINT, when set), which the contact form may fetch or post to.
+ * other origins are the platform (PUBLIC_APP_URL, once PLATFORM_LIVE is true) and the contact
+ * endpoint (PUBLIC_CONTACT_ENDPOINT, when set), which the contact form may fetch or post to.
  * frame-ancestors, report-uri and sandbox are ignored in a <meta> policy, so they are absent.
  * `npm run csp` (scripts/check-csp.mjs) checks the built pages against this policy.
  */
@@ -50,9 +58,9 @@ const httpsOrigin = (url: string | undefined): string | undefined => {
     return undefined;
   }
 };
-const remoteOrigins = [...new Set([httpsOrigin(appUrl), httpsOrigin(contactEndpoint)])].filter(
-  (origin): origin is string => Boolean(origin),
-);
+const remoteOrigins = [
+  ...new Set([PLATFORM_LIVE ? httpsOrigin(appUrl) : undefined, httpsOrigin(contactEndpoint)]),
+].filter((origin): origin is string => Boolean(origin));
 const remoteSources = remoteOrigins.map((origin) => ` ${origin}`).join('');
 const contentSecurityPolicy = [
   "default-src 'self'",
@@ -80,7 +88,11 @@ const contentSecurityPolicy = [
     <meta name="robots" content={robots} />
     {/* A noindex page (the 404 page) has no canonical URL to point at. */}
     {!noindex && <link rel="canonical" href={canonical} />}
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
+    <link rel="icon" href="/favicon-32x32.png" sizes="32x32" type="image/png" />
+    <link rel="icon" href="/favicon-16x16.png" sizes="16x16" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <meta name="color-scheme" content="light dark" />
     <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff" />
@@ -90,7 +102,13 @@ const contentSecurityPolicy = [
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={ogImageAlt} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image:alt" content={ogImageAlt} />
     {/* Without JavaScript the mobile menu toggle cannot work (src/components/Header.astro). */}
     <noscript>
       <link rel="stylesheet" href="/noscript.css" />
