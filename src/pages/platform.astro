@@ -54,15 +54,16 @@ const features: { icon: IconName; title: string; text: string }[] = [
   },
 ];
 
-// Claims register rows H1 (Platform form) with H2 verbatim in the same item, S1-S7, H4/H5 (short
-// forms), H8 (short form). FedRAMP appears only in the Hosting item, never in a heading. Hosting
-// and Encryption keep their full approved wording and span the grid; every other item is one
-// sentence of 15 words or fewer.
+// Claims register rows H1, H9 and H10 (Platform forms, H9 and H10 after "Roadmap:" so Terms
+// §3.3 covers them) with H2 verbatim in the same item, S1-S7, H4/H5 (short forms), H8 (short
+// form). FedRAMP appears only in the Hosting item, never in a heading. Hosting and Encryption
+// keep their full approved wording and span the grid; every other item is one sentence of 15
+// words or fewer.
 const security: { icon: IconName; title: string; text: string; wide?: boolean }[] = [
   {
     icon: 'server',
     title: 'Hosting',
-    text: 'The platform is built to run entirely in AWS GovCloud (US), on FedRAMP High authorized infrastructure, with private networks, a web application firewall, and controlled egress. It is not yet in service. Direwolf itself is not FedRAMP certified or authorized. FedRAMP certification applies to the AWS infrastructure we build on, not to the Direwolf Platform.',
+    text: 'The platform is built to run on AWS in the US West (Oregon) Region, with backups in US East (Ohio), using private networks, a web application firewall, and controlled egress. AWS reports both Regions at the FedRAMP Moderate baseline. It is not yet in service. Roadmap: we plan to move it to AWS GovCloud (US) as we onboard customers who need it, and we intend to pursue FedRAMP authorization for the Direwolf Platform as our customers require it. Direwolf itself is not FedRAMP certified or authorized. AWS’s FedRAMP certification belongs to AWS, not to the Direwolf Platform.',
     wide: true,
   },
   {
@@ -83,7 +84,7 @@ const security: { icon: IconName; title: string; text: string; wide?: boolean }[
   {
     icon: 'brain-circuit',
     title: 'AI SOC',
-    text: 'AI triage is designed to run on Amazon Bedrock inside the same GovCloud boundary.',
+    text: 'AI triage is designed to run on Amazon Bedrock in AWS US Regions.',
   },
   {
     icon: 'scroll-text',

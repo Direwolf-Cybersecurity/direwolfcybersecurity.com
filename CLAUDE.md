@@ -23,8 +23,19 @@ the site and platform fit together.
 - **Accuracy of claims:** every factual or compliance claim on the site must appear in
   `docs/claims-register.md` with its status (true today / planned / pursuing) and evidence.
   Never write "certified", "authorized", "compliant" or "FedRAMP" about Direwolf unless the
-  register says it is true today. Hosting is described as "AWS GovCloud (US), FedRAMP High
-  authorized infrastructure". **Owner facts (2026-10-23):** the business is an SBA
+  register says it is true today. **Hosting (owner decision 2026-10-25, platform ADR 0021):** the
+  Platform is described as built to run on AWS in the US West (Oregon) Region, with backups in
+  US East (Ohio), Regions AWS reports at the FedRAMP Moderate baseline (AWS's label:
+  "FedRAMP Certified Class C (formerly Moderate baseline)"), always with the row H2 disclaimer;
+  never say the infrastructure beneath the Platform carries AWS's certification (AWS's FedRAMP
+  services-in-scope page has no row for Fargate or Elastic Load Balancing, row H1). AI inference
+  is Amazon Bedrock in AWS US Regions. Only under a "Roadmap" label: AWS GovCloud (US) as a
+  planned move ("We plan to move the Platform to AWS GovCloud (US) as we onboard customers who
+  need it", row H9, with no ITAR or Impact Level example) and FedRAMP for Direwolf as an
+  intention ("We intend to pursue FedRAMP authorization for the Direwolf Platform as our
+  customers require it", row H10). Never "FedRAMP In Process", "FedRAMP Ready", or FedRAMP
+  "authorized/certified/compliant" about Direwolf, and never "FIPS certified" or "FIPS
+  compliant" (rows H1-H10). **Owner facts (2026-10-23):** the business is an SBA
   VetCert-certified Service-Disabled Veteran-Owned Small Business (SDVOSB), so the site may
   say "Service-Disabled Veteran-Owned Small Business (SDVOSB), SBA certified"; keep the
   certificate reference in the claims register and follow SBA's logo-usage rules if the
@@ -35,10 +46,12 @@ the site and platform fit together.
   Domain registrar: Namecheap (DNS instructions must use Namecheap's Advanced DNS record
   format: Type, Host, Value, TTL).
   Do not invent names, numbers, customers, certifications, or testimonials.
-- **Legal pages** are published. Terms of Service, Privacy Policy, Acceptable Use Policy and
-  Subprocessors are at `v2026.10.24.2` (effective 2026-10-24, MSSP scope: no NinjaOne or
-  endpoint management, penetration testing added); Cookie Notice, Accessibility and EEO are at
-  `v2026.10.23`. Attorney review has not happened yet and is an open post-launch gate (G1 in
+- **Legal pages** are published. Terms of Service, Privacy Policy and Subprocessors are at
+  `v2026.10.25` (effective 2026-10-25: hosting on commercial AWS US West (Oregon), backups in
+  US East (Ohio), AI inference in AWS US Regions); the Acceptable Use Policy is at `v2026.10.24.2`
+  (effective 2026-10-24, MSSP scope: no NinjaOne or endpoint management, penetration testing
+  added); Cookie Notice, Accessibility and EEO are at `v2026.10.23`; the Security page policy is
+  at `v2026.10.25`. Attorney review has not happened yet and is an open post-launch gate (G1 in
   docs/launch-runbook.md). Each document is versioned `vYYYY.MM.DD` (a same-day re-issue adds
   `.N`, N from 2) in its frontmatter and shown with its version and "Last updated" date; the
   platform records which version a user accepted, so every change to a published document

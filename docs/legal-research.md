@@ -8,6 +8,12 @@ small and mid-size businesses and to DoD contractors, with a static marketing si
 GitHub Pages (`www.direwolfcybersecurity.com`) and a separate platform
 (`app.direwolfcybersecurity.com`) hosted in AWS GovCloud (US).
 
+**Note 2026-10-25 (platform ADR 0021).** The platform is now to be hosted on commercial AWS, US
+West (Oregon) `us-west-2`, with backups in US East (Ohio) `us-east-2`, until customers need AWS
+GovCloud (US). Statements below that assume GovCloud or FedRAMP High are kept as researched on
+2026-10-23 and annotated where they occur; the current wording is in `docs/claims-register.md`
+(rows H1 and H6 to H10) and in the legal documents at `v2026.10.25`.
+
 How to read this document:
 
 - **Required** = a statute, regulation or contract that applies to Direwolf today (or will at
@@ -139,6 +145,11 @@ threshold but exempts SBA-defined small businesses from most obligations (UNVERI
 pass; confirm if Texas customers are targeted).
 
 #### 1.1.4 What the privacy policy must actually disclose for this stack
+
+**Note 2026-10-25 (platform ADR 0021).** Where this section says GovCloud, the platform is now to
+be hosted in AWS US West (Oregon), with backups in AWS US East (Ohio), and AI inference runs in
+AWS US Regions (Bedrock's US inference profile); the Privacy Policy says so from `v2026.10.25`.
+AWS's statements on training and model providers [S15], [S16] are not specific to GovCloud.
 
 Specific facts to disclose, because they are true today or at launch:
 
@@ -571,6 +582,10 @@ attorney, not the agreement.
 
 ### 4.2 Subprocessor list and change notice
 
+**Note 2026-10-25 (platform ADR 0021).** The AWS row below assumed GovCloud. The Subprocessors
+page (`v2026.10.25`) now gives its location as AWS US West (Oregon), with backups in AWS US East
+(Ohio), and AI inference on Amazon Bedrock in AWS US Regions.
+
 Publish `/legal/subprocessors` and incorporate it by reference, with notice of additions (email
 to org admins, 30 days) and a termination right if the customer objects on reasonable
 security grounds. Today's list, with the function each serves:
@@ -679,6 +694,13 @@ Add the matching representation to the sign-up attestation (§2.3 item 8) and th
   "citizens only."
 
 ### 4.6 DFARS 252.204-7012 flow-down awareness and the 72-hour DIBNet context
+
+**Note 2026-10-25 (platform ADR 0021).** The "FedRAMP wording" bullet at the end of this section
+assumed GovCloud. The platform is now built for AWS US West (Oregon), which AWS describes as
+"FedRAMP Certified Class C (formerly Moderate baseline)" ([S65], re-read 2026-10-25); the site
+says only that AWS reports the Regions at the FedRAMP Moderate baseline (register row H1), never
+that the infrastructure beneath the Platform carries that certification, and never "Direwolf is
+FedRAMP authorized".
 
 - **What 7012 does.** Requires "adequate security" (NIST SP 800-171 Rev 2 per the May 2, 2024
   class deviation [S47]) on contractor systems that process covered defense information; cloud
@@ -880,6 +902,11 @@ and treat tax as "plus applicable taxes" in the Customer Agreement.
 
 ### 6.1 FTC truth-in-advertising basics and the cybersecurity enforcement history
 
+**Note 2026-10-25 (platform ADR 0021).** In "What this means for the Direwolf site" below, read
+the hosting phrase as "built to run on AWS in the US West (Oregon) Region" with "AWS reports both
+Regions at the FedRAMP Moderate baseline" (register row H1); GovCloud is now described only as a
+planned move, under a "Roadmap" label (row H9).
+
 - **Standard.** Under the FTC Act, "advertising must be truthful and non-deceptive," not
   unfair, and "the law requires that advertisers have proof before the ad runs" (substantiation).
   An ad is deceptive if it is "likely to mislead consumers acting reasonably under the
@@ -980,6 +1007,12 @@ incentive given.
   page. Publish at `/legal/eeo` (or on About) and link from the footer.
 
 ### 6.5 Compliance-claim wording (consolidated)
+
+**Note 2026-10-25 (platform ADR 0021).** The Hosting row below is superseded. The current wording
+is register row H1 ("built to run on AWS in the US West (Oregon) Region, ... AWS reports both
+Regions at the FedRAMP Moderate baseline"), with, under a "Roadmap" label, the GovCloud move
+planned (row H9) and the intention to pursue FedRAMP authorization for the Direwolf Platform as
+customers require it (row H10).
 
 | Topic           | Say                                                                                                                                                               | Do not say                                                                                                          |
 | --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |

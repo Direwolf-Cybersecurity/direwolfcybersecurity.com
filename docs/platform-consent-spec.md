@@ -3,8 +3,8 @@
 **For:** the platform team (`direwolf-platform`), implementing sign-up, purchase and login
 consent for PLAN.md §14.4.
 **From:** the website workstream, which owns the legal documents.
-**Status:** draft for attorney review, 2026-10-23; versions and sample texts updated 2026-10-24
-for the `v2026.10.24.2` documents (§0.1). The texts below are the recommended
+**Status:** draft for attorney review, 2026-10-23; versions and sample texts updated 2026-10-25
+for the `v2026.10.25` Terms of Service, Privacy Policy and Subprocessors (§0.1). The texts below are the recommended
 wording; counsel must approve the banner and the clickwrap labels before launch
 (NIST SP 800-53 AC-8 guidance has legal counsel review the banner; the contract-formation
 cases in `docs/legal-research.md` §2 turn on exactly how these screens look).
@@ -18,11 +18,11 @@ section of `docs/legal-requirements-checklist.md`.
 
 | Slug                      | Document                                                          | Current version                                            | Canonical URL                                               |
 | ------------------------- | ----------------------------------------------------------------- | ---------------------------------------------------------- | ----------------------------------------------------------- |
-| `terms`                   | Terms of Service                                                  | `v2026.10.24.2`                                            | https://www.direwolfcybersecurity.com/legal/terms/          |
+| `terms`                   | Terms of Service                                                  | `v2026.10.25`                                              | https://www.direwolfcybersecurity.com/legal/terms/          |
 | `aup`                     | Acceptable Use Policy                                             | `v2026.10.24.2`                                            | https://www.direwolfcybersecurity.com/legal/acceptable-use/ |
-| `privacy`                 | Privacy Policy                                                    | `v2026.10.24.2`                                            | https://www.direwolfcybersecurity.com/legal/privacy/        |
-| `subprocessors`           | Subprocessors (incorporated by reference; no separate acceptance) | `v2026.10.24.2`                                            | https://www.direwolfcybersecurity.com/legal/subprocessors/  |
-| `banner`                  | System-use notice (text in §4 below)                              | `v2026.10.24.2`                                            | n/a (served by the platform)                                |
+| `privacy`                 | Privacy Policy                                                    | `v2026.10.25`                                              | https://www.direwolfcybersecurity.com/legal/privacy/        |
+| `subprocessors`           | Subprocessors (incorporated by reference; no separate acceptance) | `v2026.10.25`                                              | https://www.direwolfcybersecurity.com/legal/subprocessors/  |
+| `banner`                  | System-use notice (text in §4 below)                              | `v2026.10.25`                                              | n/a (served by the platform)                                |
 | `prohibited-data`         | Prohibited-data attestation (text in §1 below)                    | `v2026.10.23`                                              | n/a (part of sign-up)                                       |
 | `vendor-eula:sentinelone` | SentinelOne Terms of Service (vendor document)                    | as published by the vendor; record its "last updated" date | https://www.sentinelone.com/legal/terms-of-service/         |
 
@@ -47,16 +47,17 @@ day (`.10`).
 
 ### 0.1 Version history
 
-No one has accepted any version before `v2026.10.24.2`: each was live for a few hours at most
-and the Platform is not in service, so no consent record names one and no re-acceptance notice is due.
-Pin `v2026.10.24.2` directly.
+No one has accepted any version yet: the Platform is not in service, so no consent record names
+one and no re-acceptance notice is due. Pin the current versions in §0 directly.
 
-| Slug                                       | Version                                                                  | Live                                 | Change                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-| ------------------------------------------ | ------------------------------------------------------------------------ | ------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `terms`, `aup`, `privacy`, `subprocessors` | `v2026.10.23`                                                            | from the launch on 2026-10-23        | Launch texts.                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-| `terms`, `privacy`, `subprocessors`        | `v2026.10.24`                                                            | 2026-10-24, a few hours              | "The Platform is being brought into service" note beside the hosting statements.                                                                                                                                                                                                                                                                                                                                                                                     |
-| `terms`, `aup`, `privacy`, `subprocessors` | `v2026.10.24.2`                                                          | from 2026-10-24                      | Owner direction 2026-10-24 (MSSP scope): endpoint management and NinjaOne removed everywhere; penetration testing added (Terms §§2, 3.1, 3.6, 5, 6.1, 16.3, 18.2; AUP §§1, 4(5), 5.4; Privacy §§2, 3.4, 4); "a Direwolf analyst reviews" and "human analyst review" replaced with "monitored by a team of security professionals" wording, with no staffing level or hours promised (Terms §3.1); "compliance guidance" renamed "compliance readiness" in the Terms. |
-| `banner`                                   | `v2026.10.23`, then `v2026.10.24` (the platform's per-document citation) | not served (Platform not in service) | Replaced by `v2026.10.24.2`, which cites the `v2026.10.24.2` documents (§4.1, §4.2).                                                                                                                                                                                                                                                                                                                                                                                 |
+| Slug                                       | Version                                                                  | Live                                                                                                     | Change                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| ------------------------------------------ | ------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `terms`, `aup`, `privacy`, `subprocessors` | `v2026.10.23`                                                            | from the launch on 2026-10-23                                                                            | Launch texts.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| `terms`, `privacy`, `subprocessors`        | `v2026.10.24`                                                            | 2026-10-24, a few hours                                                                                  | "The Platform is being brought into service" note beside the hosting statements.                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| `terms`, `aup`, `privacy`, `subprocessors` | `v2026.10.24.2`                                                          | from 2026-10-24 (the AUP is still current; the Terms, Privacy Policy and Subprocessors until 2026-10-25) | Owner direction 2026-10-24 (MSSP scope): endpoint management and NinjaOne removed everywhere; penetration testing added (Terms §§2, 3.1, 3.6, 5, 6.1, 16.3, 18.2; AUP §§1, 4(5), 5.4; Privacy §§2, 3.4, 4); "a Direwolf analyst reviews" and "human analyst review" replaced with "monitored by a team of security professionals" wording, with no staffing level or hours promised (Terms §3.1); "compliance guidance" renamed "compliance readiness" in the Terms.                                                                                |
+| `terms`, `privacy`, `subprocessors`        | `v2026.10.25`                                                            | from 2026-10-25                                                                                          | Hosting on commercial AWS (platform ADR 0021): US West (Oregon), with backups in US East (Ohio), and AI inference on Amazon Bedrock in AWS US Regions (Privacy §§2, 5, 6, 7, 9; Terms §12; the Subprocessors AWS row). Also in Privacy §7: the FIPS-endpoint statement narrowed to the Platform's application and "wherever AWS provides them" (register H6, POAM-2026-021), and email to the organization's users and notification recipients added to the flows that leave AWS US Regions (register H6). The AUP is unchanged at `v2026.10.24.2`. |
+| `banner`                                   | `v2026.10.23`, then `v2026.10.24` (the platform's per-document citation) | not served (Platform not in service)                                                                     | Replaced by `v2026.10.24.2`, which cites the `v2026.10.24.2` documents (§4.1, §4.2).                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| `banner`                                   | `v2026.10.24.2`                                                          | not served (Platform not in service)                                                                     | Replaced by `v2026.10.25`, which cites the `v2026.10.25` Terms of Service and Privacy Policy and the `v2026.10.24.2` Acceptable Use Policy (§4.1, §4.2).                                                                                                                                                                                                                                                                                                                                                                                            |
 
 ## 1. Sign-up screen (clickwrap)
 
@@ -67,7 +68,7 @@ the notice from the button):
 2. **Checkbox A (unchecked, required).** Label, with each document name an underlined link in
    the link color that opens the versioned document in a new tab:
 
-   > I have read and agree to the Direwolf Cybersecurity **[Terms of Service](https://www.direwolfcybersecurity.com/legal/terms/)** (v2026.10.24.2), **[Acceptable Use Policy](https://www.direwolfcybersecurity.com/legal/acceptable-use/)** (v2026.10.24.2) and **[Privacy Policy](https://www.direwolfcybersecurity.com/legal/privacy/)** (v2026.10.24.2).
+   > I have read and agree to the Direwolf Cybersecurity **[Terms of Service](https://www.direwolfcybersecurity.com/legal/terms/)** (v2026.10.25), **[Acceptable Use Policy](https://www.direwolfcybersecurity.com/legal/acceptable-use/)** (v2026.10.24.2) and **[Privacy Policy](https://www.direwolfcybersecurity.com/legal/privacy/)** (v2026.10.25).
 
 3. **Checkbox B (unchecked, required).** The prohibited-data attestation:
 
@@ -121,7 +122,7 @@ Vendor partner agreements may dictate their own required language; conform when 
   (`https://www.direwolfcybersecurity.com/legal/privacy/`) before enabling consent collection.
 - On every Checkout Session: `consent_collection[terms_of_service] = required`, and
   `custom_text[terms_of_service_acceptance][message]` =
-  _"I agree to the [Direwolf Cybersecurity Terms of Service](https://www.direwolfcybersecurity.com/legal/terms/) (v2026.10.24.2)."_
+  _"I agree to the [Direwolf Cybersecurity Terms of Service](https://www.direwolfcybersecurity.com/legal/terms/) (v2026.10.25)."_
 - Do **not** enable promotional-email consent collection unless marketing email is launched;
   if enabled, it must be its own checkbox (Stripe requires separate consent).
 - Enable the refund-policy display in Checkout settings and publish the refund terms (Terms
@@ -138,7 +139,7 @@ Vendor partner agreements may dictate their own required language; conform when 
 
 Shown **before** the email and password fields, on every sign-in (PLAN.md §14.4), retained on
 screen until the user activates **"I acknowledge"**, which reveals the credential fields.
-Record `document_slug = banner`, `document_version = v2026.10.24.2`, `method = login_banner`
+Record `document_slug = banner`, `document_version = v2026.10.25`, `method = login_banner`
 on every acknowledgement (cheap, and exactly the evidence an assessor asks for under
 AC.L2-3.1.9).
 
@@ -167,7 +168,7 @@ that this is **not a U.S. Government system**, the **prohibited-data** reminder,
 > - You will not upload Controlled Unclassified Information, export-controlled technical data
 >   (ITAR/EAR), protected health information or payment card data unless your agreement with
 >   Direwolf expressly permits it.
-> - Your use is governed by the [Terms of Service](https://www.direwolfcybersecurity.com/legal/terms/) (v2026.10.24.2), [Acceptable Use Policy](https://www.direwolfcybersecurity.com/legal/acceptable-use/) (v2026.10.24.2) and [Privacy Policy](https://www.direwolfcybersecurity.com/legal/privacy/) (v2026.10.24.2).
+> - Your use is governed by the [Terms of Service](https://www.direwolfcybersecurity.com/legal/terms/) (v2026.10.25), [Acceptable Use Policy](https://www.direwolfcybersecurity.com/legal/acceptable-use/) (v2026.10.24.2) and [Privacy Policy](https://www.direwolfcybersecurity.com/legal/privacy/) (v2026.10.25).
 >
 > **[ I acknowledge ]**
 
@@ -176,7 +177,8 @@ that this is **not a U.S. Government system**, the **prohibited-data** reminder,
 > Private system of Direwolf Cybersecurity. Authorized use only. Activity is monitored and
 > recorded. Unauthorized use is prohibited and may be prosecuted. This is not a U.S.
 > Government system. Do not upload CUI, ITAR/EAR data, PHI or card data. By continuing you
-> accept the Terms of Service, Acceptable Use Policy and Privacy Policy (v2026.10.24.2).
+> accept the Terms of Service (v2026.10.25), Acceptable Use Policy (v2026.10.24.2) and Privacy
+> Policy (v2026.10.25).
 > **[ I acknowledge ]**
 
 ### 4.3 Rules for the banner
@@ -246,8 +248,8 @@ to you. See our Privacy Policy." That is notice, not a contract, and is sufficie
 4. Whether an `account_owner` role (officer-level) is needed in addition to `org_admin` for
    acceptance of material changes (platform; PLAN.md Appendix A).
 5. Confirm the Colorado contract limitation period for consent-record retention (attorney).
-6. Platform: accept the `vYYYY.MM.DD.N` form in `VERSION_RE`, pin the `v2026.10.24.2` documents and
-   banner, and recompute each pinned `sha256` from the website's sources (§0, §0.1).
+6. Platform: accept the `vYYYY.MM.DD.N` form in `VERSION_RE`, pin the current documents and banner
+   (`v2026.10.25` Terms, Privacy Policy, Subprocessors and banner; `v2026.10.24.2` AUP), and recompute each pinned `sha256` from the website's sources (§0, §0.1).
 7. Penetration testing (Terms §3.6, AUP §5.4): no engagement starts until rules of engagement signed
    for it and the customer's written authorization listing every target are on file. These are
    engagement documents, not website documents; if the platform records their acceptance, it uses

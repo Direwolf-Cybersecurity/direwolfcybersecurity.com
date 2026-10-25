@@ -8,9 +8,12 @@ const description =
   'Where Direwolf Cybersecurity stands on NIST SP 800-171 and CMMC Level 2, where the Direwolf Platform is built to run and how its data will be encrypted, and what we do not claim.';
 
 /** Update when this page is re-checked against docs/claims-register.md. */
-const lastReviewed = { iso: '2026-10-24', label: 'October 24, 2026' };
+const lastReviewed = { iso: '2026-10-25', label: 'October 25, 2026' };
 
-const posture = [
+// Claims register rows C1, C2, H1 (long form) with H2, H4/H5 with H6 (first sentence), and
+// H9 with L7 (export-controlled data only) and H10 with H2's first sentence, under a "Roadmap"
+// title so Terms §3.3 covers them. `wide` spans the grid.
+const posture: { claim: string; meaning: string; wide?: boolean }[] = [
   {
     claim: 'Aligned to NIST SP 800-171',
     meaning:
@@ -22,14 +25,20 @@ const posture = [
       'Direwolf is preparing for a CMMC Level 2 assessment. In July 2026 the Department of War suspended the requirement for third-party (C3PAO) Level 2 assessments while it reviews the CMMC program; self-assessment requirements remain in force. We will update this page when our status changes. Until an assessment is complete and recorded, we do not describe Direwolf as CMMC certified.',
   },
   {
-    claim: 'Built for AWS GovCloud (US)',
+    claim: 'Built for AWS US West (Oregon)',
     meaning:
-      'The Direwolf Platform is built to run in AWS GovCloud (US) and is not yet in service. AWS states that AWS GovCloud (US) is FedRAMP Certified at Class D (formerly the FedRAMP High baseline), so when the Platform is in service, the infrastructure beneath it carries that certification. Direwolf itself is not FedRAMP certified or authorized. FedRAMP certification applies to the AWS infrastructure we build on, not to the Direwolf Platform.',
+      'The Direwolf Platform is built to run on Amazon Web Services in the US West (Oregon) Region, with backups in US East (Ohio), and is not yet in service. AWS states that its US East and US West Regions are FedRAMP Certified at Class C (formerly the FedRAMP Moderate baseline). Direwolf itself is not FedRAMP certified or authorized. AWS’s FedRAMP certification belongs to AWS, not to the Direwolf Platform.',
   },
   {
     claim: 'Designed for FIPS 140-validated TLS and key management',
     meaning:
-      'When the Platform is in service, data in transit will be protected with TLS 1.2 or higher, terminated with a FIPS 140-validated cryptographic module (AWS-LC, CMVP certificate #4631), and data at rest (databases, object storage, queues, secrets and logs) will be encrypted with customer-managed keys held in AWS KMS hardware security modules validated to FIPS 140-3 Level 3 (CMVP certificate #4884), with automatic key rotation. We make no FIPS claim about any other component.',
+      'When the Platform is in service, data in transit will be protected with TLS 1.2 or higher, terminated with a FIPS 140-validated cryptographic module (AWS-LC, CMVP certificate #4631), and data at rest (databases, object storage, queues, secrets and logs) will be encrypted with customer-managed keys held in AWS KMS hardware security modules validated to FIPS 140-3 Level 3 (CMVP certificate #4884), with automatic key rotation. The Platform’s application is designed to call AWS services only through AWS FIPS endpoints, which use FIPS 140-validated cryptographic modules, wherever AWS provides them. We make no FIPS claim about any other component.',
+  },
+  {
+    claim: 'Roadmap: AWS GovCloud (US)',
+    meaning:
+      'We plan to move the Platform to AWS GovCloud (US) as we onboard customers who need it. The Platform is not approved to receive export-controlled technical data (ITAR or EAR). We intend to pursue FedRAMP authorization for the Direwolf Platform as our customers require it. Direwolf itself is not FedRAMP certified or authorized.',
+    wide: true,
   },
 ];
 
@@ -51,7 +60,7 @@ const notClaimed = [
   <Section id="posture" title="Our posture">
     <dl class="mt-8 grid gap-6 md:grid-cols-2">
       {posture.map((item) => (
-        <div class="card">
+        <div class:list={['card', item.wide && 'md:col-span-2']}>
           <dt class="text-lg font-semibold">{item.claim}</dt>
           <dd class="text-muted mt-3 text-sm leading-relaxed">{item.meaning}</dd>
         </div>
@@ -63,17 +72,17 @@ const notClaimed = [
     <div class="prose mt-6">
       <p>
         When you use Direwolf, three parties share the security of the service. AWS is responsible
-        for the physical and virtual infrastructure of GovCloud and for the FIPS-validated
-        cryptographic modules we rely on. Direwolf is responsible for everything inside the platform
-        boundary: tenant isolation, identity and multi-factor authentication, session controls,
-        audit logging, configuration and vulnerability management, encryption configuration,
-        incident handling for the platform, and the guardrails around the AI SOC. You remain
-        responsible for your own people and endpoints: who gets an account and which role, removing
-        leavers promptly, protecting MFA devices, installing sensors only on endpoints you own,
-        reviewing your organization&rsquo;s audit log, acting on notifications, and the
-        organizational policies that no technology provides. Our customer responsibility matrix,
-        which we are completing as controls are implemented, will spell this out requirement by
-        requirement.
+        for the physical and virtual infrastructure of the AWS Regions the Platform is built to run
+        in and for the FIPS-validated cryptographic modules we rely on. Direwolf is responsible for
+        everything inside the platform boundary: tenant isolation, identity and multi-factor
+        authentication, session controls, audit logging, configuration and vulnerability management,
+        encryption configuration, incident handling for the platform, and the guardrails around the
+        AI SOC. You remain responsible for your own people and endpoints: who gets an account and
+        which role, removing leavers promptly, protecting MFA devices, installing sensors only on
+        endpoints you own, reviewing your organization&rsquo;s audit log, acting on notifications,
+        and the organizational policies that no technology provides. Our customer responsibility
+        matrix, which we are completing as controls are implemented, will spell this out requirement
+        by requirement.
       </p>
     </div>
     <p class="mt-8">

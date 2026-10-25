@@ -17,7 +17,7 @@ const expiresLabel = new Intl.DateTimeFormat('en-US', {
 }).format(new Date(securityTxtExpires));
 
 /** Bump when this policy's wording changes; the platform may record acknowledgements of it. */
-const policyVersion = 'v2026.10.24.2';
+const policyVersion = 'v2026.10.25';
 ---
 
 <BaseLayout title="Security and responsible disclosure" description={description}>
@@ -100,8 +100,9 @@ const policyVersion = 'v2026.10.24.2';
       </ul>
       <p>
         The website is hosted separately from the Direwolf Platform and does not store customer
-        data. The Platform is built to run in AWS GovCloud (US) and is not yet in service; how it is
-        built and protected is described on the <a href="/platform/#security">Platform</a> page.
+        data. The Platform is built to run on Amazon Web Services in the US West (Oregon) Region and
+        is not yet in service; how it is built and protected is described on the{' '}
+        <a href="/platform/#security">Platform</a> page.
       </p>
     </div>
   </Section>

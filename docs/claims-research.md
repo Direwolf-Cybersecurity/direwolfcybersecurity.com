@@ -120,6 +120,14 @@ register is the control that keeps public statements consistent with
 
 ## 2. FedRAMP
 
+**Note 2026-10-25 (platform ADR 0021).** Hosting moved to commercial AWS, US West (Oregon)
+`us-west-2`, with backups in US East (Ohio) `us-east-2`, until customers need AWS GovCloud (US).
+AWS's FedRAMP page, re-read on 2026-10-25, says "AWS US East-West (Northern Virginia, Ohio,
+Oregon, Northern California) is FedRAMP Certified Class C (formerly Moderate baseline)". The
+GovCloud and Class D statements in this section are kept as researched on 2026-10-23 and now
+describe only the planned move (claims register row H9). Current wording: register rows H1 to
+H10.
+
 ### 2.1 Program vocabulary after the Consolidated Rules for 2026
 
 - fedramp.gov now uses "FedRAMP Certified" throughout and describes the Marketplace as
@@ -188,6 +196,14 @@ email branding@gsa.gov with the exact compliance-page paragraph and keep the rep
 
 ### 2.3 What AWS says, and what it does not say
 
+**Note 2026-10-25 (platform ADR 0021).** The Platform is now built for commercial AWS
+`us-west-2`, which AWS reports at FedRAMP Class C (formerly Moderate). On the services-in-scope
+page (last updated 2026-10-15, re-read 2026-10-25) the "FedRAMP Class C (formerly Moderate
+baseline) (East/West)" column is checked for the services listed below, Amazon Bedrock included;
+AWS Fargate and Elastic Load Balancing have no row. Commercial Regions support DoD Impact Level 2
+only (ADR 0021), so the GovCloud IL2, IL4 and IL5 bullet below no longer describes the Platform's
+hosting (register row H3, retired 2026-10-25).
+
 - "AWS GovCloud (US) is FedRAMP Certified Class D (formerly High baseline)"; US East/West
   "is FedRAMP Certified Class C (formerly Moderate baseline)"; "FedRAMP Authorized" was
   "updated to 'FedRAMP Certified'"; the JAB P-ATO "is a legacy designation superseded by
@@ -226,6 +242,11 @@ ITAR compliance is an export-control posture (US-persons staffing, data handling
 Direwolf has not established as a policy; do not claim it.
 
 ### 2.4 Deployment reality check
+
+**Note 2026-10-25 (platform ADR 0021).** The gate is now production applied in `us-west-2`
+(backups in `us-east-2`). `PLATFORM/infra/README.md` now says "Everything here validates
+offline; nothing has been applied yet.", and ADR 0003 is superseded by ADR 0021. The quotations
+below are kept as researched.
 
 `infra/README.md` in the platform repo: "nothing has been applied yet because the GovCloud
 account does not exist", and ADR 0003: "The GovCloud account does not exist yet". The
@@ -644,6 +665,10 @@ or stores card numbers." Not approved: "PCI certified", "PCI compliant platform"
 
 ## 11. The website itself
 
+**Note 2026-10-25 (platform ADR 0021).** Read "the GovCloud boundary" below as the platform's
+AWS environment in `us-west-2`; ADR 0003 is superseded by ADR 0021. The rule itself is unchanged
+(register row W1).
+
 - The website is on GitHub Pages, outside the GovCloud boundary (PLAN.md §14.1; ADR 0003
   lists public DNS and CI as the only things outside the boundary; the marketing site holds
   no customer data). Nothing on the site may imply the _website_ is in GovCloud or covered
@@ -657,6 +682,9 @@ or stores card numbers." Not approved: "PCI certified", "PCI compliant platform"
 ---
 
 ## 12. Open items to close before launch (also listed in the register)
+
+**Note 2026-10-25 (platform ADR 0021).** Item 1 now reads "production applied in `us-west-2`"
+(backups in `us-east-2`); the current list is the register's launch-gates table.
 
 1. Production applied in `us-gov-west-1`; ALB FIPS policy, KMS keys and FIPS endpoints
    confirmed live (converts the hosting/FIPS/encryption rows to "true today").

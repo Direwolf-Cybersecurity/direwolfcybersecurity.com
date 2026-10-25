@@ -1,7 +1,7 @@
 ---
 title: Privacy Policy
-version: v2026.10.24.2
-effectiveDate: 2026-10-24
+version: v2026.10.25
+effectiveDate: 2026-10-25
 summary: How Direwolf Cybersecurity collects, uses, shares and protects personal information on this website and in the Direwolf Platform, and the choices and rights you have.
 status: published
 order: 10
@@ -27,8 +27,8 @@ Direwolf provides services to organizations, not to individuals. When you use th
 - We collect only what we need to respond to you, to run and secure the Platform, to deliver the services our customers order, to bill customers, and to meet our legal obligations.
 - We do not sell personal information, and we do not use it for advertising.
 - This Website sets no non-essential cookies (today, no cookies at all) and uses no analytics, tracking pixels or third-party scripts. The Platform uses strictly necessary cookies only. See our [Cookie Notice](/legal/cookies/).
-- Customer data is stored in the United States, in AWS GovCloud (US). The Platform is being brought into service; these statements describe how customer data is handled once you use it.
-- The AI that analyzes security alerts runs inside the same AWS GovCloud (US) environment. Your alert data is not sent to third-party AI services and is not used to train models.
+- Customer data is stored in the United States, in AWS US West (Oregon), with backups in AWS US East (Ohio). The Platform is being brought into service; these statements describe how customer data is handled once you use it.
+- The AI that analyzes security alerts runs on Amazon Bedrock, an AWS service, in AWS US Regions. Your alert data is not sent to third-party AI services and is not used to train models.
 - Our subprocessors are listed on the [Subprocessors](/legal/subprocessors/) page.
 
 ## 3. Information we collect
@@ -85,7 +85,7 @@ We do not sell personal information, do not share it for cross-context behaviora
 
 ## 5. AI processing
 
-The Direwolf AI SOC uses a large language model to analyze security alerts. AI analysis runs on Amazon Bedrock inside the same AWS GovCloud (US) boundary as the rest of the Platform. Your alert data is not sent to third-party AI services and is not used to train models. Amazon Web Services states that content processed through Amazon Bedrock is not used to improve the underlying models and is not shared with model providers.
+The Direwolf AI SOC uses a large language model to analyze security alerts. AI analysis runs on Amazon Bedrock in AWS US Regions: Bedrock's US inference profile processes each request in US East (N. Virginia), US East (Ohio) or US West (Oregon). Your alert data is not sent to third-party AI services and is not used to train models. Amazon Web Services states that content processed through Amazon Bedrock is not used to improve the underlying models and is not shared with model providers.
 
 Every automated verdict is labeled as automated in the Platform ("Direwolf SOC (automated)"). The AI SOC's work is monitored by a team of security professionals, who take the cases it cannot decide.
 
@@ -93,7 +93,7 @@ Every automated verdict is labeled as automated in the Platform ("Direwolf SOC (
 
 We share personal information only as described here.
 
-**Subprocessors.** Service providers that process information on our behalf, under contracts that limit their use of it and require appropriate security. The current list, with what each one does for us and where it processes data, is on the [Subprocessors](/legal/subprocessors/) page. In summary: Amazon Web Services (hosting, storage, email delivery and AI inference in AWS GovCloud (US)); Stripe (payment processing and subscription billing); SentinelOne (the endpoint protection product whose licenses Direwolf resells, which receives data from your endpoints directly); and GitHub (hosting of this Website only).
+**Subprocessors.** Service providers that process information on our behalf, under contracts that limit their use of it and require appropriate security. The current list, with what each one does for us and where it processes data, is on the [Subprocessors](/legal/subprocessors/) page. In summary: Amazon Web Services (hosting, storage, email delivery and AI inference in AWS US Regions); Stripe (payment processing and subscription billing); SentinelOne (the endpoint protection product whose licenses Direwolf resells, which receives data from your endpoints directly); and GitHub (hosting of this Website only).
 
 **Third-party software vendors.** When your organization buys a resold product such as SentinelOne, that vendor also has a direct relationship with your organization under its own end user license agreement, and your endpoints send data to the vendor's cloud directly. The vendor's privacy terms govern its own use of that data, including any de-identified "system data" or "usage data" the vendor's terms permit it to keep.
 
@@ -109,7 +109,7 @@ We do not share personal information with anyone else, and we never sell it.
 
 ## 7. Where information is stored
 
-Customer data is stored in the United States, in AWS GovCloud (US-West), with backups in AWS GovCloud (US-East). Our services call AWS only through FIPS endpoints, and customer data does not leave the AWS GovCloud (US) boundary except to the endpoint protection vendor's cloud that your sensors already report to, and to our payment processor for billing. The Platform is being brought into service; these statements describe how customer data is handled once you use it.
+Customer data is stored in the United States, in AWS US West (Oregon), with backups in AWS US East (Ohio), and AI analysis of alerts runs in AWS US Regions (section 5). The Platform's application is designed to call AWS services only through AWS FIPS endpoints wherever AWS provides them, and customer data does not leave AWS US Regions except to the endpoint protection vendor's cloud that your sensors already report to, to our payment processor for billing, and in email to your organization's users and the notification recipients it designates. The Platform is being brought into service; these statements describe how customer data is handled once you use it.
 
 Contact form messages and email are held in our business email and support systems in the United States.
 
@@ -133,7 +133,7 @@ Where we keep information after an account closes, we keep it only for the purpo
 
 In plain language, this is how the Platform protects your data. A fuller description is on our [Platform](/platform/#security) page, and our compliance status, including what we do and do not claim, is on our [Compliance](/compliance/) page.
 
-- **Hosting.** The Platform runs in AWS GovCloud (US), with customer data stored in the United States. The Platform is being brought into service; these statements describe how customer data is handled once you use it.
+- **Hosting.** The Platform runs on Amazon Web Services in the US West (Oregon) Region, with customer data stored in the United States. The Platform is being brought into service; these statements describe how customer data is handled once you use it.
 - **Encryption.** Data in transit is protected with TLS 1.2 or higher, and data at rest (databases, object storage, queues, secrets and logs) is encrypted with customer-managed keys in AWS Key Management Service, with automatic key rotation. The FIPS 140 validation details for these components are on our [Compliance](/compliance/) page.
 - **Multi-factor authentication** is mandatory for every user: an authenticator app or a passkey, plus recovery codes. Direwolf staff must use a passkey or hardware security key.
 - **Tenant isolation.** Each customer organization is isolated at the database layer with PostgreSQL row-level security, enforced for every query, in addition to application-level permission checks.

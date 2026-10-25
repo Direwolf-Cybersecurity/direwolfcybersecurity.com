@@ -129,7 +129,7 @@ export const contactEndpoint: string | undefined =
 export const complianceStrip = [
   'Aligned to NIST SP 800-171',
   'Pursuing CMMC Level 2',
-  'Built for AWS GovCloud (US)',
+  'Built for AWS US West (Oregon)',
   'Designed for FIPS 140-validated TLS and key management',
 ] as const;
 
