@@ -8,8 +8,12 @@ import type { StatId } from './stats';
  * security services provider (MSSP) for any small or mid-size business, with no endpoint
  * management or RMM service. Only `services` may be described as offered; `roadmap` items are
  * always labelled as roadmap on the site (CLAUDE.md, register rule 9). Every statement below is
- * in docs/claims-register.md (rows A1-A4, A6, A7, C5, R1). While PLATFORM_LIVE is false, bullets
- * that describe the Direwolf Platform use the future tense (row W6).
+ * in docs/claims-register.md (rows A1-A4, A6-A8, C5, R1). While PLATFORM_LIVE is false, bullets
+ * that describe the Direwolf Platform use the future tense (row W6). The MDR lede and bullets
+ * name only the AI roles built in the platform's code (analysts triage and investigate,
+ * responders contain); the detection-engineer and advisor agents are owner intent, not built, so
+ * this file never names them (row A8). Each idea is said once: the lede carries the roles and
+ * the oversight, the bullets the detail.
  *
  * Vendor names: the endpoint protection vendor is not named anywhere in this file until the
  * partner agreement is signed (register rule 5, rows V1 and A4). When the gate closes, update
@@ -49,11 +53,10 @@ export const services: Service[] = [
     kicker: 'Powered by the Direwolf AI SOC',
     icon: 'radar',
     summary: 'The Direwolf AI SOC triages every endpoint alert and contains confirmed threats.',
-    lede: 'Every alert from your endpoints is enriched and triaged automatically, around the clock, and confirmed threats are contained under guardrails you control. A team of security professionals monitors the AI SOC’s work.',
+    lede: 'AI security analysts and responders work every alert from your endpoints around the clock. Our team of security professionals oversees their work and takes the cases the AI cannot decide.',
     whatYouGet: [
-      'AI triage of every endpoint alert: a verdict, a confidence level, a MITRE ATT&CK mapping and a plain-English summary.',
-      'Automatic containment of confirmed threats (stop the process, quarantine the file, isolate the host), with one-click undo.',
-      'A team of security professionals monitoring the AI SOC and taking the cases it cannot decide.',
+      'AI analysts triage and investigate each alert, returning a verdict, a confidence level, a MITRE ATT&CK mapping and a plain-English summary.',
+      'AI responders contain confirmed threats (stop the process, quarantine the file, isolate the host) under guardrails you control, with one-click undo.',
       'Email alerts for your administrators, and a dashboard in the Direwolf Platform that will show alerts, sensor health and your audit log.',
     ],
     whoItIsFor:

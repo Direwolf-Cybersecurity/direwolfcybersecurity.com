@@ -432,6 +432,9 @@
  *   proof points (light text, which needs less) sit over the shield.
  * Contrast was checked by sampling the rendered pixels behind every line of hero text at 1440,
  * 1280, 1024, 768 and 375 px wide; re-check if the image, the scrim or the hero copy changes.
+ * Last re-checked 2026-10-26 (row A8 subhead, three proof points) at 19 widths from 375 to
+ * 1920 px: worst 4.83:1, the subhead's second line at 1000 px. Two proof points make the
+ * hero shorter and drop that line below 4.5:1 at 960-1060 px.
  */
 .hero-media {
   position: absolute;

@@ -94,6 +94,10 @@ export const socials: { name: string; url: string }[] = [];
  * platform is opening to early customers, the platform origin is left out of the Content Security
  * Policy, and `npm run links` fails if any built page links to the platform host. Set it to `true`
  * the day the platform serves sign-in, and the Log in / Sign up links return.
+ * Before setting it to `true`, close claims register row A8's gate (launch runbook G20): either the
+ * AI detection-engineer agent is in service and row A8 says so, or "engineers" comes off the Home
+ * hero line. While the flag is `true`, `npm run links` fails on any built page that still says
+ * "analysts, engineers and responders".
  * scripts/check-links.mjs greps for this exact line, so keep its form.
  */
 export const PLATFORM_LIVE = false;

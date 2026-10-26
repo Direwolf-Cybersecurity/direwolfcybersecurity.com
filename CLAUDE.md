@@ -67,6 +67,22 @@ the site and platform fit together.
   protection (EDR), penetration testing, compliance readiness; no endpoint management or RMM.
   Say "monitored by a team of security professionals", never "human analyst reviewing", and
   never claim 24/7 human staffing (claims register rule 8, rows A2, A6, A7, F5).
+  **Approved positioning line (owner decision 2026-10-26, row A8):** "A next-gen AI SOC: AI
+  security analysts, engineers and responders work every alert around the clock, overseen by our
+  team of security professionals." It is the Home hero subhead, verbatim; Services (MDR) and
+  Platform (AI SOC card) use row A8's approved Services and Platform forms, word for word. The
+  analysts, engineers and responders are Direwolf's AI agents: always write "AI" with them, never
+  word, name or picture them so they could be read as people, and keep "monitored by" /
+  "overseen by our team of security professionals" for the human side ("around the clock" never
+  describes the people). The analyst (triage and investigation) and responder (automated,
+  guarded containment) agents are built in the platform's code, not yet in service; the
+  detection-engineer and advisor agents are owner intent (owner direction 2026-10-26, not yet
+  built or in the platform's PLAN.md or backlog). Only the Home hero's verbatim line names
+  "engineers" (the register's `owner intent` exception); every other page names only the built
+  roles, and a page that lists duties lists only theirs. Before `PLATFORM_LIVE` is set to `true`,
+  either the engineer agent is in service or "engineers" comes off the Home hero (row A8's gate,
+  launch runbook G20; `npm run links` enforces it). Evidence:
+  `docs/evidence/2026-10-26-owner-decision-ai-soc-positioning.md`.
 - **Brand and logos:** the owner's logo masters (the 1254 px shield and stacked lockup, and the
   1672 x 941 horizontal lockup, all designed for dark surfaces, 2026-10-24) are in
   `docs/brand/v2/` and are never shipped; `npm run brand:assets` generates the horizontal lockup

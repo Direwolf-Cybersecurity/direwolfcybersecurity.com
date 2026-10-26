@@ -16,9 +16,12 @@ import { PLATFORM_LIVE, earlyAccessUrl, signupUrl } from '../config';
 /*
  * Home (owner direction 2026-10-24): an AI-driven managed security services provider for any
  * small or mid-size business. Short copy, one idea per section, a visual element in each, and
- * each idea said once: the monitoring line (row A2) appears in the hero subhead and the Respond
- * step only. Every claim is in docs/claims-register.md (rows F1, F5, A1-A4, A6, A7, C1, C5,
- * S-STAT-2, S-STAT-3, S-STAT-6, W6).
+ * each idea said once: the positioning line (row A8, owner decision 2026-10-26), which carries
+ * the monitoring idea (row A2), is the hero subhead, verbatim. It is the only place on the site
+ * that names the AI engineers (owner intent, not built; row A8's gate, launch runbook G20); the
+ * "How it works" steps name only the AI roles built in the platform's code (analysts triage,
+ * responders contain). Every claim is in docs/claims-register.md (rows F1, F5, A1-A4, A6-A8,
+ * C1, C5, S-STAT-2, S-STAT-3, S-STAT-6, W6).
  */
 
 /*
@@ -34,8 +37,12 @@ const heroHeight = withHeroImage
   ? 'pb-24 sm:flex sm:min-h-[36rem] sm:items-center sm:py-16 md:min-h-[38rem] md:py-20 lg:min-h-[40rem] lg:py-24'
   : 'pb-10 lg:flex lg:min-h-[30rem] lg:items-center lg:py-24';
 
+// Three proof points, the first saying what no other Home section says (the subhead already says
+// the AI SOC works every alert; the EDR card and Detect step do not name the operating systems),
+// each with its own icon. Keep three: with two, the hero is shorter from about 960 px up, the
+// image reframes, and the subhead's second line drops below 4.5:1 at 960-1060 px.
 const proofPoints: { icon: IconName; text: string }[] = [
-  { icon: 'radar', text: 'AI triage on every endpoint alert' },
+  { icon: 'cpu', text: 'EDR for Windows, macOS and Linux' },
   { icon: 'crosshair', text: 'Penetration tests with a written report' },
   { icon: 'badge-check', text: 'Service-disabled veteran-owned' },
 ];
@@ -49,12 +56,12 @@ const steps: { icon: IconName; title: string; text: string }[] = [
   {
     icon: 'brain-circuit',
     title: 'Investigate',
-    text: 'AI enriches and triages each alert, with a verdict and a plain-English summary.',
+    text: 'AI analysts enrich and triage each alert, with a verdict and a plain-English summary.',
   },
   {
     icon: 'shield-check',
     title: 'Respond',
-    text: 'Confirmed threats are contained under guardrails you control, monitored by our security professionals.',
+    text: 'AI responders contain confirmed threats under guardrails you control.',
   },
 ];
 
@@ -101,8 +108,8 @@ const reasons: { icon: IconName; title: string; text: string }[] = [
           Enterprise-grade security, sized for your business.
         </h1>
         <p class="text-muted mt-6 text-lg md:text-xl">
-          AI-driven detection and response, monitored by a team of security professionals. Built and
-          priced for small and mid-size businesses.
+          A next-gen AI SOC: AI security analysts, engineers and responders work every alert around
+          the clock, overseen by our team of security professionals.
         </p>
         <div class="mt-8 flex flex-col gap-3 sm:flex-row">
           {PLATFORM_LIVE ? (

@@ -16,10 +16,11 @@ const description = PLATFORM_LIVE
   ? 'The Direwolf Platform is the web application behind every Direwolf service: buy licenses, download organization-bound installers, invite users, and see what the SOC did.'
   : 'The Direwolf Platform is the web application behind every Direwolf service: your administrators will use it to buy licenses, download organization-bound installers, invite users, and see what the SOC did.';
 
-// 25 words or fewer (rows W6 and A2).
+// 25 words or fewer (row W6). The monitoring idea is said once on this page, in the AI SOC card
+// below (row A8, which carries row A2's oversight wording).
 const lede = PLATFORM_LIVE
-  ? 'Your administrators buy licenses, deploy sensors and see what the AI SOC did. Our security professionals monitor the SOC’s work from the same platform.'
-  : 'Your administrators will buy licenses, deploy sensors and see what the AI SOC did. Our security professionals will monitor the SOC’s work from the same platform.';
+  ? 'Your administrators buy licenses, deploy sensors and see what the AI SOC did.'
+  : 'Your administrators will buy licenses, deploy sensors and see what the AI SOC did.';
 
 const features: { icon: IconName; title: string; text: string }[] = [
   {
@@ -55,10 +56,12 @@ const features: { icon: IconName; title: string; text: string }[] = [
 ];
 
 // Claims register rows H1, H9 and H10 (Platform forms, H9 and H10 after "Roadmap:" so Terms
-// §3.3 covers them) with H2 verbatim in the same item, S1-S7, H4/H5 (short forms), H8 (short
-// form). FedRAMP appears only in the Hosting item, never in a heading. Hosting and Encryption
-// keep their full approved wording and span the grid; every other item is one sentence of 15
-// words or fewer.
+// §3.3 covers them) with H2 verbatim in the same item, S1-S7, H4/H5 (short forms), and the AI SOC
+// item, row A8's Platform form, which carries row H8's Bedrock short form and row A2's oversight
+// in one sentence (future tense until row H8's gate closes). FedRAMP appears only in the Hosting
+// item, never in a heading. Hosting and Encryption keep their full approved wording and span the
+// grid; every other item is one sentence within the 20-word card limit of
+// docs/design-direction.md rule 12.
 const security: { icon: IconName; title: string; text: string; wide?: boolean }[] = [
   {
     icon: 'server',
@@ -84,7 +87,7 @@ const security: { icon: IconName; title: string; text: string; wide?: boolean }[
   {
     icon: 'brain-circuit',
     title: 'AI SOC',
-    text: 'AI triage is designed to run on Amazon Bedrock in AWS US Regions.',
+    text: 'AI analysts will triage every alert using Amazon Bedrock in AWS US Regions, overseen by our security professionals.',
   },
   {
     icon: 'scroll-text',

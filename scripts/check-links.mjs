@@ -7,10 +7,15 @@
 // not fetched, so the check is deterministic and works offline. The Open Graph image
 // (<meta property="og:image">) is checked the same way. Exit code 1 on any failure.
 //
-// Two more assertions:
+// Three more assertions:
 // - While `PLATFORM_LIVE` in src/config.ts is false (the platform is not in service), no href,
 //   src or action may point to the platform host (app.direwolfcybersecurity.com, or the host of
 //   PUBLIC_APP_URL when set): every such call to action must be "Request early access".
+// - While `PLATFORM_LIVE` is true, no built page may still say "analysts, engineers and
+//   responders" (claims register row A8's gate, launch runbook G20): the AI detection-engineer
+//   agent is owner intent, not built, so "engineers" comes off the Home hero line before the
+//   platform goes live. Remove this assertion only in the change that records that agent in
+//   service in row A8.
 // - Every image in dist/_astro/ is referenced by a built page or stylesheet, so an image that
 //   no page shows (such as an organization logo imported without permission,
 //   src/data/engagements.ts) is never published. astro.config.mjs prunes them; this catches a
@@ -37,6 +42,9 @@ try {
 } catch {
   // Not a URL: src/config.ts would not produce links from it either.
 }
+
+/** Row A8's role list naming the AI engineers (the agent is owner intent, not built). */
+const engineerRole = /analysts, engineers and responders/i;
 
 /**
  * PLATFORM_LIVE from src/config.ts, read the way .github/workflows/deploy.yml reads
@@ -167,6 +175,13 @@ async function main() {
       : `/${rel}`;
     const html = await readFile(file, 'utf8');
     corpus.push(html);
+
+    // Row A8's gate: the unbuilt AI engineer role stays off every page once the platform is live.
+    if (live && engineerRole.test(html.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' '))) {
+      failures.push(
+        `${pagePath}: says "analysts, engineers and responders" while PLATFORM_LIVE is true (claims register row A8's gate, launch runbook G20)`,
+      );
+    }
 
     const values = [
       ...[...html.matchAll(/\s(?:href|src|action)=["']([^"']*)["']/g)].map((m) => m[1]),
