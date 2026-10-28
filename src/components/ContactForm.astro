@@ -6,10 +6,12 @@
  * topic. The "website" field is a honeypot: hidden from people, and a filled value makes the
  * submission a silent no-op.
  *
- * Topic: `?topic=<value>` in the page URL preselects a matching option, so "Request early
- * access" links (`earlyAccessUrl` in src/config.ts, `/contact/?topic=early-access`) and the
- * Services page's per-service links (`?topic=mdr`, `endpoint-protection`, `penetration-testing`,
- * `compliance-readiness`) open the form ready for that request. Without JavaScript the topic stays at its default, Other.
+ * Topic: `?topic=<value>` in the page URL preselects a matching option, so the Services page's
+ * per-service links (`?topic=mdr`, `endpoint-protection`, `penetration-testing`,
+ * `compliance-readiness`) open the form ready for that request, and `?topic=launch-updates`
+ * selects "Platform launch updates" (row W6). Without JavaScript the topic stays at its default,
+ * Other. The platform's contact endpoint does not accept every code yet: see `contactEndpoint` in
+ * src/config.ts before setting PUBLIC_CONTACT_ENDPOINT.
  */
 import { contactEndpoint, contactEmail } from '../config';
 ---
@@ -78,9 +80,6 @@ import { contactEndpoint, contactEmail } from '../config';
       Topic
     </label>
     <select id="cf-topic" name="topic" class="field mt-1">
-      <option value="early-access" data-subject="Early access request">
-        Early access to the Direwolf Platform
-      </option>
       <option value="mdr" data-subject="Managed detection and response inquiry">
         Managed detection and response
       </option>
@@ -92,6 +91,9 @@ import { contactEndpoint, contactEmail } from '../config';
       </option>
       <option value="compliance-readiness" data-subject="Compliance readiness inquiry">
         Compliance readiness
+      </option>
+      <option value="launch-updates" data-subject="Platform launch updates request">
+        Platform launch updates: let me know when the Direwolf Platform opens
       </option>
       <option value="other" data-subject="Website inquiry" selected>
         Other
@@ -182,7 +184,7 @@ import { contactEndpoint, contactEmail } from '../config';
 
     const fields = ['name', 'email', 'message'] as const;
 
-    // Preselect the topic named in the page URL (?topic=early-access), if it is one of the options.
+    // Preselect the topic named in the page URL (?topic=mdr), if it is one of the options.
     const topic = form.elements.namedItem('topic') as HTMLSelectElement | null;
     const requestedTopic = new URLSearchParams(window.location.search).get('topic');
     if (topic && requestedTopic) {

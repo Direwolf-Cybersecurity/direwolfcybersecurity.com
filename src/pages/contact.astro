@@ -10,7 +10,6 @@ import {
   hqLine,
   streetAddress,
   PLATFORM_LIVE,
-  earlyAccessUrl,
   loginUrl,
 } from '../config';
 
@@ -106,13 +105,10 @@ const telHref = phone ? `tel:${phone.replace(/[^+\d]/g, '')}` : '';
             </div>
           ) : (
             <div>
-              <dt class="font-semibold">Early access</dt>
+              <dt class="font-semibold">The Direwolf Platform</dt>
               <dd class="text-muted mt-1">
-                The Direwolf Platform is opening to early customers.{' '}
-                <a href={earlyAccessUrl} class="link">
-                  Request early access
-                </a>{' '}
-                with the form, and tell us about your organization.
+                The Direwolf Platform is being built now and will open when it is complete. To hear
+                when it opens, choose the topic Platform launch updates in the form.
               </dd>
             </div>
           )}

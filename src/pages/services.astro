@@ -7,7 +7,7 @@ import ImageSlot from '../components/ImageSlot.astro';
 import Icon from '../components/Icon.astro';
 import StatFigure from '../components/StatFigure.astro';
 import WhatYouGet from '../components/WhatYouGet.astro';
-import { services, roadmap } from '../data/services';
+import { services, roadmap, roadmapGroups } from '../data/services';
 import { threatStats, statsNote } from '../data/stats';
 import { hasImage } from '../data/images';
 import { getProduct, formatPrice } from '../data/pricing';
@@ -38,14 +38,26 @@ const rows = services.map((service, index) => {
 });
 
 const description =
-  'Direwolf Cybersecurity services for small and mid-size businesses: managed detection and response powered by the Direwolf AI SOC, managed endpoint protection (EDR), penetration testing and compliance readiness. Later services are listed as roadmap.';
+  'Direwolf Cybersecurity services for small and mid-size businesses: managed detection and response powered by the Direwolf AI SOC, managed endpoint protection (EDR), penetration testing and compliance readiness. Services planned for launch are listed as roadmap.';
+
+/*
+ * Roadmap (register rule 9, rows R1-R11): every item sits under the eyebrow "Roadmap" and the
+ * heading "Planned for launch, not yet available", in three short groups so ten items stay easy
+ * to scan. No price, and no "available", "included" or "today" except in a negation (rule 9).
+ * The lede says once that our security professionals oversee any AI work (row A2's Services
+ * roadmap form), so the item summaries do not repeat it.
+ */
+const roadmapByGroup = roadmapGroups.map((group) => ({
+  ...group,
+  items: roadmap.filter((item) => item.group === group.id),
+}));
 ---
 
 <BaseLayout title="Services" description={description}>
   <PageHeader
     eyebrow="Services"
     title="Managed security, from first alert to final report"
-    lede="Four services for small and mid-size businesses. Anything we plan to add later is labelled as roadmap."
+    lede="Four services for small and mid-size businesses. The services we are building for launch are labelled as roadmap."
   >
     <nav aria-label="On this page" class="mt-8">
       <ul class="flex flex-wrap gap-2 text-sm">
@@ -152,21 +164,24 @@ const description =
   <Section
     id="roadmap"
     eyebrow="Roadmap"
-    title="Coming later, not yet available"
-    lede="Services we plan to add. They are not available today, and plans can change."
+    title="Planned for launch, not yet available"
+    lede="We are building these for launch. None is available today, and plans can change. Our security professionals oversee any AI work."
   >
-    <ul
-      class="mt-10 grid gap-x-8 gap-y-6 sm:grid-cols-2 lg:grid-cols-4"
-      aria-label="Roadmap: coming later, not yet available"
-      data-reveal="stagger"
-    >
-      {roadmap.map((item) => (
-        <li>
-          <p class="font-medium">{item.name}</p>
-          <p class="text-muted mt-1 text-sm">{item.summary}</p>
-        </li>
+    <div class="mt-12 grid gap-x-10 gap-y-12 md:grid-cols-3" data-reveal="stagger">
+      {roadmapByGroup.map((group) => (
+        <div>
+          <h3 class="border-line border-b pb-3 text-lg font-semibold">{group.title}</h3>
+          <ul class="mt-5 space-y-6" aria-label={`Roadmap, not yet available: ${group.title}`}>
+            {group.items.map((item) => (
+              <li>
+                <p class="font-medium">{item.name}</p>
+                <p class="text-muted mt-1 text-sm leading-relaxed">{item.summary}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
       ))}
-    </ul>
+    </div>
   </Section>
 
   <CallToAction />

@@ -8,7 +8,7 @@ import type { StatId } from './stats';
  * security services provider (MSSP) for any small or mid-size business, with no endpoint
  * management or RMM service. Only `services` may be described as offered; `roadmap` items are
  * always labelled as roadmap on the site (CLAUDE.md, register rule 9). Every statement below is
- * in docs/claims-register.md (rows A1-A4, A6-A8, C5, R1). While PLATFORM_LIVE is false, bullets
+ * in docs/claims-register.md (rows A1-A4, A6-A8, C5, R1-R11). While PLATFORM_LIVE is false, bullets
  * that describe the Direwolf Platform use the future tense (row W6). The MDR lede and bullets
  * name only the AI roles built in the platform's code (analysts triage and investigate,
  * responders contain); the detection-engineer and advisor agents are owner intent, not built, so
@@ -128,27 +128,102 @@ export const services: Service[] = [
   },
 ];
 
+/** The three groups the Services page sorts the roadmap into, in display order. */
+export const roadmapGroups = [
+  { id: 'exposure', title: 'Exposure and posture' },
+  { id: 'compliance', title: 'Compliance and evidence' },
+  { id: 'readiness', title: 'Readiness and advisory' },
+] as const;
+
+export type RoadmapGroupId = (typeof roadmapGroups)[number]['id'];
+
 export interface RoadmapItem {
+  /** Short name, shown on Services and, when `homeTag` is set, as a Home roadmap tag. */
   name: string;
+  /** One or two sentences for the Services roadmap section. */
   summary: string;
+  group: RoadmapGroupId;
+  /**
+   * Show the name as a tag on Home (design-direction rule 6: a single muted row of tags). Set on
+   * four items only (rows R2-R5), so the roadmap does not outweigh the four services there.
+   */
+  homeTag?: boolean;
 }
 
-/** Later services (register row R1). Never described as available. */
+/**
+ * Services planned for the platform's launch (owner direction 2026-10-27; register rows R1 to
+ * R11, one row per item). Never described as available, never priced, and always under the
+ * "Roadmap" label (register rule 9). Each item stays here until its register row's gate closes
+ * (its platform milestone in service); it then moves to a service row and to `services` above.
+ * The AI that will do much of this work is described once, in the Services roadmap lede, with
+ * row A2's oversight wording, so no summary below repeats it.
+ *
+ * Honest names: "Breach-exposure monitoring", never "dark web monitoring" (row R3); scanning is
+ * "authorized" and "not a penetration test" (row R2); the GRC tracker is "readiness support
+ * only" and never says "ready" or "certified" (rule 4, row R5); the security officer program
+ * names no one and never says "Qualified Individual" (row R11).
+ */
 export const roadmap: RoadmapItem[] = [
   {
-    name: 'Vulnerability scanning',
-    summary: 'Scheduled external scans, with findings in the same alert queue.',
+    name: 'Authorized external vulnerability scanning',
+    summary:
+      'Scheduled scans of the internet-facing addresses you authorize in writing, with findings in the same queue as your alerts. Not a penetration test.',
+    group: 'exposure',
+    homeTag: true,
   },
   {
-    name: 'Dark web monitoring',
+    name: 'Breach-exposure monitoring',
     summary: 'Searches for your domains and accounts in breach data.',
+    group: 'exposure',
+    homeTag: true,
+  },
+  {
+    name: 'Microsoft 365 and Google Workspace posture reviews',
+    summary:
+      'Checks of settings such as MFA coverage, admin accounts and stale users, with a short list of what to fix first.',
+    group: 'exposure',
+  },
+  {
+    name: 'GRC compliance tracker',
+    summary:
+      'Mark each requirement not started, in progress or complete, and attach evidence, notes and policies. Exports include a NIST SP 800-171 System Security Plan and POA&M that show the evidence. Readiness support only.',
+    group: 'compliance',
+    homeTag: true,
+  },
+  {
+    name: 'Cyber-insurance evidence pack',
+    summary:
+      'Dated evidence for each security question on your cyber-insurance application or renewal. Your executive reviews and signs the carrier’s form.',
+    group: 'compliance',
+  },
+  {
+    name: 'Security questionnaire engine',
+    summary:
+      'Draft answers to the security questionnaires your customers send, each citing its evidence. Anything we cannot cite is marked Unknown, and you review and sign.',
+    group: 'compliance',
+  },
+  {
+    name: 'Risk analysis',
+    summary:
+      'A dated, versioned risk analysis of your business, drafted from your profile and evidence, for you to review and approve.',
+    group: 'compliance',
+  },
+  {
+    name: 'Incident-response readiness',
+    summary:
+      'An incident-response plan, an annual tabletop exercise and tracking of the notification deadlines that may apply, for your counsel to decide.',
+    group: 'readiness',
   },
   {
     name: 'Security awareness training',
     summary: 'Short courses for your staff, with completion tracking.',
+    group: 'readiness',
+    homeTag: true,
   },
   {
-    name: 'GRC and compliance tracker',
-    summary: 'Control status, evidence and plans of action in one place.',
+    name: 'Fractional security officer program',
+    summary:
+      'Ongoing security program leadership from our team, with AI keeping the obligations calendar and drafting the reports and policies.',
+    group: 'readiness',
   },
 ];

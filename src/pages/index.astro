@@ -11,7 +11,7 @@ import { services, roadmap } from '../data/services';
 import { hasImage } from '../data/images';
 import { shownEngagements } from '../data/engagements';
 import type { IconName } from '../data/icons';
-import { PLATFORM_LIVE, earlyAccessUrl, signupUrl } from '../config';
+import { PLATFORM_LIVE, signupUrl } from '../config';
 
 /*
  * Home (owner direction 2026-10-24): an AI-driven managed security services provider for any
@@ -21,8 +21,12 @@ import { PLATFORM_LIVE, earlyAccessUrl, signupUrl } from '../config';
  * that names the AI engineers (owner intent, not built; row A8's gate, launch runbook G20); the
  * "How it works" steps name only the AI roles built in the platform's code (analysts triage,
  * responders contain). Every claim is in docs/claims-register.md (rows F1, F5, A1-A4, A6-A8,
- * C1, C5, S-STAT-2, S-STAT-3, S-STAT-6, W6).
+ * C1, C5, R2-R5, S-STAT-2, S-STAT-3, S-STAT-6, W6). While the platform is not in service the
+ * hero's primary button is "Contact us" (row W6: no early access, owner direction 2026-10-27),
+ * and the roadmap row shows four names only (`homeTag`, rows R2-R5), under its "Roadmap" label,
+ * linking to all ten on Services, so the roadmap does not outweigh the four services.
  */
+const homeRoadmap = roadmap.filter((item) => item.homeTag);
 
 /*
  * Hero: the owner's image (src/assets/images/hero.webp, composed with an empty dark left third
@@ -117,8 +121,8 @@ const reasons: { icon: IconName; title: string; text: string }[] = [
               Get started
             </a>
           ) : (
-            <a href={earlyAccessUrl} class="btn btn-primary">
-              Request early access
+            <a href="/contact/" class="btn btn-primary">
+              Contact us
             </a>
           )}
           <a href="/services/" class="btn btn-secondary">
@@ -152,13 +156,21 @@ const reasons: { icon: IconName; title: string; text: string }[] = [
         </Card>
       ))}
     </div>
-    <div class="mt-10 flex flex-col gap-3 text-sm sm:flex-row sm:items-center" data-reveal>
-      <p class="text-muted font-semibold">Roadmap, not yet available:</p>
-      <ul class="flex flex-wrap gap-2" aria-label="Roadmap">
-        {roadmap.map((item) => (
-          <li class="border-line text-muted rounded-full border px-3 py-1">{item.name}</li>
-        ))}
-      </ul>
+    <div class="mt-10 flex flex-col gap-3 text-sm sm:flex-row sm:items-start" data-reveal>
+      <p class="text-muted shrink-0 font-semibold sm:py-1">Roadmap, not yet available:</p>
+      <div>
+        <ul class="flex flex-wrap gap-2" aria-label="Roadmap">
+          {homeRoadmap.map((item) => (
+            <li class="border-line text-muted rounded-full border px-3 py-1">{item.name}</li>
+          ))}
+        </ul>
+        <p class="mt-3">
+          {/* "ten" is the length of `roadmap` in src/data/services.ts; change both together. */}
+          <a href="/services/#roadmap" class="link">
+            See all ten on the roadmap
+          </a>
+        </p>
+      </div>
     </div>
   </Section>
 

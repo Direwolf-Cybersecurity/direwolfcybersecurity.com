@@ -1,7 +1,7 @@
 ---
 import BrandLogo from './BrandLogo.astro';
 import { primaryNav, isCurrent } from '../data/navigation';
-import { PLATFORM_LIVE, earlyAccessUrl, loginUrl, signupUrl } from '../config';
+import { PLATFORM_LIVE, loginUrl, signupUrl } from '../config';
 
 /**
  * A near-black band (`.dark-band`) in both color schemes, so the owner's horizontal lockup, which
@@ -13,7 +13,8 @@ import { PLATFORM_LIVE, earlyAccessUrl, loginUrl, signupUrl } from '../config';
  * a shadow) once the page scrolls.
  *
  * Calls to action: "Log in" and "Sign up" while the platform is in service (PLATFORM_LIVE),
- * otherwise a single "Request early access" link to the contact form.
+ * otherwise a single "Contact us" button to the contact page (claims register row W6; no early
+ * access, owner direction 2026-10-27).
  *
  * Without JavaScript the toggle cannot work: public/noscript.css, loaded by BaseLayout.astro in a
  * <noscript>, hides #menu-toggle and keeps #site-menu open. It is a file rather than an inline
@@ -68,8 +69,8 @@ const pathname = Astro.url.pathname;
             </a>
           </>
         ) : (
-          <a href={earlyAccessUrl} class="btn btn-primary">
-            Request early access
+          <a href="/contact/" class="btn btn-primary">
+            Contact us
           </a>
         )}
       </div>

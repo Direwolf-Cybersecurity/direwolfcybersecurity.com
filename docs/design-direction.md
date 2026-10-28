@@ -65,8 +65,9 @@ middle and bottom; and no wall of text anywhere above the fold.
    written report" for penetration testing). Leave the Experience section off until gate G18
    closes.
 8. **One primary call to action, repeated three times.** While `PLATFORM_LIVE` is `false` the
-   primary label is "Request early access" (row W6) and the secondary is a contact link. Show
-   them in the header, the hero and the closing band, plus once after the service cards. Do
+   only call to action is "Contact us" (row W6; owner direction 2026-10-27: no early access, the
+   platform opens when it is complete), with "See services" as the hero's secondary link. Show
+   it in the header, the hero and the closing band, plus once after the service cards. Do
    not add an "Experienced a breach?" hotline: it implies round-the-clock human incident
    response, which the owner has not authorized (no 24/7 staffing claim).
 9. **A small, consistent motion system.** Durations 150 ms (hover), 250 ms (reveal), 400 ms

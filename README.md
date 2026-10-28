@@ -135,7 +135,8 @@ are `<meta>` tags in `src/layouts/BaseLayout.astro`; `npm run csp` checks them o
    orchestrator enables it once GitHub has issued the certificate for
    `www.direwolfcybersecurity.com`.
 5. **Repository variables** (Settings → Secrets and variables → Actions → Variables), optional:
-   `PUBLIC_APP_URL` and, when the platform's contact endpoint exists, `PUBLIC_CONTACT_ENDPOINT`.
+   `PUBLIC_APP_URL` and, when the platform's contact endpoint exists and accepts the form's topic
+   codes (see `contactEndpoint` in `src/config.ts`), `PUBLIC_CONTACT_ENDPOINT`.
    None is set, so the build uses the default `https://app.direwolfcybersecurity.com`.
    "Run workflow" (workflow_dispatch) on `deploy.yml` re-publishes on demand.
 

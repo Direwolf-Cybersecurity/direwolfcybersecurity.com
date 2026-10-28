@@ -8,10 +8,13 @@ import ImageSlot from '../components/ImageSlot.astro';
 import Icon from '../components/Icon.astro';
 import { hasImage } from '../data/images';
 import type { IconName } from '../data/icons';
-import { PLATFORM_LIVE, earlyAccessUrl, loginUrl, signupUrl } from '../config';
+import { PLATFORM_LIVE, loginUrl, signupUrl } from '../config';
 
-// While the platform is not in service the description and lede use the future tense (claims
-// register row W6); the present-tense forms return when PLATFORM_LIVE is true.
+// While the platform is not in service the description and lede use the future tense, the only
+// call to action is "Contact us", and the page says the platform is being built and will open
+// when it is complete (claims register row W6; no early access, owner direction 2026-10-27). The
+// present-tense forms and the Sign up / Log in links return when PLATFORM_LIVE is true.
+const statusLine = 'The Direwolf Platform is being built now and will open when it is complete.';
 const description = PLATFORM_LIVE
   ? 'The Direwolf Platform is the web application behind every Direwolf service: buy licenses, download organization-bound installers, invite users, and see what the SOC did.'
   : 'The Direwolf Platform is the web application behind every Direwolf service: your administrators will use it to buy licenses, download organization-bound installers, invite users, and see what the SOC did.';
@@ -123,10 +126,10 @@ const withImage = hasImage('platform');
       </div>
     ) : (
       <div class="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center">
-        <a href={earlyAccessUrl} class="btn btn-primary">
-          Request early access
+        <a href="/contact/" class="btn btn-primary">
+          Contact us
         </a>
-        <p class="text-muted text-sm">The Direwolf Platform is opening to early customers.</p>
+        <p class="text-muted text-sm">{statusLine}</p>
       </div>
     )}
   </PageHeader>
@@ -209,8 +212,8 @@ const withImage = hasImage('platform');
     />
   ) : (
     <CallToAction
-      title="Be among the first to use it."
-      text="The Direwolf Platform is opening to early customers. Tell us about your organization and we will be in touch."
+      title="Questions about the platform?"
+      text="Tell us about your organization and what you need, and we will be in touch."
     />
   )}
 </BaseLayout>

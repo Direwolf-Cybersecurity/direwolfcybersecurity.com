@@ -10,7 +10,8 @@
 // Three more assertions:
 // - While `PLATFORM_LIVE` in src/config.ts is false (the platform is not in service), no href,
 //   src or action may point to the platform host (app.direwolfcybersecurity.com, or the host of
-//   PUBLIC_APP_URL when set): every such call to action must be "Request early access".
+//   PUBLIC_APP_URL when set): every such call to action is then "Contact us" (claims register
+//   row W6; the site offers no early access, owner direction 2026-10-27).
 // - While `PLATFORM_LIVE` is true, no built page may still say "analysts, engineers and
 //   responders" (claims register row A8's gate, launch runbook G20): the AI detection-engineer
 //   agent is owner intent, not built, so "engineers" comes off the Home hero line before the

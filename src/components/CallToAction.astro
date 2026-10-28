@@ -1,11 +1,12 @@
 ---
 /**
  * Closing call to action: a near-black panel with a blue edge glow, the same in both color
- * schemes. While the platform is not in service (PLATFORM_LIVE is false) the primary button is
- * "Request early access" (claims register row W6) instead of "Sign up", and the default text
- * says the platform is opening to early customers.
+ * schemes. While the platform is not in service (PLATFORM_LIVE is false) the only button is
+ * "Contact us", and the default text says the platform is being built and invites a conversation
+ * about the reader's environment (claims register row W6; owner direction 2026-10-27: no early
+ * access). Once it is live, "Sign up" returns beside "Contact us".
  */
-import { PLATFORM_LIVE, earlyAccessUrl, signupUrl } from '../config';
+import { PLATFORM_LIVE, signupUrl } from '../config';
 
 interface Props {
   title?: string;
@@ -19,10 +20,10 @@ interface Props {
 
 const {
   flushTop = false,
-  title = 'Ready when you are.',
+  title = PLATFORM_LIVE ? 'Ready when you are.' : 'Start with a conversation.',
   text = PLATFORM_LIVE
     ? 'Create your account, choose the services you need, and deploy sensors from your dashboard. Prefer to talk first? We are happy to.'
-    : 'The Direwolf Platform is opening to early customers. Request early access, or contact us to talk through your environment first.',
+    : 'The Direwolf Platform is being built now and will open when it is complete. Until then, tell us about your environment and what you need.',
 } = Astro.props;
 ---
 
@@ -36,16 +37,12 @@ const {
         <p class="text-muted mt-3 text-lg">{text}</p>
       </div>
       <div class="flex shrink-0 flex-col gap-3 sm:flex-row">
-        {PLATFORM_LIVE ? (
+        {PLATFORM_LIVE && (
           <a href={signupUrl} class="btn btn-primary" rel="noopener noreferrer">
             Sign up
           </a>
-        ) : (
-          <a href={earlyAccessUrl} class="btn btn-primary">
-            Request early access
-          </a>
         )}
-        <a href="/contact/" class="btn btn-secondary">
+        <a href="/contact/" class:list={['btn', PLATFORM_LIVE ? 'btn-secondary' : 'btn-primary']}>
           Contact us
         </a>
       </div>

@@ -14,7 +14,6 @@ import {
   phone,
   socials,
   PLATFORM_LIVE,
-  earlyAccessUrl,
   loginUrl,
 } from '../config';
 
@@ -100,17 +99,14 @@ const footerLink = 'text-muted hover:text-fg inline-block py-1 no-underline hove
             </a>
           </li>
         ))}
-        <li>
-          {PLATFORM_LIVE ? (
+        {/* The column already links to Contact, so the platform link shows only once it is live (row W6). */}
+        {PLATFORM_LIVE && (
+          <li>
             <a href={loginUrl} class={footerLink} rel="noopener noreferrer">
               Log in to the platform
             </a>
-          ) : (
-            <a href={earlyAccessUrl} class={footerLink}>
-              Request early access
-            </a>
-          )}
-        </li>
+          </li>
+        )}
       </ul>
     </nav>
 

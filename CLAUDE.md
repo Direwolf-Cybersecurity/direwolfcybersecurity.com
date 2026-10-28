@@ -58,9 +58,13 @@ the site and platform fit together.
   requires a version bump (new `version` and `effectiveDate`), never an edit in place.
 - **Links to the platform** use `PUBLIC_APP_URL` (default `https://app.direwolfcybersecurity.com`),
   and only while `PLATFORM_LIVE` in `src/config.ts` is `true`. It is `false` until the platform
-  is in service (no DNS yet): every "Log in" / "Sign up" is then "Request early access" to
-  `/contact/?topic=early-access`, and `npm run links` fails on any link to the platform host.
+  is in service (no DNS yet): the site then offers no sign-up and no early access (row W6, owner
+  direction 2026-10-27). Every "Log in" / "Sign up" becomes a single "Contact us" link to
+  `/contact/`, the footer drops its platform link, and the contact form's "Platform launch
+  updates" topic (`/contact/?topic=launch-updates`) collects launch-notice requests.
+  `npm run links` fails on any link to the platform host.
   Contact form posts to `PUBLIC_CONTACT_ENDPOINT` when set, else falls back to a mailto link.
+  Set that variable only after the platform's contact topics match the form's (`src/config.ts`).
 - **Positioning (owner direction 2026-10-24):** an AI-driven managed security services provider
   (MSSP) for any small or mid-size business, not an MSP and not only for government contractors.
   Services: managed detection and response powered by the Direwolf AI SOC, managed endpoint
