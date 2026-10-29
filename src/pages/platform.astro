@@ -113,7 +113,7 @@ const security: { icon: IconName; title: string; text: string; wide?: boolean }[
 const withImage = hasImage('platform');
 ---
 
-<BaseLayout title="Platform" description={description}>
+<BaseLayout title="Platform" description={description} progress>
   <PageHeader eyebrow="The Direwolf Platform" title="Your security, in one place" lede={lede}>
     {PLATFORM_LIVE ? (
       <div class="mt-8 flex flex-col gap-3 sm:flex-row">
@@ -153,7 +153,7 @@ const withImage = hasImage('platform');
           {features.map((feature) => (
             <li class="flex gap-4">
               <span class="icon-tile">
-                <Icon name={feature.icon} class="h-5 w-5" />
+                <Icon name={feature.icon} class="h-5 w-5" draw="reveal" />
               </span>
               <div>
                 <h3 class="font-semibold">{feature.title}</h3>

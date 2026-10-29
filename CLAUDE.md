@@ -50,7 +50,8 @@ the site and platform fit together.
   `v2026.10.25` (effective 2026-10-25: hosting on commercial AWS US West (Oregon), backups in
   US East (Ohio), AI inference in AWS US Regions); the Acceptable Use Policy is at `v2026.10.24.2`
   (effective 2026-10-24, MSSP scope: no NinjaOne or endpoint management, penetration testing
-  added); Cookie Notice, Accessibility and EEO are at `v2026.10.23`; the Security page policy is
+  added); Cookie Notice and EEO are at `v2026.10.23`; the Accessibility Statement is at `v2026.10.28` (effective
+  2026-10-28: its motion sentence, claims register row W3); the Security page policy is
   at `v2026.10.25`. Attorney review has not happened yet and is an open post-launch gate (G1 in
   docs/launch-runbook.md). Each document is versioned `vYYYY.MM.DD` (a same-day re-issue adds
   `.N`, N from 2) in its frontmatter and shown with its version and "Last updated" date; the
@@ -98,8 +99,12 @@ the site and platform fit together.
   the owner's own (image-generator output or licensed), placed in the five slots of
   `src/data/images.ts` (`src/assets/images/`, README "Adding images"); a slot with no file renders
   nothing. UI icons come from Lucide (`lucide-static`, ISC, pinned) via `src/data/icons.ts`.
-  Motion (`src/scripts/motion.ts`, CSS in `src/styles/global.css`) is off under
-  `prefers-reduced-motion`, and content is fully visible without JavaScript. Third-party statistics
+  Motion (`src/scripts/motion.ts`, CSS in `src/styles/global.css`; rules in `docs/design-direction.md`,
+  "Motion system v2 (2026-10-28)") is off under `prefers-reduced-motion`, plays once and never
+  loops, and content is fully visible without JavaScript. The Home "How it works" flow
+  (`src/components/SystemFlow.astro`: labelled HTML steps joined by CSS rules and one CSS frame, with no
+  SVG) is interface, not illustration; nothing figurative is ever added to it (motion gate 1: for the
+  owner to confirm before the motion change is published). Third-party statistics
   come only from `src/data/stats.ts` (rows S-STAT-1 to S-STAT-6, rule 13). Other organizations' logos stay off until the mark owner's written
   permission is filed (claims register rows E1-E6, `docs/logo-use-research.md`), and their files
   are **not committed**: this repository is public, so `src/assets/engagements/*` is gitignored and
@@ -120,7 +125,8 @@ src/pages/        home, services, platform, about, contact, compliance, security
 src/components/   header, footer, brand logo, image slots, icons, stats, cards, forms, legal layout
 src/content/      legal documents (MDX with frontmatter)
 src/data/         services, pricing, stats, images (slots), icons, navigation, engagements
-src/scripts/      motion.ts (scroll reveal, count-up, header state)
+src/scripts/      motion.ts (motion tiers, scroll reveal, one-shots, count-up, the Home flow,
+                  card light, header state)
 src/assets/       brand/ (generated logo copies, badge), images/ (owner-supplied slot images)
 src/config.ts     site constants (name, address line, phone/email placeholders, flags)
 public/           favicons, web manifest, og-image.png, CNAME; robots.txt and security.txt generated
@@ -132,4 +138,5 @@ docs/             claims-register.md, legal-research.md, claims-research.md, log
 ## Definition of done
 
 `npm ci`, `npm run build`, `npm run check` (astro check), `npm run lint`, `npm run links`
-(internal link check over `dist/`), `npm run a11y` (axe over the built pages) all pass.
+(internal link check over `dist/`), `npm run a11y` (axe over the built pages), `npm run csp`,
+`npm run motion` and `npm run hero-contrast` all pass (`npm run verify` runs them in order).

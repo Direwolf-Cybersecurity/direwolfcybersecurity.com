@@ -3,17 +3,33 @@
  * Title block for secondary pages: the near-black band with the CSS glow backdrop, continuous
  * with the header, in both color schemes. An optional slot sits under the lede (for example a
  * call to action).
+ *
+ * `motion` (src/styles/global.css, "Page headers"): `standard` (default; Services, Platform,
+ * Compliance, About, Contact) is at rest by 2.4 s: the dot grid powers on, the glow settles, the
+ * eyebrow line sweeps in and one pulse of light sweeps once, at an even speed, along the bottom
+ * edge (`.header-trace`; if the owner's preview finds four effects busy, remove that span: the
+ * power-on and the glow carry the entrance). The heading and lede never move. `calm` (Security,
+ * the Legal index) is fully static. `data-oneshot` lets src/scripts/motion.ts finish the sequence
+ * if the band scrolls away mid-way.
  */
 interface Props {
   eyebrow?: string;
   title: string;
   lede?: string;
+  motion?: 'standard' | 'calm';
 }
 
-const { eyebrow, title, lede } = Astro.props;
+const { eyebrow, title, lede, motion = 'standard' } = Astro.props;
+const standard = motion === 'standard';
 ---
 
-<div class="dark-band glow-backdrop border-line border-b">
+<div
+  class:list={[
+    'dark-band glow-backdrop border-line border-b',
+    standard ? 'page-header-motion' : 'page-header-calm',
+  ]}
+  data-oneshot={standard ? '' : undefined}
+>
   <div class="container-x py-14 md:py-20">
     {eyebrow && <p class="eyebrow accent-sweep">{eyebrow}</p>}
     <h1 class="mt-3 max-w-3xl text-4xl font-semibold tracking-[-0.03em] text-balance md:text-5xl">
@@ -22,4 +38,5 @@ const { eyebrow, title, lede } = Astro.props;
     {lede && <p class="text-muted mt-5 max-w-2xl text-lg">{lede}</p>}
     <slot />
   </div>
+  {standard && <span class="header-trace" aria-hidden="true" />}
 </div>

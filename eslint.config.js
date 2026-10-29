@@ -20,6 +20,14 @@ export default tseslint.config(
     },
   },
   {
+    // Checks that drive a page (motion, hero contrast): their page.evaluate callbacks run in the
+    // browser, so these files see both sets of globals.
+    files: ['scripts/check-motion.mjs', 'scripts/hero-contrast.mjs', 'scripts/lib/freeze.mjs'],
+    languageOptions: {
+      globals: { ...globals.node, ...globals.browser },
+    },
+  },
+  {
     // Client-side <script> blocks inside .astro files run in the browser.
     files: ['**/*.astro/*.js', '**/*.astro/*.ts'],
     languageOptions: {

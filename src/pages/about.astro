@@ -71,7 +71,7 @@ const withImage = hasImage('about');
     >
       {industries.map((industry) => (
         <li class="flex items-center gap-3 font-medium">
-          <Icon name={industryIcons[industry]} class="text-accent h-6 w-6" />
+          <Icon name={industryIcons[industry]} class="text-accent h-6 w-6" draw="reveal" />
           {industry}
         </li>
       ))}
@@ -111,7 +111,7 @@ const withImage = hasImage('about');
       <div>
         <dt class="flex items-center gap-3 font-semibold">
           <span class="icon-tile">
-            <Icon name="map-pin" class="h-5 w-5" />
+            <Icon name="map-pin" class="h-5 w-5" draw="reveal" />
           </span>
           Headquarters
         </dt>
@@ -120,6 +120,7 @@ const withImage = hasImage('about');
       <div>
         <dt class="flex items-center gap-3 font-semibold">
           <span class="icon-tile">
+            {/* Static: an ownership status (motion copy rule 9: no animated checks or seals). */}
             <Icon name="badge-check" class="h-5 w-5" />
           </span>
           Ownership
@@ -129,7 +130,7 @@ const withImage = hasImage('about');
       <div>
         <dt class="flex items-center gap-3 font-semibold">
           <span class="icon-tile">
-            <Icon name="users" class="h-5 w-5" />
+            <Icon name="users" class="h-5 w-5" draw="reveal" />
           </span>
           Equal opportunity employer
         </dt>

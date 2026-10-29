@@ -53,7 +53,7 @@ const roadmapByGroup = roadmapGroups.map((group) => ({
 }));
 ---
 
-<BaseLayout title="Services" description={description}>
+<BaseLayout title="Services" description={description} progress>
   <PageHeader
     eyebrow="Services"
     title="Managed security, from first alert to final report"
@@ -95,7 +95,12 @@ const roadmapByGroup = roadmapGroups.map((group) => ({
           <div data-reveal>
             <div class="flex items-center gap-3">
               <span class="icon-tile">
-                <Icon name={service.icon} class="h-5 w-5" />
+                {/* Static beside compliance wording (motion copy rule 9); the others draw on reveal. */}
+                <Icon
+                  name={service.icon}
+                  class="h-5 w-5"
+                  draw={service.id === 'compliance-readiness' ? false : 'reveal'}
+                />
               </span>
               <p class="eyebrow">{service.kicker}</p>
             </div>

@@ -28,9 +28,11 @@ interface Props {
   description?: string;
   /** Keep this page out of search engines even after launch (e.g. the 404 page). */
   noindex?: boolean;
+  /** Reading-progress hairline in the header from md up (long pages; src/components/Header.astro). */
+  progress?: boolean;
 }
 
-const { title, description = siteDescription, noindex = false } = Astro.props;
+const { title, description = siteDescription, noindex = false, progress = false } = Astro.props;
 
 const pathname = Astro.url.pathname;
 const isHome = pathname === '/';
@@ -128,12 +130,15 @@ const contentSecurityPolicy = [
       Skip to main content
     </a>
     {!SITE_LAUNCHED && <PreviewBanner />}
-    <Header />
+    <Header progress={progress} />
     <main id="main" tabindex="-1" class="flex-1 focus:outline-none">
       <slot />
     </main>
     <Footer />
-    {/* Scroll reveal, count-up and header state; bundled to a file under /_astro/ (no inline JS). */}
+    {/*
+      Motion (scroll reveal, one-shots, count-up, the Home flow, the card light) and header state;
+      bundled to a file under /_astro/ (no inline JS).
+    */}
     <script>
       import '../scripts/motion';
     </script>

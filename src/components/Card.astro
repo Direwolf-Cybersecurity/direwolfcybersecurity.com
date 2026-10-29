@@ -2,8 +2,9 @@
 /**
  * A bordered card with an optional icon and an h3 title. With `href`, the title is a link whose
  * hit area covers the whole card, a "Learn more" cue appears at the bottom, and the card lifts on
- * hover and focus. Without `href` the card is static: it never lifts, so it does not look
- * clickable. `titleClass` lets a grid give every title the same height (for example two lines
+ * hover and focus (in a `data-spotlight` grid its edge also catches light near the pointer, and
+ * the cue's arrow nudges right; src/styles/global.css, "Link cards"). Without `href` the card is
+ * static: it never lifts, so it does not look clickable. `titleClass` lets a grid give every title the same height (for example two lines
  * from lg up), so the body text in a row of cards starts at the same height.
  */
 import Icon from './Icon.astro';
@@ -43,7 +44,7 @@ const { title, href, icon, class: className = '', titleClass = '' } = Astro.prop
   </div>
   {href && (
     <p
-      class="text-accent mt-auto flex items-center gap-1.5 pt-5 text-sm font-semibold"
+      class="learn-more text-accent mt-auto flex items-center gap-1.5 pt-5 text-sm font-semibold"
       aria-hidden="true"
     >
       Learn more

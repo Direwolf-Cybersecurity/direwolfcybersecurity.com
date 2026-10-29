@@ -24,6 +24,12 @@
    */
   --brand-panel: #05070d; /* the shield's near-black field (the platform's --brand-panel) */
   --brand-blue: #0184f7; /* the art's electric blue, for glow and decoration only */
+  /*
+   * --brand-blue as channels, for the motion layer's light at an alpha: rgb(var(--brand-blue-rgb) /
+   * 55%) is exactly color-mix(in srgb, var(--brand-blue) 55%, transparent), and the build passes
+   * it through as written (it repeats each color-mix() declaration in an @supports fallback).
+   */
+  --brand-blue-rgb: 1 132 247;
   --bg: #ffffff;
   --surface: #f5f7fa;
   --fg: #101828;
@@ -36,8 +42,27 @@
   --accent-soft: #e8f1fc; /* tint behind text: --accent 5.4:1, --fg 15.6:1, --muted 6.7:1 */
   --focus: #012756; /* oklch(0.28 0.094 256): 14.7:1 on --bg, 13.7:1 on --surface */
   --danger: #b42318; /* form errors, 6.4:1 on --bg */
-  /* Motion: one easing curve; 150 ms hover, 250 ms state, 400 ms reveal (docs/design-direction.md). */
-  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  /*
+   * Motion (docs/design-direction.md, "Motion system v2 (2026-10-28)"): one easing curve and five
+   * duration tiers; every sequence on the site is built from these.
+   */
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1); /* every transition, reveal, draw and pulse */
+  --ease-count: cubic-bezier(0.3333, 1, 0.6667, 1); /* exactly motion.ts's 1 - (1 - p)^3 */
+  --dur-hover: 150ms; /* hover, press, nav bar, arrow nudge, field borders, card light */
+  --dur-state: 250ms; /* lit / unlit, the header's line of light, dwell between hops */
+  --dur-reveal: 400ms; /* section reveal, icon draw on reveal, one hop of a pulse */
+  --dur-count: 1000ms; /* count-up and its bar */
+  --dur-settle: 1200ms; /* image settle, dot-grid power-on, rail pulse, header trace, frame light */
+  --catch-light: rgb(255 255 255 / 0.16); /* the 1 px top edge of a primary button */
+  --spot-edge: 55%; /* link-card edge light strength */
+  --spot-fill: 6%; /* link-card interior light strength */
+  /*
+   * Who gets motion, decided once, here: `off` (reduced motion, slow-update screens, browsers
+   * without the `update` feature, print), `plain` (the MOTION block below: forced colours, more
+   * contrast) or `full` (the LIGHT block). src/scripts/motion.ts reads it, so CSS and script
+   * never disagree.
+   */
+  --motion-tier: off;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -58,6 +83,22 @@
     --accent-soft: #0c2240; /* tint behind text: --accent 5.1:1, --fg 13.2:1, --muted 7.8:1 */
     --focus: #89c4fb; /* oklch(0.8 0.1 248): 10.1:1 on --bg, 8.7:1 on --surface */
     --danger: #ff8a7a; /* 7.0:1 on --bg and on --surface */
+    --catch-light: rgb(255 255 255 / 0.22);
+    --spot-edge: 75%;
+    --spot-fill: 10%;
+  }
+}
+
+/* MOTION: reveals, settles, draws, the count-up bar, the nav bar, the press, the progress line. */
+@media screen and (prefers-reduced-motion: no-preference) and (update: fast) {
+  :root {
+    --motion-tier: plain;
+  }
+}
+/* LIGHT: the MOTION query plus no forced colours and no contrast preference; the light effects. */
+@media screen and (prefers-reduced-motion: no-preference) and (update: fast) and (forced-colors: none) and (prefers-contrast: no-preference) {
+  :root {
+    --motion-tier: full;
   }
 }
 
@@ -122,7 +163,11 @@
     color: var(--fg);
   }
 
-  /* Reduced motion: no smooth scrolling, no transitions, no animations. */
+  /*
+   * Reduced motion: no smooth scrolling, no transitions, no animations. Every animation is also
+   * written inside the MOTION or LIGHT block, which reduced motion never matches; this stays as
+   * the safety net.
+   */
   @media (prefers-reduced-motion: reduce) {
     html {
       scroll-behavior: auto;
@@ -166,6 +211,13 @@
     --accent-soft: #0c2240;
     --focus: #89c4fb; /* 11.6:1 on --bg */
     --danger: #ff8a7a;
+    --catch-light: rgb(255 255 255 / 0.22);
+    /*
+     * Light for the motion layer (pulses), mixed here so it takes the band's --fg. Kept in custom
+     * properties, which the build passes through as written, rather than repeated in each rule.
+     */
+    --pulse-head: color-mix(in srgb, var(--brand-blue) 55%, var(--fg));
+    --pulse-glow: rgb(var(--brand-blue-rgb) / 45%);
     color-scheme: dark;
     background-color: var(--bg);
     color: var(--fg);
@@ -174,20 +226,36 @@
   .btn {
     @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-md border px-5 py-2.5 text-sm font-semibold no-underline;
     transition:
-      transform 150ms var(--ease-out),
-      box-shadow 150ms var(--ease-out),
-      background-color 150ms var(--ease-out),
-      border-color 150ms var(--ease-out),
-      color 150ms var(--ease-out);
+      transform var(--dur-hover) var(--ease-out),
+      box-shadow var(--dur-hover) var(--ease-out),
+      background-color var(--dur-hover) var(--ease-out),
+      border-color var(--dur-hover) var(--ease-out),
+      color var(--dur-hover) var(--ease-out);
   }
+  /*
+   * Primary: a 1 px catch-light along the inside of the top edge at rest; a 1 px lift with the
+   * blue glow on hover (never on focus: focus is the instant 3 px ring); a press lands flat with
+   * the glow halved. The catch-light stays first in every shadow list.
+   */
   .btn-primary {
     @apply bg-accent-solid border-accent-solid text-on-accent;
+    --press-ring: rgb(var(--brand-blue-rgb) / 20%);
+    --press-glow: rgb(var(--brand-blue-rgb) / 35%);
+    box-shadow: inset 0 1px 0 var(--catch-light);
   }
   .btn-primary:hover {
     transform: translateY(-1px);
     box-shadow:
-      0 0 0 1px color-mix(in srgb, var(--brand-blue) 40%, transparent),
-      0 10px 28px -8px color-mix(in srgb, var(--brand-blue) 70%, transparent);
+      inset 0 1px 0 var(--catch-light),
+      0 0 0 1px rgb(var(--brand-blue-rgb) / 40%),
+      0 10px 28px -8px rgb(var(--brand-blue-rgb) / 70%);
+  }
+  .btn-primary:active {
+    transform: translateY(0);
+    box-shadow:
+      inset 0 1px 0 var(--catch-light),
+      0 0 0 1px var(--press-ring),
+      0 5px 14px -8px var(--press-glow);
   }
   .btn-secondary {
     @apply border-line-strong text-fg hover:bg-surface bg-transparent;
@@ -202,19 +270,20 @@
 
   /*
    * Link cards only (Card.astro with `href`): they lift 2 px, with an accent edge and a soft blue
-   * glow, on hover and focus. Static cards never lift, so they do not look clickable.
+   * glow, on hover and focus. Static cards never lift, so they do not look clickable. The edge
+   * light under the pointer is in the LIGHT block ("Link cards" below).
    */
   .card-lift {
     transition:
-      transform 150ms var(--ease-out),
-      border-color 150ms var(--ease-out),
-      box-shadow 150ms var(--ease-out);
+      transform var(--dur-hover) var(--ease-out),
+      border-color var(--dur-hover) var(--ease-out),
+      box-shadow var(--dur-hover) var(--ease-out);
   }
   .card-lift:hover,
   .card-lift:focus-within {
     transform: translateY(-2px);
     border-color: color-mix(in srgb, var(--accent) 60%, var(--line));
-    box-shadow: 0 14px 34px -16px color-mix(in srgb, var(--brand-blue) 55%, transparent);
+    box-shadow: 0 14px 34px -16px rgb(var(--brand-blue-rgb) / 55%);
   }
 
   /* A rounded tile behind a card's icon. */
@@ -228,10 +297,10 @@
    */
   .brand-panel {
     @apply rounded-2xl border;
-    border-color: color-mix(in srgb, var(--brand-blue) 45%, transparent);
+    border-color: rgb(var(--brand-blue-rgb) / 45%);
     box-shadow:
-      0 0 28px -6px color-mix(in srgb, var(--brand-blue) 55%, transparent),
-      inset 0 0 36px -8px color-mix(in srgb, var(--brand-blue) 30%, transparent);
+      0 0 28px -6px rgb(var(--brand-blue-rgb) / 55%),
+      inset 0 0 36px -8px rgb(var(--brand-blue-rgb) / 30%);
   }
 
   .eyebrow {
@@ -242,8 +311,13 @@
     @apply text-accent underline decoration-1 underline-offset-4 hover:decoration-2;
   }
 
+  /* Form fields: the border turns accent on focus (150 ms); the focus ring itself is instant. */
   .field {
     @apply border-line-strong bg-bg text-fg w-full rounded-md border px-3 py-2.5;
+    transition: border-color var(--dur-hover) var(--ease-out);
+  }
+  .field:focus {
+    border-color: var(--accent);
   }
 
   /* Long-form text (legal documents, policy pages). */
@@ -302,19 +376,68 @@
 }
 
 /* ------------------------------------------------------------------------------------------ */
+/* Motion: the global pause and the reveal stagger (src/scripts/motion.ts).                    */
+/* ------------------------------------------------------------------------------------------ */
+
+/*
+ * The tab is hidden (motion.ts keeps .is-tab-hidden on <html> in step with document.hidden):
+ * every animation pauses. CSS delays do not count down while paused, so a page opened in a
+ * background tab plays its one-shots when it is first viewed.
+ */
+.is-tab-hidden *,
+.is-tab-hidden *::before,
+.is-tab-hidden *::after {
+  animation-play-state: paused !important;
+}
+
+/* Items in a data-reveal="stagger" group enter 60 ms apart (0 to 240 ms). Harmless at rest. */
+[data-reveal='stagger'] > :nth-child(2) {
+  --stagger: 60ms;
+}
+[data-reveal='stagger'] > :nth-child(3) {
+  --stagger: 120ms;
+}
+[data-reveal='stagger'] > :nth-child(4) {
+  --stagger: 180ms;
+}
+[data-reveal='stagger'] > :nth-child(n + 5) {
+  --stagger: 240ms;
+}
+
+/* ------------------------------------------------------------------------------------------ */
 /* Header                                                                                      */
 /* ------------------------------------------------------------------------------------------ */
 
 /*
  * Sticky from md up (on phones it scrolls away, so an open menu never outgrows the screen). At the
  * top of the page the bottom edge is transparent, so the header and the near-black hero or page
- * header read as one band; the hairline appears only once the page scrolls (.is-scrolled).
+ * header read as one band. Once the page scrolls (.is-scrolled) the bottom edge becomes a
+ * centre-weighted line of light (::before, over the transparent 1 px border, so the header never
+ * changes height) with a shadow. ::after is the reading-progress hairline (`data-progress`).
  */
 .site-header {
+  --header-light: rgb(var(--brand-blue-rgb) / 55%);
+  --progress-line: rgb(var(--brand-blue-rgb) / 70%);
+  position: relative;
   border-bottom: 1px solid transparent;
-  transition:
-    box-shadow 250ms var(--ease-out),
-    border-color 250ms var(--ease-out);
+  transition: box-shadow var(--dur-state) var(--ease-out);
+}
+.site-header::before {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  bottom: -1px;
+  height: 1px;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--header-light) 30%,
+    var(--header-light) 70%,
+    transparent
+  );
+  opacity: 0;
+  transition: opacity var(--dur-state) var(--ease-out);
 }
 @media (min-width: 768px) {
   .site-header {
@@ -325,8 +448,66 @@
 }
 /* Set by src/scripts/motion.ts once the page has scrolled. */
 .site-header.is-scrolled {
-  border-bottom-color: color-mix(in srgb, var(--brand-blue) 35%, transparent);
   box-shadow: 0 10px 30px -18px rgb(0 0 0 / 0.9);
+}
+.site-header.is-scrolled::before {
+  opacity: 1;
+}
+
+/*
+ * Primary navigation from md up: one indicator system. A 1 px accent bar draws in from the left
+ * under a link on hover and keyboard focus (150 ms); the current page shows the same bar at 2 px,
+ * static. Drawn as a border so it keeps a system colour in forced-colours mode.
+ */
+@media (min-width: 768px) {
+  .nav-link {
+    position: relative;
+  }
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0.25rem;
+    inset-inline: 0.5rem;
+    border-top: 1px solid var(--accent);
+    pointer-events: none;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--dur-hover) var(--ease-out);
+  }
+  .nav-link:hover::after,
+  .nav-link:focus-visible::after {
+    transform: scaleX(1);
+  }
+  .nav-link[aria-current='page']::after {
+    border-top-width: 2px;
+    transform: none;
+  }
+}
+
+/*
+ * Reading-progress hairline (Services, Platform, Compliance; BaseLayout `progress`): from md up,
+ * where the header is sticky, the bright part of its bottom line grows left to right with the
+ * page's scroll position. Scroll-driven, so it moves only while the visitor scrolls. Absent in
+ * browsers without scroll timelines, on phones and with reduced motion.
+ */
+@supports (animation-timeline: scroll()) {
+  /* MOTION */
+  @media screen and (prefers-reduced-motion: no-preference) and (update: fast) and (min-width: 768px) {
+    .site-header[data-progress]::after {
+      content: '';
+      position: absolute;
+      inset-inline: 0;
+      bottom: -1px;
+      border-top: 1px solid var(--progress-line);
+      pointer-events: none;
+      transform-origin: left;
+      /* Longhands: the build would otherwise fold the timeline into the shorthand, which drops it. */
+      animation-name: draw-x;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: scroll(root block);
+    }
+  }
 }
 
 /*
@@ -334,7 +515,7 @@
  * top and bottom, so the band edges stay visible in the dark color scheme too. Decorative.
  */
 .section-dark {
-  border-block: 1px solid color-mix(in srgb, var(--brand-blue) 25%, transparent);
+  border-block: 1px solid rgb(var(--brand-blue-rgb) / 25%);
 }
 
 /* ------------------------------------------------------------------------------------------ */
@@ -355,7 +536,7 @@
   pointer-events: none;
   background-image: radial-gradient(
     circle,
-    color-mix(in srgb, var(--brand-blue) 60%, transparent) 1px,
+    rgb(var(--brand-blue-rgb) / 60%) 1px,
     transparent 1.6px
   );
   background-size: 24px 24px;
@@ -371,16 +552,62 @@
   height: 64rem;
   left: -26rem;
   top: -34rem;
-  background: radial-gradient(
-    closest-side,
-    color-mix(in srgb, var(--brand-blue) 26%, transparent),
-    transparent
-  );
+  background: radial-gradient(closest-side, rgb(var(--brand-blue-rgb) / 26%), transparent);
 }
-/* The hero's glow drifts slowly into place once and settles within five seconds (WCAG 2.2.2). */
-@media (prefers-reduced-motion: no-preference) {
+
+/*
+ * Page headers (PageHeader.astro). `standard`, at rest by 2.4 s: the dot grid powers on from the
+ * glow's origin (0-1.2 s), the glow settles (0-2.4 s), the eyebrow line sweeps in (0.1-1.3 s) and
+ * one pulse of light sweeps once along the band's bottom edge at an even speed (0.6-1.8 s, LIGHT
+ * only; about 1 px/ms at 1,280 px). Heading
+ * and lede never move. `calm` (Security, Legal index) is fully static. The image-less Home hero
+ * fallback (.glow-backdrop-animated) settles its glow over the same 2.4 s.
+ */
+/* MOTION */
+@media screen and (prefers-reduced-motion: no-preference) and (update: fast) {
+  .page-header-motion::before {
+    transform-origin: 22% 30%;
+    animation: grid-on var(--dur-settle) var(--ease-out) both;
+  }
+  .page-header-motion::after,
   .glow-backdrop-animated::after {
-    animation: glow-drift 5s var(--ease-out) both;
+    animation: glow-drift 2400ms var(--ease-out) both;
+  }
+  .page-header-calm .accent-sweep::after {
+    animation: none;
+  }
+}
+/* LIGHT */
+@media screen and (prefers-reduced-motion: no-preference) and (update: fast) and (forced-colors: none) and (prefers-contrast: no-preference) {
+  /* At bottom: 0, not -1 px: the band's overflow: hidden clips its border area. */
+  .header-trace {
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    height: 2px;
+    container-type: inline-size;
+    pointer-events: none;
+  }
+  /* One pulse of light along an edge: this band's bottom edge, and the Home hero's rail. */
+  .header-trace::after,
+  .hero-proof::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 4.5rem;
+    height: 2px;
+    pointer-events: none;
+    background: linear-gradient(to right, transparent, var(--brand-blue) 70%, var(--pulse-head));
+    box-shadow: 0 0 10px 1px var(--pulse-glow);
+    opacity: 0;
+    animation: trace var(--dur-settle) linear 600ms both;
+  }
+}
+@keyframes grid-on {
+  from {
+    opacity: 0;
+    transform: scale(1.04);
   }
 }
 @keyframes glow-drift {
@@ -391,6 +618,25 @@
   to {
     opacity: 1;
     transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+/*
+ * One pulse of light along an edge: the page-header trace and the hero rail (--trace-end, where
+ * the pulse's head stops). It runs linear, the one exception to --ease-out: an even speed (no
+ * dart, then linger), fading in over the first 15% and dimming steadily from 80% as it arrives.
+ */
+@keyframes trace {
+  0% {
+    opacity: 0;
+    transform: translateX(-4.5rem);
+  }
+  15%,
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(var(--trace-end, 100cqw));
   }
 }
 
@@ -404,10 +650,10 @@
   overflow: hidden;
   border-radius: 1rem;
   background-color: var(--brand-panel);
-  border: 1px solid color-mix(in srgb, var(--brand-blue) 40%, transparent);
+  border: 1px solid rgb(var(--brand-blue-rgb) / 40%);
   box-shadow:
-    0 0 0 1px color-mix(in srgb, var(--brand-blue) 10%, transparent),
-    0 18px 50px -20px color-mix(in srgb, var(--brand-blue) 55%, transparent);
+    0 0 0 1px rgb(var(--brand-blue-rgb) / 10%),
+    0 18px 50px -20px rgb(var(--brand-blue-rgb) / 55%);
 }
 .image-frame img {
   display: block;
@@ -435,6 +681,19 @@
  * Last re-checked 2026-10-26 (row A8 subhead, three proof points) at 19 widths from 375 to
  * 1920 px: worst 4.83:1, the subhead's second line at 1000 px. Two proof points make the
  * hero shorter and drop that line below 4.5:1 at 960-1060 px.
+ * Motion v2 (2026-10-28): `npm run hero-contrast` (scripts/hero-contrast.mjs) now samples every
+ * hero text line at the same 19 widths in the rest frame and in paused frames at 0, 600 and
+ * 1,400 ms (and 2,000 ms with the edge-light), failing under 4.5:1. Checked 2026-10-28: worst
+ * 4.87:1 at rest and at 1,400 ms, 4.89:1 at 600 ms, 5.14:1 at 0 ms (the settle starts at 1.035,
+ * so the shield sits further from the text), 4.87:1 at 2,000 ms with the edge-light on; always
+ * the subhead's second line at 1000 px. The same script gives 4.83:1 on the 6d8c4b3 build.
+ * Re-checked after the review fixes (the rail pulse linear, its head stopping on the rail's end;
+ * proof icons at 300 and 450 ms, the third static): unchanged.
+ * Baseline before motion v2, at 6d8c4b3 (gzip -9 of the built files): Home JavaScript 1,392 B
+ * (motion 1,056 B, header menu 336 B), site CSS 8,264 B, Home HTML 6,894 B; lab median of five
+ * Home loads at 412 x 823, 4x CPU and slow 4G (Lighthouse-like, not Lighthouse): LCP 2,320 ms,
+ * TBT 0 ms, CLS 0.
+ * Layers: the image (z-index 0), the optional edge-light (.hero-glint, 1), the scrim (::after, 2).
  */
 .hero-media {
   position: absolute;
@@ -444,6 +703,7 @@
 }
 .hero-media img {
   position: absolute;
+  z-index: 0;
   left: 0;
   right: 0;
   bottom: 0;
@@ -456,6 +716,7 @@
 .hero-media::after {
   content: '';
   position: absolute;
+  z-index: 2;
   inset: 0;
   background: linear-gradient(
     to bottom,
@@ -485,6 +746,724 @@
       );
   }
 }
+/* The optional edge-light (ImageSlot `glint`, owner preview, off by default). Empty at rest. */
+.hero-glint {
+  --glint: color-mix(in srgb, var(--fg) 10%, transparent);
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* ------------------------------------------------------------------------------------------ */
+/* Home hero motion. The headline, subhead, buttons and proof-point text are painted at first   */
+/* paint and never move. Around them: the image settles (0-1.2 s); the first two proof icons    */
+/* draw (0.3-1.25 s; the third, beside an ownership status, is static); a hairline "signal      */
+/* rail" draws above the proof points (0.4-0.8 s); one pulse of light crosses it at an even     */
+/* speed, its head stopping on the rail's end (0.8-2.0 s, LIGHT). At rest by 2.0 s; nothing     */
+/* loops. CSS only.                                                                             */
+/* ------------------------------------------------------------------------------------------ */
+
+/* The rail at rest: a faint 1 px line in the proof list's top margin, so nothing moves. */
+.hero-proof {
+  --rail: rgb(var(--brand-blue-rgb) / 22%);
+  position: relative;
+  container-type: inline-size;
+}
+.hero-proof::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: -1.25rem;
+  width: min(100%, 28rem);
+  height: 1px;
+  pointer-events: none;
+  background: var(--rail);
+  transform-origin: left;
+}
+/* MOTION */
+@media screen and (prefers-reduced-motion: no-preference) and (update: fast) {
+  /* Opacity stays 1, so the largest contentful paint is unaffected. */
+  .hero-media img {
+    transform-origin: 50% 70%;
+    animation: hero-settle var(--dur-settle) var(--ease-out) both;
+  }
+  .hero-proof::before {
+    animation: draw-x var(--dur-reveal) var(--ease-out) 400ms both;
+  }
+}
+/* MOTION, from 640 px: settle toward the shield, so bright pixels never slide toward the text. */
+@media screen and (prefers-reduced-motion: no-preference) and (update: fast) and (min-width: 640px) {
+  .hero-media img {
+    transform-origin: 78% 45%;
+  }
+}
+/* LIGHT */
+@media screen and (prefers-reduced-motion: no-preference) and (update: fast) and (forced-colors: none) and (prefers-contrast: no-preference) {
+  /*
+   * The rail pulse: the page header's edge pulse (Page headers, above), on the rail, from 800 ms.
+   * Its head (the right end of its 4.5rem) lands on the rail's end, never past it.
+   */
+  .hero-proof::after {
+    --trace-end: calc(min(100cqw, 28rem) - 4.5rem);
+    top: calc(-1.25rem - 0.5px);
+    animation-delay: 800ms;
+  }
+}
+/*
+ * LIGHT, from 640 px: one soft pass of silver light across the shield (2.4 s from 0.8 s), never
+ * behind text: it starts at 64% (the text column is capped at 58%) and only moves right.
+ */
+@media screen and (prefers-reduced-motion: no-preference) and (update: fast) and (forced-colors: none) and (prefers-contrast: no-preference) and (min-width: 640px) {
+  .hero-glint::before {
+    content: '';
+    position: absolute;
+    left: 64%;
+    width: 18%;
+    inset-block: -10%;
+    background: linear-gradient(100deg, transparent, var(--glint) 50%, transparent);
+    opacity: 0;
+    transform: translateX(0) skewX(-12deg);
+    animation: hero-glint 2400ms var(--ease-out) 800ms both;
+  }
+}
+/* Lite (Save-Data or reduced data): the light one-shots never start; at rest they are invisible. */
+.motion-lite .hero-proof::after,
+.motion-lite .hero-glint::before,
+.motion-lite .header-trace::after {
+  animation: none;
+}
+@keyframes hero-settle {
+  from {
+    transform: scale(1.035);
+  }
+}
+@keyframes hero-glint {
+  0% {
+    opacity: 0;
+    transform: translateX(0) skewX(-12deg);
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(250%) skewX(-12deg);
+  }
+}
+
+/* ------------------------------------------------------------------------------------------ */
+/* Statistics (StatsBand.astro). Each figure's rule is an accent bar over the 2 px --line       */
+/* border: drawn at rest (no JavaScript, reduced motion, print); when a figure counts up        */
+/* (motion.ts) the bar grows on the same curve and frame as the number.                         */
+/* ------------------------------------------------------------------------------------------ */
+
+li[data-stat]::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -2px;
+  height: 2px;
+  pointer-events: none;
+  background: var(--accent);
+  transform-origin: left;
+}
+@media (min-width: 768px) {
+  li[data-stat]::before {
+    top: 0;
+    bottom: 0;
+    left: -2px;
+    right: auto;
+    width: 2px;
+    height: auto;
+    transform-origin: top;
+  }
+}
+/* MOTION */
+@media screen and (prefers-reduced-motion: no-preference) and (update: fast) {
+  li[data-count='armed']::before {
+    transform: scaleX(0);
+  }
+  li[data-count='run']::before {
+    animation: draw-x var(--dur-count) var(--ease-count) both;
+  }
+}
+/* MOTION, from md: the bar stands upright beside the figure. */
+@media screen and (prefers-reduced-motion: no-preference) and (update: fast) and (min-width: 768px) {
+  li[data-count='armed']::before {
+    transform: scaleY(0);
+  }
+  li[data-count='run']::before {
+    animation-name: draw-y;
+  }
+}
+
+/* ------------------------------------------------------------------------------------------ */
+/* Flow: Home "How it works" (src/components/SystemFlow.astro). Interface, not illustration: no  */
+/* SVG, nothing figurative; labelled HTML steps joined by CSS border lines and one CSS frame.   */
+/* The base CSS is the static, fully drawn diagram, which is what no-JavaScript, reduced-motion, */
+/* plain-tier and print visitors always see and what every visitor sees at rest. The run (LIGHT, */
+/* .is-running, 4.25 s) moves only transform and opacity.                                       */
+/* ------------------------------------------------------------------------------------------ */
+
+/*
+ * Geometry: the figure is the grid and the list is a subgrid, so every part aligns to named
+ * lines. Under 1,024 px: one column, Detect above the frame, Investigate and Respond inside it,
+ * the oversight node (when shown) below it. From 1,024 px: three columns, the frame around
+ * Investigate and Respond, the oversight node above the frame's centre, which is exactly the
+ * centre of the gap between Investigate and Respond (pad + 1fr + gap + 1fr + pad).
+ */
+.flow {
+  --flow-gap: clamp(3rem, 5vw, 5rem);
+  --soc-pad: 1rem;
+  --link-v: 2.5rem;
+  --o-link: 0px;
+  --flow-track: color-mix(in srgb, var(--brand-blue) 45%, var(--line));
+  --flow-frame-line: color-mix(in srgb, var(--brand-blue) 35%, var(--line));
+  --lit-line: color-mix(in srgb, var(--brand-blue) 60%, var(--line));
+  --lit-ring: rgb(var(--brand-blue-rgb) / 25%);
+  --lit-glow: rgb(var(--brand-blue-rgb) / 60%);
+  --frame-light: color-mix(in srgb, var(--brand-blue) 70%, var(--fg));
+  --frame-glow: rgb(var(--brand-blue-rgb) / 55%);
+  --frame-inner: rgb(var(--brand-blue-rgb) / 45%);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows:
+    [detect] auto [l1] var(--link-v) [soc-top] var(--soc-pad) [investigate] auto [l2] var(--link-v)
+    [respond] auto [soc-bottom] var(--soc-pad) [o-link] var(--o-link) [over] auto [caption] auto;
+}
+.flow.has-oversight {
+  --o-link: 2rem;
+}
+.flow-steps {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-column: 1 / -1;
+  grid-row: detect / o-link;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: subgrid;
+}
+/* Steps may shrink below their longest word (large text sizes) rather than push past the edge. */
+.flow-step {
+  position: relative;
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+/* Each node: its grid area (rows under 1,024 px, columns from 1,024 px) and its lit time in the run. */
+[data-flow-node='detect'] {
+  --area: detect;
+  --lit: 0ms;
+}
+[data-flow-node='investigate'] {
+  --area: investigate;
+  --lit: 400ms;
+}
+[data-flow-node='respond'] {
+  --area: respond;
+  --lit: 1050ms;
+}
+[data-flow-node='oversight'] {
+  --lit: 2250ms;
+}
+.flow-step {
+  grid-row: var(--area);
+}
+.flow-step:not([data-flow-node='detect']) {
+  margin-inline: var(--soc-pad);
+}
+.flow-frame {
+  position: relative;
+  z-index: 0;
+  grid-column: 1 / -1;
+  grid-row: soc-top / o-link;
+  border: 1px solid var(--flow-frame-line);
+  border-radius: 1.25rem;
+  pointer-events: none;
+}
+/* "Direwolf AI SOC" sits on the frame's top edge and cuts the line, like a fieldset legend. */
+.flow-legend {
+  position: absolute;
+  z-index: 1;
+  top: -0.5px;
+  left: 1rem;
+  translate: 0 -50%;
+  padding-inline: 0.5rem;
+  border-radius: 0.375rem;
+  background: var(--bg);
+  white-space: nowrap;
+}
+.flow-oversight {
+  position: relative;
+  z-index: 1;
+  grid-column: 1 / -1;
+  grid-row: over;
+  justify-self: center;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid var(--line);
+  border-radius: 0.75rem;
+  background: var(--surface);
+  padding: 0.75rem 1rem;
+}
+.flow-caption {
+  grid-column: 1 / -1;
+  grid-row: caption;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1.5rem;
+  margin-top: 1.5rem;
+}
+
+/*
+ * Connectors: a 1 px border line (so it prints and keeps a system colour in forced colours) in a
+ * size container, carrying one pulse. Under 1,024 px every connector is vertical.
+ */
+.flow-link {
+  position: absolute;
+  left: calc(50% - 0.5px);
+  top: calc(100% + 1px); /* past the node's 1 px border: the line touches both nodes */
+  width: 1px;
+  container-type: size;
+  pointer-events: none;
+}
+.flow-link::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 0 solid var(--flow-track);
+  border-left-width: 1px;
+  transform-origin: top;
+}
+.flow-link-1 {
+  --d: 0ms;
+  --n: 3;
+  height: calc(var(--link-v) + var(--soc-pad));
+}
+.flow-link-2 {
+  --d: 650ms;
+  --n: 3;
+  height: var(--link-v);
+}
+/* Under 1,024 px the oversight node is below the frame: its link runs up to the frame's edge. */
+.flow-link-o {
+  --d: 2250ms;
+  --n: 1;
+  top: auto;
+  bottom: calc(100% + 1px);
+  height: var(--o-link);
+}
+.flow-link-o::before {
+  transform-origin: bottom;
+}
+.flow-pulse {
+  --seg: min(2.5rem, 40cqh);
+  --dir: to bottom; /* the head leads */
+  position: absolute;
+  left: -0.5px;
+  top: 0;
+  width: 2px;
+  height: var(--seg);
+  pointer-events: none;
+  opacity: 0;
+  background: linear-gradient(var(--dir), transparent, var(--brand-blue) 70%, var(--pulse-head));
+  box-shadow: 0 0 8px 1px var(--pulse-glow);
+}
+.flow-link-o .flow-pulse {
+  --dir: to top;
+}
+
+@media (min-width: 1024px) {
+  /*
+   * Wide gaps (about 90 px at 1,280 px; were clamp(3rem, 5vw, 5rem)) and longer pulses (3rem;
+   * were 2.5rem), so the travelling alert reads as a signal between the cards: the "pulse"
+   * strength knob for the owner's preview.
+   */
+  .flow {
+    --flow-gap: clamp(4.5rem, 7vw, 7rem);
+    --soc-pad: 1.25rem;
+    --col: minmax(0, 1fr);
+    grid-template-columns:
+      [detect-start] var(--col) [detect-end] var(--flow-gap) [soc-start] var(--soc-pad)
+      [investigate-start] var(--col) [investigate-end] var(--flow-gap) [respond-start] var(--col)
+      [respond-end] var(--soc-pad) [soc-end];
+    grid-template-rows:
+      [over] auto [o-link] var(--o-link) [soc-top] var(--soc-pad) [steps] auto
+      [soc-bottom] var(--soc-pad) [caption] auto;
+  }
+  .flow-steps {
+    grid-row: steps;
+    grid-template-columns: subgrid;
+    grid-template-rows: none;
+  }
+  .flow-step,
+  .flow-step:not([data-flow-node='detect']) {
+    grid-row: 1;
+    grid-column: var(--area);
+    margin-inline: 0;
+  }
+  .flow-frame {
+    grid-column: soc;
+    grid-row: soc-top / caption;
+  }
+  .flow-legend {
+    left: 1.5rem;
+  }
+  .flow-oversight {
+    grid-column: soc;
+  }
+  /* Detect -> Investigate and Investigate -> Respond run horizontally along the shared centre. */
+  .flow-link-1,
+  .flow-link-2 {
+    left: calc(100% + 1px);
+    top: calc(50% - 0.5px);
+    width: calc(var(--flow-gap) + var(--soc-pad));
+    height: 1px;
+  }
+  .flow-link-2 {
+    width: var(--flow-gap);
+  }
+  .flow-link-1::before,
+  .flow-link-2::before {
+    border-left-width: 0;
+    border-top-width: 1px;
+    transform-origin: left;
+  }
+  .flow-link-1 .flow-pulse,
+  .flow-link-2 .flow-pulse {
+    --seg: min(3rem, 45cqw);
+    left: 0;
+    top: -0.5px;
+    width: var(--seg);
+    height: 2px;
+    --dir: to right;
+  }
+  /* The oversight node is above the frame: its link runs down to the frame's top edge. */
+  .flow-link-o {
+    top: calc(100% + 1px);
+    bottom: auto;
+  }
+  .flow-link-o::before {
+    transform-origin: top;
+  }
+  .flow-link-o .flow-pulse {
+    --dir: to bottom;
+  }
+}
+
+/*
+ * 640 to 1,023 px: each step is a row (its tile, then its heading over its sentence, then its
+ * index at the top right), about half the height of the stacked card. The connectors and the
+ * frame are unchanged.
+ */
+@media (min-width: 640px) and (max-width: 1023.98px) {
+  .flow-step {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    column-gap: 1.25rem;
+    align-items: baseline;
+  }
+  .flow-step > div {
+    display: contents;
+  }
+  .flow-step .icon-tile {
+    grid-row: 1 / span 2;
+    align-self: start;
+  }
+  .flow-step h3 {
+    grid-area: 1 / 2;
+    margin-top: 0;
+  }
+  .flow-step p {
+    grid-area: 2 / 2;
+    margin-top: 0.25rem;
+  }
+  .flow-step > div > :last-child {
+    grid-area: 1 / 3;
+  }
+}
+
+@media (prefers-contrast: more) {
+  .flow {
+    --flow-track: var(--line-strong);
+    --flow-frame-line: var(--line-strong);
+  }
+}
+
+/*
+ * Replay / Play: absent without JavaScript and outside the LIGHT tier (shown under LIGHT below).
+ * A quiet control for the illustration, not a call to action: muted text and no border at rest
+ * (the 44 px target and the 3 px focus ring stay); the border and full-contrast text on hover and
+ * focus.
+ */
+.flow-replay {
+  display: none;
+  border-color: transparent;
+  background: transparent;
+  color: var(--muted);
+  padding-inline: 0.75rem;
+}
+.flow-replay:hover,
+.flow-replay:focus-visible {
+  color: var(--fg);
+  border-color: var(--line-strong);
+}
+.flow-icon-play,
+.flow-replay.is-play .flow-icon-replay {
+  display: none;
+}
+.flow-replay.is-play .flow-icon-play {
+  display: block;
+}
+
+/* LIGHT */
+@media screen and (prefers-reduced-motion: no-preference) and (update: fast) and (forced-colors: none) and (prefers-contrast: no-preference) {
+  /*
+   * Lit overlays: each node's ::after (and the frame light, .flow-frame::after) changes opacity
+   * only. Text colour never changes between states.
+   */
+  [data-flow-node]::after,
+  .flow-frame::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    border: 1px solid var(--lit-line);
+    box-shadow:
+      0 0 0 1px var(--lit-ring),
+      0 12px 32px -14px var(--lit-glow);
+    pointer-events: none;
+    opacity: 0;
+  }
+  .flow-frame::after {
+    border-color: var(--frame-light);
+    box-shadow:
+      0 0 28px -6px var(--frame-glow),
+      inset 0 0 28px -10px var(--frame-inner);
+  }
+
+  /* Armed: the lines wait at scale 0 until the first run lays them down under its pulses. */
+  .flow.is-armed:not(.is-drawn) .flow-link::before {
+    transform: scaleY(0);
+  }
+  .flow.is-running:not(.is-drawn) .flow-link::before {
+    animation: draw-y var(--dur-reveal) var(--ease-out) var(--d) both;
+  }
+
+  /* The run: t 0 from .is-running; it ends at 4,250 ms (motion.ts then sets .is-drawn). */
+  .flow.is-running .flow-pulse {
+    animation:
+      flow-travel-y 600ms var(--ease-out) var(--d) var(--n) both,
+      flow-fade 600ms linear var(--d) var(--n) both;
+  }
+  .flow.is-running .flow-link-o .flow-pulse {
+    animation-name: flow-travel-up, flow-fade;
+  }
+  .flow.is-running [data-flow-node]::after {
+    animation:
+      flow-lit var(--dur-state) var(--ease-out) var(--lit) both,
+      flow-unlit var(--dur-reveal) var(--ease-out) 3850ms forwards;
+  }
+  .flow.is-running .flow-frame::after {
+    animation: flow-frame-light var(--dur-settle) var(--ease-out) 2650ms both;
+  }
+
+  /* Off-screen mid-run: everything holds where it is and resumes on return. */
+  .flow.is-paused,
+  .flow.is-paused *,
+  .flow.is-paused *::before,
+  .flow.is-paused *::after {
+    animation-play-state: paused !important;
+  }
+}
+/* LIGHT, from 1,024 px: the step links run horizontally; the oversight link runs down. */
+@media screen and (prefers-reduced-motion: no-preference) and (update: fast) and (forced-colors: none) and (prefers-contrast: no-preference) and (min-width: 1024px) {
+  .flow.is-armed:not(.is-drawn) :is(.flow-link-1, .flow-link-2)::before {
+    transform: scaleX(0);
+  }
+  .flow.is-running:not(.is-drawn) :is(.flow-link-1, .flow-link-2)::before {
+    animation-name: draw-x;
+  }
+  .flow.is-running :is(.flow-link-1, .flow-link-2) .flow-pulse {
+    animation-name: flow-travel-x, flow-fade;
+  }
+  .flow.is-running .flow-link-o .flow-pulse {
+    animation-name: flow-travel-y, flow-fade;
+  }
+}
+/* LIGHT, with scripting: reserve the button's space from first paint; motion.ts shows it. */
+@media screen and (prefers-reduced-motion: no-preference) and (update: fast) and (forced-colors: none) and (prefers-contrast: no-preference) and (scripting: enabled) {
+  .flow-replay {
+    display: inline-flex;
+    visibility: hidden;
+  }
+  .flow-replay.is-shown {
+    visibility: visible;
+  }
+}
+/*
+ * Draw a line or bar from scale 0 to its resting state (the rail, flow lines, bars, progress). The
+ * end is explicit: during the flow's first run the armed rule (scale 0) is still the underlying
+ * value.
+ */
+@keyframes draw-x {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: none;
+  }
+}
+@keyframes draw-y {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: none;
+  }
+}
+/* The pulse's head sits exactly on the line's drawing edge: 400 ms of travel, then 200 ms idle. */
+@keyframes flow-travel-x {
+  0% {
+    transform: translateX(calc(-1 * var(--seg)));
+  }
+  66.667%,
+  100% {
+    transform: translateX(calc(100cqw - var(--seg)));
+  }
+}
+@keyframes flow-travel-y {
+  0% {
+    transform: translateY(calc(-1 * var(--seg)));
+  }
+  66.667%,
+  100% {
+    transform: translateY(calc(100cqh - var(--seg)));
+  }
+}
+@keyframes flow-travel-up {
+  0% {
+    transform: translateY(100cqh);
+  }
+  66.667%,
+  100% {
+    transform: translateY(0);
+  }
+}
+@keyframes flow-fade {
+  0% {
+    opacity: 0;
+  }
+  12%,
+  52% {
+    opacity: 1;
+  }
+  66.667%,
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes flow-lit {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes flow-unlit {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@keyframes flow-frame-light {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* ------------------------------------------------------------------------------------------ */
+/* Link cards (Home services grid, `data-spotlight`): under a fine pointer the card's 1 px edge */
+/* catches light near the pointer (240 px) over a faint interior light (320 px); keyboard focus */
+/* gets the same light from the top of the card. motion.ts writes --mx / --my (CSSOM).          */
+/* ------------------------------------------------------------------------------------------ */
+
+/* LIGHT */
+@media screen and (prefers-reduced-motion: no-preference) and (update: fast) and (forced-colors: none) and (prefers-contrast: no-preference) {
+  .card-lift {
+    --spot-edge-color: color-mix(in srgb, var(--accent) var(--spot-edge), transparent);
+    --spot-fill-color: rgb(var(--brand-blue-rgb) / var(--spot-fill));
+    isolation: isolate;
+  }
+  .card-lift::before,
+  .card-lift::after {
+    content: '';
+    position: absolute;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity var(--dur-state) var(--ease-out);
+  }
+  /*
+   * The edge: the light in the 1 px border box over an opaque surface-coloured padding box (the
+   * card's own background), behind the content, so only the edge shows it.
+   */
+  .card-lift::before {
+    inset: -1px;
+    z-index: -1;
+    border: 1px solid transparent;
+    background:
+      linear-gradient(var(--surface), var(--surface)) padding-box,
+      radial-gradient(
+          240px circle at var(--mx, 50%) var(--my, 0%),
+          var(--spot-edge-color),
+          transparent 70%
+        )
+        border-box;
+  }
+  .card-lift::after {
+    inset: 0;
+    z-index: -1;
+    background: radial-gradient(
+      320px circle at var(--mx, 50%) var(--my, 0%),
+      var(--spot-fill-color),
+      transparent 65%
+    );
+  }
+  /* Keyboard focus: lit from above, never at a stale pointer position (beats motion.ts's CSSOM). */
+  .card-lift:has(:focus-visible) {
+    --mx: 50% !important;
+    --my: 0% !important;
+  }
+  .card-lift:has(:focus-visible)::before,
+  .card-lift:has(:focus-visible)::after {
+    opacity: 1;
+  }
+  /* Lite (Save-Data or reduced data): no card light. */
+  .motion-lite .card-lift::before,
+  .motion-lite .card-lift::after {
+    display: none;
+  }
+}
+/* LIGHT, fine pointers only */
+@media screen and (prefers-reduced-motion: no-preference) and (update: fast) and (forced-colors: none) and (prefers-contrast: no-preference) and (hover: hover) and (pointer: fine) {
+  .card-lift:hover::before,
+  .card-lift:hover::after {
+    opacity: 1;
+  }
+}
 
 /* ------------------------------------------------------------------------------------------ */
 /* Motion (src/scripts/motion.ts). Everything is visible without JavaScript: the script adds    */
@@ -492,7 +1471,8 @@
 /* only, so a printed page never has blank gaps where content had not yet scrolled into view.   */
 /* ------------------------------------------------------------------------------------------ */
 
-@media screen and (prefers-reduced-motion: no-preference) {
+/* MOTION */
+@media screen and (prefers-reduced-motion: no-preference) and (update: fast) {
   .reveal-pending:not([data-reveal='stagger']),
   .reveal-pending[data-reveal='stagger'] > * {
     opacity: 0;
@@ -503,38 +1483,43 @@
     opacity: 1;
     translate: 0 0;
     transition:
-      opacity 400ms var(--ease-out),
-      translate 400ms var(--ease-out);
-  }
-  .reveal-pending.is-revealed[data-reveal='stagger'] > :nth-child(2) {
-    transition-delay: 50ms;
-  }
-  .reveal-pending.is-revealed[data-reveal='stagger'] > :nth-child(3) {
-    transition-delay: 100ms;
-  }
-  .reveal-pending.is-revealed[data-reveal='stagger'] > :nth-child(4) {
-    transition-delay: 150ms;
-  }
-  .reveal-pending.is-revealed[data-reveal='stagger'] > :nth-child(n + 5) {
-    transition-delay: 200ms;
+      opacity var(--dur-reveal) var(--ease-out),
+      translate var(--dur-reveal) var(--ease-out);
+    transition-delay: var(--stagger, 0ms);
   }
 
-  /* Hero icons draw their strokes once (each shape has pathLength="1"; Icon.astro `draw`). */
+  /*
+   * The hero's first two proof icons draw their strokes once (each shape has pathLength="1";
+   * Icon.astro `draw` 1 and 2): 800 ms each from 300 and 450 ms, so no slot is empty for long.
+   */
   .icon-draw :is(path, circle, rect, line, polyline, polygon, ellipse) {
-    stroke-dasharray: 1;
-    stroke-dashoffset: 1;
-    animation: icon-draw 1.4s var(--ease-out) 0.2s forwards;
+    animation: icon-draw 800ms var(--ease-out) 300ms both;
   }
   .icon-draw-2 :is(path, circle, rect, line, polyline, polygon, ellipse) {
-    animation-delay: 0.45s;
-  }
-  .icon-draw-3 :is(path, circle, rect, line, polyline, polygon, ellipse) {
-    animation-delay: 0.7s;
+    animation-delay: 450ms;
   }
 
-  /* A thin accent line that sweeps in under the hero eyebrow. */
+  /*
+   * Icons with Icon.astro `draw="reveal"` draw once as their item is revealed (data-revealed,
+   * set by motion.ts): 400 ms from 100 ms after the item, plus its stagger. Icons already on
+   * screen at load are never revealed and stay static. The dash array lives in the keyframes, so
+   * at rest the icon is untouched.
+   */
+  [data-revealed] .icon-draw-reveal :is(path, circle, rect, line, polyline, polygon, ellipse) {
+    animation: icon-draw-in var(--dur-reveal) var(--ease-out) calc(100ms + var(--stagger, 0ms)) both;
+  }
+
+  /* A thin accent line that sweeps in under the hero and page-header eyebrows. */
   .accent-sweep::after {
-    animation: accent-sweep 1.2s var(--ease-out) 0.1s both;
+    animation: accent-sweep var(--dur-settle) var(--ease-out) 100ms both;
+  }
+
+  /* The "Learn more" arrow on link cards nudges 2 px right on hover and focus. */
+  .learn-more svg {
+    transition: translate var(--dur-hover) var(--ease-out);
+  }
+  .card-lift:is(:hover, :focus-within) .learn-more svg {
+    translate: 2px 0;
   }
 }
 
@@ -548,6 +1533,7 @@
 
 @keyframes icon-draw {
   0% {
+    stroke-dasharray: 1;
     stroke-dashoffset: 1;
     opacity: 0;
   }
@@ -555,8 +1541,19 @@
     opacity: 1;
   }
   100% {
+    stroke-dasharray: 1;
     stroke-dashoffset: 0;
     opacity: 1;
+  }
+}
+@keyframes icon-draw-in {
+  from {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 0;
   }
 }
 

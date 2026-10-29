@@ -4,6 +4,9 @@
  * rows S-STAT-3, S-STAT-2 and S-STAT-6, rule 13), each with its source beside it. The heading
  * claims no business size and no cost, because only S-STAT-3 is a small-business figure; the note
  * under the figures says they are not Direwolf results.
+ *
+ * Each item's rule is an accent bar (`data-stat`, src/styles/global.css "Statistics"): drawn at
+ * rest; when its figure counts up (src/scripts/motion.ts) it grows in lockstep with the number.
  */
 import StatFigure from './StatFigure.astro';
 import { homeStats, statsNote } from '../data/stats';
@@ -22,7 +25,10 @@ import { homeStats, statsNote } from '../data/stats';
     </div>
     <ul class="mt-10 grid gap-8 md:grid-cols-3 md:gap-6" data-reveal="stagger">
       {homeStats.map((stat) => (
-        <li class="border-line border-t-2 pt-6 md:border-t-0 md:border-l-2 md:pt-0 md:pl-6">
+        <li
+          data-stat
+          class="border-line relative border-t-2 pt-6 md:border-t-0 md:border-l-2 md:pt-0 md:pl-6"
+        >
           <StatFigure stat={stat} />
         </li>
       ))}

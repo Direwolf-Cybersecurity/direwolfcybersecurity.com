@@ -17,7 +17,7 @@ concurrency:
 
 jobs:
   verify:
-    name: Build, check, lint, format, links, a11y, csp
+    name: Build, check, lint, format, links, a11y, csp, motion, hero contrast
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -61,6 +61,14 @@ jobs:
       - name: Content Security Policy (meta on every page, no inline code, pages work under it)
         # Same browser as the a11y step; see scripts/check-csp.mjs.
         run: npm run csp
+
+      - name: Motion (tiers, settling, every animated element, budgets, no layout shift)
+        # Same browser as the a11y step; see scripts/check-motion.mjs.
+        run: npm run motion
+
+      - name: Home hero text contrast over the image, at rest and mid-animation
+        # Same browser; see scripts/hero-contrast.mjs.
+        run: npm run hero-contrast
 
       - name: Upload the axe report when the accessibility check fails
         if: failure()

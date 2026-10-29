@@ -7,6 +7,7 @@ import Experience from '../components/Experience.astro';
 import ImageSlot from '../components/ImageSlot.astro';
 import Icon from '../components/Icon.astro';
 import StatsBand from '../components/StatsBand.astro';
+import SystemFlow from '../components/SystemFlow.astro';
 import { services, roadmap } from '../data/services';
 import { hasImage } from '../data/images';
 import { shownEngagements } from '../data/engagements';
@@ -25,6 +26,17 @@ import { PLATFORM_LIVE, signupUrl } from '../config';
  * hero's primary button is "Contact us" (row W6: no early access, owner direction 2026-10-27),
  * and the roadmap row shows four names only (`homeTag`, rows R2-R5), under its "Roadmap" label,
  * linking to all ten on Services, so the roadmap does not outweigh the four services.
+ *
+ * Motion (motion system v2, 2026-10-28; docs/design-direction.md): one high-novelty moment per
+ * viewport. The hero plays once at load (CSS only, at rest by 2.0 s; its text never moves), the
+ * statistics count up, and "How it works" is the flow (src/components/SystemFlow.astro, its
+ * strings in src/data/flow.ts, register row D1), which plays once when it comes into view; the
+ * statistics band and the services sit between the two. The services grid's link cards catch
+ * light under the pointer (`data-spotlight`) and the Why Direwolf icons draw as they are
+ * revealed, except those beside status or compliance wording (motion copy rule 9: no animated
+ * checks or seals on status or compliance content), which stay static, as does the hero's
+ * veteran-owned proof icon. Section order is today's (motion gate 5 would move "How it works" up
+ * to directly after the statistics band).
  */
 const homeRoadmap = roadmap.filter((item) => item.homeTag);
 
@@ -37,39 +49,27 @@ const homeRoadmap = roadmap.filter((item) => item.homeTag);
  * the hero is a little shorter: text on the CSS glow backdrop.
  */
 const withHeroImage = hasImage('hero');
+
+// The hero's one-pass silver edge-light across the shield (motion gate 4): off until the owner has
+// seen it in a local preview and kept it.
+const heroEdgeLight = false;
 const heroHeight = withHeroImage
   ? 'pb-24 sm:flex sm:min-h-[36rem] sm:items-center sm:py-16 md:min-h-[38rem] md:py-20 lg:min-h-[40rem] lg:py-24'
   : 'pb-10 lg:flex lg:min-h-[30rem] lg:items-center lg:py-24';
 
 // Three proof points, the first saying what no other Home section says (the subhead already says
 // the AI SOC works every alert; the EDR card and Detect step do not name the operating systems),
-// each with its own icon. Keep three: with two, the hero is shorter from about 960 px up, the
-// image reframes, and the subhead's second line drops below 4.5:1 at 960-1060 px.
+// each with its own icon. The first two icons draw at load; the third, beside an ownership status,
+// stays static (motion copy rule 9). Keep three: with two, the hero is shorter from about 960 px
+// up, the image reframes, and the subhead's second line drops below 4.5:1 at 960-1060 px.
 const proofPoints: { icon: IconName; text: string }[] = [
   { icon: 'cpu', text: 'EDR for Windows, macOS and Linux' },
   { icon: 'crosshair', text: 'Penetration tests with a written report' },
   { icon: 'badge-check', text: 'Service-disabled veteran-owned' },
 ];
 
-const steps: { icon: IconName; title: string; text: string }[] = [
-  {
-    icon: 'scan-search',
-    title: 'Detect',
-    text: 'The EDR agent on each endpoint sends every alert to the Direwolf AI SOC.',
-  },
-  {
-    icon: 'brain-circuit',
-    title: 'Investigate',
-    text: 'AI analysts enrich and triage each alert, with a verdict and a plain-English summary.',
-  },
-  {
-    icon: 'shield-check',
-    title: 'Respond',
-    text: 'AI responders contain confirmed threats under guardrails you control.',
-  },
-];
-
-const reasons: { icon: IconName; title: string; text: string }[] = [
+// `draw: false`: static beside status or compliance wording (motion copy rule 9).
+const reasons: { icon: IconName; title: string; text: string; draw?: false }[] = [
   {
     icon: 'network',
     title: 'One partner for detection, testing and compliance',
@@ -84,11 +84,13 @@ const reasons: { icon: IconName; title: string; text: string }[] = [
     icon: 'badge-check',
     title: 'Veteran-owned',
     text: 'An SBA-certified Service-Disabled Veteran-Owned Small Business in Colorado Springs, Colorado.',
+    draw: false,
   },
   {
     icon: 'landmark',
     title: 'When your contracts raise the bar',
     text: 'Compliance readiness for NIST SP 800-171, CMMC and similar frameworks when your contracts call for it.',
+    draw: false,
   },
 ];
 ---
@@ -96,12 +98,13 @@ const reasons: { icon: IconName; title: string; text: string }[] = [
 <BaseLayout title="Home">
   <section
     aria-labelledby="hero-heading"
+    data-oneshot
     class:list={[
       'dark-band relative isolate overflow-hidden',
       !withHeroImage && 'glow-backdrop glow-backdrop-animated',
     ]}
   >
-    <ImageSlot id="hero" variant="backdrop" />
+    <ImageSlot id="hero" variant="backdrop" glint={heroEdgeLight} />
     <div class:list={['container-x relative z-10 pt-14 md:pt-20', heroHeight]}>
       <div class:list={['max-w-xl', withHeroImage && 'sm:max-w-[min(36rem,58%)]']}>
         <p class="eyebrow accent-sweep">AI-driven managed security</p>
@@ -129,10 +132,14 @@ const reasons: { icon: IconName; title: string; text: string }[] = [
             See services
           </a>
         </div>
-        <ul class="mt-10 flex flex-col gap-3 text-sm sm:flex-row sm:flex-wrap sm:gap-x-6">
+        <ul class="hero-proof mt-10 flex flex-col gap-3 text-sm sm:flex-row sm:flex-wrap sm:gap-x-6">
           {proofPoints.map((point, index) => (
             <li class="flex items-center gap-2">
-              <Icon name={point.icon} class="text-accent h-5 w-5" draw={(index + 1) as 1 | 2 | 3} />
+              <Icon
+                name={point.icon}
+                class="text-accent h-5 w-5"
+                draw={index < 2 ? ((index + 1) as 1 | 2) : false}
+              />
               <span>{point.text}</span>
             </li>
           ))}
@@ -144,7 +151,11 @@ const reasons: { icon: IconName; title: string; text: string }[] = [
   <StatsBand />
 
   <Section id="services" eyebrow="Services" title="Four services. One security partner.">
-    <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4" data-reveal="stagger">
+    <div
+      class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4"
+      data-reveal="stagger"
+      data-spotlight
+    >
       {services.map((service) => (
         <Card
           title={service.name}
@@ -180,22 +191,7 @@ const reasons: { icon: IconName; title: string; text: string }[] = [
     eyebrow="How it works"
     title="From alert to action in three steps"
   >
-    <ol class="mt-12 grid gap-6 md:grid-cols-3" data-reveal="stagger">
-      {steps.map((step, index) => (
-        <li class="card">
-          <div class="flex items-center justify-between">
-            <span class="icon-tile">
-              <Icon name={step.icon} class="h-5 w-5" />
-            </span>
-            <span class="text-accent font-mono text-sm font-semibold" aria-hidden="true">
-              {String(index + 1).padStart(2, '0')}
-            </span>
-          </div>
-          <h3 class="mt-5 text-lg font-semibold">{step.title}</h3>
-          <p class="text-muted mt-2 text-sm leading-relaxed">{step.text}</p>
-        </li>
-      ))}
-    </ol>
+    <SystemFlow class="mt-12" />
   </Section>
 
   <Section
@@ -208,7 +204,11 @@ const reasons: { icon: IconName; title: string; text: string }[] = [
       {reasons.map((reason) => (
         <li class="flex gap-4">
           <span class="icon-tile">
-            <Icon name={reason.icon} class="h-5 w-5" />
+            <Icon
+              name={reason.icon}
+              class="h-5 w-5"
+              draw={reason.draw === false ? false : 'reveal'}
+            />
           </span>
           <div>
             <h3 class="text-lg font-semibold">{reason.title}</h3>

@@ -9,6 +9,8 @@
  *
  * `framed` (default): fixed aspect ratio, rounded corners and a thin electric-blue edge glow.
  * `backdrop`: the Home hero's full-bleed treatment (.hero-media in src/styles/global.css).
+ * `glint` (backdrop only, default false; motion gate 4, owner preview): adds the one-pass silver
+ * edge-light across the shield (`.hero-glint`) between the image and the scrim.
  */
 import { Picture } from 'astro:assets';
 import { imageLoader, imageSlots, type ImageSlotId } from '../data/images';
@@ -17,9 +19,10 @@ interface Props {
   id: ImageSlotId;
   variant?: 'framed' | 'backdrop';
   class?: string;
+  glint?: boolean;
 }
 
-const { id, variant = 'framed', class: className } = Astro.props;
+const { id, variant = 'framed', class: className, glint = false } = Astro.props;
 const spec = imageSlots[id];
 const loader = imageLoader(id);
 const image = loader ? (await loader()).default : undefined;
@@ -57,5 +60,6 @@ const eager = id === 'hero';
       fetchpriority={eager ? 'high' : 'auto'}
       decoding="async"
     />
+    {variant === 'backdrop' && glint && <span class="hero-glint" aria-hidden="true" />}
   </div>
 )}

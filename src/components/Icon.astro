@@ -2,22 +2,27 @@
 /**
  * A Lucide UI icon (src/data/icons.ts), inlined as SVG. Decorative: always aria-hidden, so put
  * the meaning in adjacent text. `draw` gives every shape pathLength="1" so the stroke can draw
- * itself in once (`.icon-draw` in src/styles/global.css, off with reduced motion).
+ * itself in once (src/styles/global.css, off with reduced motion): 1 and 2 draw on load, staggered
+ * (`.icon-draw`, the Home hero's first two proof points); `'reveal'` draws when the icon's
+ * `data-reveal` item is revealed on scroll (`.icon-draw-reveal`), and never for an item already
+ * on screen at load. Without JavaScript and with reduced motion every icon is fully drawn. Never
+ * draw an icon beside status or compliance wording (motion copy rule 9: no animated checks or
+ * seals there); `npm run motion` checks it.
  */
 import { icons, type IconName } from '../data/icons';
 
 interface Props {
   name: IconName;
   class?: string;
-  /** Animate the strokes drawing in on load; 1 to 3 staggers the start. */
-  draw?: false | 1 | 2 | 3;
+  /** Draw the strokes in once: 1 or 2 on load (staggered), 'reveal' as the item is revealed. */
+  draw?: false | 1 | 2 | 'reveal';
 }
 
 const { name, class: className = 'h-6 w-6', draw = false } = Astro.props;
 const classes = [
   'shrink-0',
-  draw && 'icon-draw',
-  draw && draw > 1 && `icon-draw-${draw}`,
+  draw === 'reveal' ? 'icon-draw-reveal' : draw && 'icon-draw',
+  draw === 2 && 'icon-draw-2',
   className,
 ]
   .filter(Boolean)

@@ -9,8 +9,11 @@ import { PLATFORM_LIVE, loginUrl, signupUrl } from '../config';
  * its alt text; no typed name is set beside it. The logo is 56 px tall from md up and 44 px on
  * phones, so its lettering stays readable, with tight padding so the band is about 76 px tall.
  * Sticky from md up, with no bottom edge at the top of the page (the header and the dark hero or
- * page header read as one band); src/scripts/motion.ts adds `.is-scrolled` (a blue hairline and
- * a shadow) once the page scrolls.
+ * page header read as one band); src/scripts/motion.ts adds `.is-scrolled` (a centre-weighted
+ * line of light along the bottom edge, and a shadow) once the page scrolls. `progress` (from
+ * BaseLayout) adds the reading-progress hairline from md up (`data-progress`). From md up each
+ * navigation link (`.nav-link`) draws a 1 px accent bar under itself on hover and keyboard focus,
+ * and the current page shows it at 2 px (src/styles/global.css, "Header").
  *
  * Calls to action: "Log in" and "Sign up" while the platform is in service (PLATFORM_LIVE),
  * otherwise a single "Contact us" button to the contact page (claims register row W6; no early
@@ -20,10 +23,16 @@ import { PLATFORM_LIVE, loginUrl, signupUrl } from '../config';
  * <noscript>, hides #menu-toggle and keeps #site-menu open. It is a file rather than an inline
  * <style> so the Content Security Policy's style-src 'self' allows it.
  */
+interface Props {
+  /** Show the reading-progress hairline (long pages: Services, Platform, Compliance). */
+  progress?: boolean;
+}
+
+const { progress = false } = Astro.props;
 const pathname = Astro.url.pathname;
 ---
 
-<header class="site-header dark-band" data-site-header>
+<header class="site-header dark-band" data-site-header data-progress={progress ? '' : undefined}>
   <div class="container-x flex flex-wrap items-center justify-between gap-x-4 gap-y-4 py-2.5 lg:gap-x-6">
     <a href="/" class="shrink-0 rounded-md no-underline">
       <BrandLogo height={56} loading="eager" class="h-11 md:h-14" />
@@ -50,7 +59,7 @@ const pathname = Astro.url.pathname;
               <a
                 href={href}
                 aria-current={isCurrent(href, pathname) ? 'page' : undefined}
-                class="text-muted hover:text-fg aria-[current=page]:text-fg block rounded-md px-2 py-2 text-sm font-medium no-underline transition-colors aria-[current=page]:font-semibold md:aria-[current=page]:underline md:aria-[current=page]:decoration-2 md:aria-[current=page]:underline-offset-8"
+                class="nav-link text-muted hover:text-fg aria-[current=page]:text-fg block rounded-md px-2 py-2 text-sm font-medium no-underline transition-colors aria-[current=page]:font-semibold"
               >
                 {label}
               </a>
