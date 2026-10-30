@@ -5,27 +5,39 @@ import Section from '../components/Section.astro';
 import CallToAction from '../components/CallToAction.astro';
 import ImageSlot from '../components/ImageSlot.astro';
 import Icon from '../components/Icon.astro';
+import ServiceFit from '../components/ServiceFit.astro';
 import StatFigure from '../components/StatFigure.astro';
 import WhatYouGet from '../components/WhatYouGet.astro';
-import { services, roadmap, roadmapGroups } from '../data/services';
+import { serviceGroups, servicesByGroup, type Service } from '../data/services';
 import { threatStats, statsNote } from '../data/stats';
 import { hasImage } from '../data/images';
 import { getProduct, formatPrice } from '../data/pricing';
+import type { IconName } from '../data/icons';
 
 /*
- * One template for every service. The DOM order is the reading order on phones: kicker, heading,
- * lede and any cited statistic; the owner's image, when its file exists; "What you get"; "Who it
- * is for"; then the call to action and footnote. From lg up the copy sits on the left and the
- * right column holds the image, or, in a row without an image, the "What you get" card; with an
- * image, "What you get" is a full-width two-column card below the pair. A cited statistic is
+ * Services (owner decision 2026-10-29: every service is a current service, with no roadmap; the
+ * page shows the difference between EDR and MDR and how Direwolf fits into a business, and sorts
+ * the services into four groups so the page is not overwhelming). Order: the EDR and MDR
+ * explainer with the "How Direwolf fits" figure (src/components/ServiceFit.astro), then one
+ * section per group (src/data/services.ts): its detailed services, then a short card for each of
+ * its other services. Every statement is in docs/claims-register.md (rows A1-A4, A6-A9, C5, D2,
+ * P1, R2-R11, S-STAT-5).
+ *
+ * A detailed service keeps its template. The DOM order is the reading order on phones: kicker,
+ * heading, lede and any cited statistic; the owner's image, when its file exists; "What you get";
+ * "Who it is for"; then the call to action and footnote. From lg up the copy sits on the left and
+ * the right column holds the image, or, in a row without an image, the "What you get" card; with
+ * an image, "What you get" is a full-width two-column card below the pair. A cited statistic is
  * always an inline callout in the copy column, with the note that it is not a Direwolf result
  * (claims register rule 13).
  *
- * Calls to action: a primary button per service. While a product has no price (row P1) the button
- * reads "Get a quote" and no price line is shown; once a price is entered the button reads
- * "Ask about ..." with the price beside it.
+ * Calls to action: "Request a quote" on every service, preselecting its contact-form topic (the
+ * service's id). While a product has no price (row P1) no price line is shown; once a price is
+ * entered the detailed service's button reads "Ask about ..." with the price beside it. Icons
+ * beside compliance wording stay static (motion copy rule 9): the Compliance readiness tile, and
+ * every short card and the figure, whose icons never draw.
  */
-const rows = services.map((service, index) => {
+const detail = (service: Service) => {
   const product = getProduct(service.productId);
   return {
     service,
@@ -33,161 +45,214 @@ const rows = services.map((service, index) => {
     image: service.image && hasImage(service.image) ? service.image : undefined,
     price: product.priceUsd === null ? undefined : formatPrice(product),
     shortName: service.name.replace(/ \(EDR\)$/, '').toLowerCase(),
-    tinted: index % 2 === 1,
   };
-});
+};
+
+// The explainer section has the page background, so the first group is tinted and they alternate.
+const groups = servicesByGroup.map((group, index) => ({
+  ...group,
+  tinted: index % 2 === 0,
+  featured: group.featured.map(detail),
+}));
 
 const description =
-  'Direwolf Cybersecurity services for small and mid-size businesses: managed detection and response powered by the Direwolf AI SOC, managed endpoint protection (EDR), penetration testing and compliance readiness. Services planned for launch are listed as roadmap.';
+  'Managed detection and response, endpoint protection (EDR), penetration testing, vulnerability scanning, compliance readiness and security planning for small and mid-size businesses, from Direwolf Cybersecurity.';
 
-/*
- * Roadmap (register rule 9, rows R1-R11): every item sits under the eyebrow "Roadmap" and the
- * heading "Planned for launch, not yet available", in three short groups so ten items stay easy
- * to scan. No price, and no "available", "included" or "today" except in a negation (rule 9).
- * The lede says once that our security professionals oversee any AI work (row A2's Services
- * roadmap form), so the item summaries do not repeat it.
- */
-const roadmapByGroup = roadmapGroups.map((group) => ({
-  ...group,
-  items: roadmap.filter((item) => item.group === group.id),
-}));
+// EDR and MDR in plain words (rows A4, A8 short form, A9). The MDR sentence carries the oversight.
+// MDR is scoped to what the EDR reports, as in the MDR section below and on Home; Microsoft 365 or
+// Google Workspace monitoring is named only once the owner confirms it is delivered (row A9).
+const terms: { icon: IconName; short: string; long: string; text: string }[] = [
+  {
+    icon: 'shield-check',
+    short: 'EDR',
+    long: 'Endpoint detection and response',
+    text: 'Security software on each of your computers and servers. It sees what runs there and can stop a threat on the spot. We deploy and manage it for you.',
+  },
+  {
+    icon: 'radar',
+    short: 'MDR',
+    long: 'Managed detection and response',
+    text: 'The service that watches what your EDR reports, investigates every alert and responds. AI security analysts and responders do the work around the clock, overseen by our team of security professionals.',
+  },
+];
 ---
 
 <BaseLayout title="Services" description={description} progress>
   <PageHeader
     eyebrow="Services"
     title="Managed security, from first alert to final report"
-    lede="Four services for small and mid-size businesses. The services we are building for launch are labelled as roadmap."
+    lede="Detection and response, testing, compliance and security leadership for small and mid-size businesses, from one security partner."
   >
     <nav aria-label="On this page" class="mt-8">
       <ul class="flex flex-wrap gap-2 text-sm">
-        {services.map((service) => (
+        {serviceGroups.map((group) => (
           <li>
             <a
-              href={`#${service.id}`}
+              href={`#${group.id}`}
               class="border-line text-fg hover:border-accent inline-flex items-center gap-2 rounded-full border px-3.5 py-1.5 no-underline transition-colors"
             >
-              <Icon name={service.icon} class="text-accent h-4 w-4" />
-              {service.name}
+              <Icon name={group.icon} class="text-accent h-4 w-4" />
+              {group.title}
             </a>
           </li>
         ))}
-        <li>
-          <a
-            href="#roadmap"
-            class="border-line text-muted hover:border-accent inline-flex items-center rounded-full border border-dashed px-3.5 py-1.5 no-underline transition-colors"
-          >
-            Roadmap
-          </a>
-        </li>
       </ul>
     </nav>
   </PageHeader>
 
-  {rows.map(({ service, stat, image, price, shortName, tinted }) => (
+  <Section
+    id="mdr-and-edr"
+    eyebrow="How it fits together"
+    title="EDR and MDR, in plain terms"
+    lede="EDR is the tool on each device. MDR is the service that uses it to find and contain threats. You get both from Direwolf."
+  >
+    <dl class="mt-10 grid gap-6 md:grid-cols-2" data-reveal="stagger">
+      {terms.map((term) => (
+        <div class="card">
+          <dt class="flex items-center gap-4">
+            <span class="icon-tile">
+              <Icon name={term.icon} class="h-5 w-5" />
+            </span>
+            <span>
+              <span class="block text-lg font-semibold">{term.short}</span>
+              <span class="text-muted block text-sm">{term.long}</span>
+            </span>
+          </dt>
+          <dd class="text-muted mt-4 leading-relaxed">{term.text}</dd>
+        </div>
+      ))}
+    </dl>
+    <ServiceFit class="mt-14 md:mt-16" />
+  </Section>
+
+  {groups.map((group) => (
     <section
-      id={service.id}
-      aria-labelledby={`${service.id}-heading`}
-      class:list={['py-16 md:py-24', tinted && 'bg-surface border-line border-y']}
+      id={group.id}
+      aria-labelledby={`${group.id}-heading`}
+      class:list={['py-16 md:py-24', group.tinted && 'bg-surface border-line border-y']}
     >
       <div class="container-x">
-        <div class="grid gap-10 lg:grid-cols-2 lg:items-start lg:gap-16">
-          <div data-reveal>
-            <div class="flex items-center gap-3">
-              <span class="icon-tile">
-                {/* Static beside compliance wording (motion copy rule 9); the others draw on reveal. */}
-                <Icon
-                  name={service.icon}
-                  class="h-5 w-5"
-                  draw={service.id === 'compliance-readiness' ? false : 'reveal'}
-                />
-              </span>
-              <p class="eyebrow">{service.kicker}</p>
+        <div class="max-w-2xl" data-reveal>
+          <h2
+            id={`${group.id}-heading`}
+            class="text-3xl font-semibold tracking-tight text-balance md:text-4xl"
+          >
+            {group.title}
+          </h2>
+          <p class="text-muted mt-4 text-lg">{group.lede}</p>
+        </div>
+
+        {group.featured.map(({ service, stat, image, price, shortName }) => (
+          <article
+            id={service.id}
+            aria-labelledby={`${service.id}-heading`}
+            class="border-line mt-12 border-t pt-12"
+          >
+            <div class="grid gap-10 lg:grid-cols-2 lg:items-start lg:gap-16">
+              <div data-reveal>
+                <div class="flex items-center gap-3">
+                  <span class="icon-tile">
+                    {/* Static beside compliance wording (motion copy rule 9); the others draw on reveal. */}
+                    <Icon
+                      name={service.icon}
+                      class="h-5 w-5"
+                      draw={service.id === 'compliance-readiness' ? false : 'reveal'}
+                    />
+                  </span>
+                  <p class="eyebrow">{service.kicker}</p>
+                </div>
+                <h3
+                  id={`${service.id}-heading`}
+                  class="mt-5 text-2xl font-semibold tracking-tight text-balance md:text-3xl"
+                >
+                  {service.name}
+                </h3>
+                <p class="text-muted mt-4 max-w-2xl text-lg">{service.lede}</p>
+                {stat && (
+                  <div class="border-accent mt-8 max-w-md border-l-2 pl-5">
+                    <StatFigure stat={stat} size="inline" />
+                    <p class="text-muted mt-2 text-xs">{statsNote}</p>
+                  </div>
+                )}
+              </div>
+              {image ? (
+                <div data-reveal>
+                  <ImageSlot id={image} />
+                </div>
+              ) : (
+                <div class:list={['card p-6 md:p-8', group.tinted && 'bg-bg']} data-reveal>
+                  <WhatYouGet items={service.whatYouGet} />
+                </div>
+              )}
             </div>
-            <h2
-              id={`${service.id}-heading`}
-              class="mt-5 text-3xl font-semibold tracking-tight text-balance md:text-4xl"
-            >
-              {service.name}
-            </h2>
-            <p class="text-muted mt-4 max-w-2xl text-lg">{service.lede}</p>
-            {stat && (
-              <div class="border-accent mt-8 max-w-md border-l-2 pl-5">
-                <StatFigure stat={stat} size="inline" />
-                <p class="text-muted mt-2 text-xs">{statsNote}</p>
+
+            {image && (
+              <div class:list={['card mt-10 p-6 md:p-8', group.tinted && 'bg-bg']} data-reveal>
+                <WhatYouGet items={service.whatYouGet} columns={2} />
               </div>
             )}
-          </div>
-          {image ? (
-            <div data-reveal>
-              <ImageSlot id={image} />
-            </div>
-          ) : (
-            <div class:list={['card p-6 md:p-8', tinted && 'bg-bg']} data-reveal>
-              <WhatYouGet items={service.whatYouGet} />
-            </div>
-          )}
-        </div>
 
-        {image && (
-          <div class:list={['card mt-10 p-6 md:p-8', tinted && 'bg-bg']} data-reveal>
-            <WhatYouGet items={service.whatYouGet} columns={2} />
-          </div>
-        )}
-
-        <div class="mt-10" data-reveal>
-          <p class="max-w-3xl">
-            <span class="font-semibold">Who it is for:</span>{' '}
-            <span class="text-muted">{service.whoItIsFor}</span>
-          </p>
-          <div class="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-5">
-            <a href={`/contact/?topic=${service.contactTopic}`} class="btn btn-primary">
-              {price ? (
-                `Ask about ${shortName}`
-              ) : (
-                <>
-                  Get a quote<span class="sr-only"> for {shortName}</span>
-                </>
+            <div class="mt-10" data-reveal>
+              <p class="max-w-3xl">
+                <span class="font-semibold">Who it is for:</span>{' '}
+                <span class="text-muted">{service.whoItIsFor}</span>
+              </p>
+              <div class="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-5">
+                <a href={`/contact/?topic=${service.id}`} class="btn btn-primary">
+                  {price ? (
+                    `Ask about ${shortName}`
+                  ) : (
+                    <>
+                      Request a quote<span class="sr-only"> for {shortName}</span>
+                    </>
+                  )}
+                </a>
+                {price && <p class="text-muted text-sm">{price}</p>}
+              </div>
+              {service.footnote && (
+                <p class="text-muted mt-6 max-w-prose text-xs">
+                  {service.footnote} See our{' '}
+                  <a href="/compliance/" class="link">
+                    Compliance page
+                  </a>{' '}
+                  for the current status of the CMMC program.
+                </p>
               )}
-            </a>
-            {price && <p class="text-muted text-sm">{price}</p>}
-          </div>
-          {service.footnote && (
-            <p class="text-muted mt-6 max-w-prose text-xs">
-              {service.footnote} See our{' '}
-              <a href="/compliance/" class="link">
-                Compliance page
-              </a>{' '}
-              for the current status of the CMMC program.
-            </p>
-          )}
-        </div>
-      </div>
-    </section>
-  ))}
+            </div>
+          </article>
+        ))}
 
-  <Section
-    id="roadmap"
-    eyebrow="Roadmap"
-    title="Planned for launch, not yet available"
-    lede="We are building these for launch. None is available today, and plans can change. Our security professionals oversee any AI work."
-  >
-    <div class="mt-12 grid gap-x-10 gap-y-12 md:grid-cols-3" data-reveal="stagger">
-      {roadmapByGroup.map((group) => (
-        <div>
-          <h3 class="border-line border-b pb-3 text-lg font-semibold">{group.title}</h3>
-          <ul class="mt-5 space-y-6" aria-label={`Roadmap, not yet available: ${group.title}`}>
-            {group.items.map((item) => (
-              <li>
-                <p class="font-medium">{item.name}</p>
-                <p class="text-muted mt-1 text-sm leading-relaxed">{item.summary}</p>
+        {group.more.length > 0 && (
+          <ul
+            class:list={[
+              'mt-12 grid gap-6 sm:grid-cols-2',
+              group.more.length > 2 && 'lg:grid-cols-3',
+            ]}
+            data-reveal="stagger"
+          >
+            {group.more.map((item) => (
+              <li id={item.id} class:list={['card flex flex-col', group.tinted && 'bg-bg']}>
+                <span class="icon-tile">
+                  <Icon name={item.icon} class="h-5 w-5" />
+                </span>
+                <h3 class="mt-5 text-lg font-semibold">{item.name}</h3>
+                <p class="text-muted mt-2 text-sm leading-relaxed">{item.summary}</p>
+                <p class="mt-4 text-sm">
+                  <span class="font-semibold">You get:</span>{' '}
+                  <span class="text-muted">{item.youGet}</span>
+                </p>
+                <p class="mt-auto pt-5 text-sm">
+                  <a href={`/contact/?topic=${item.id}`} class="link">
+                    Request a quote<span class="sr-only"> for {item.name}</span>
+                  </a>
+                </p>
               </li>
             ))}
           </ul>
-        </div>
-      ))}
-    </div>
-  </Section>
+        )}
+      </div>
+    </section>
+  ))}
 
   <CallToAction />
 </BaseLayout>

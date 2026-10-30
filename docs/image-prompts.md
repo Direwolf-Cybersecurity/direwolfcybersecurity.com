@@ -45,13 +45,13 @@ Export at the minimum size or larger, in the slot's aspect ratio (the site crops
 high-quality JPEG or WebP are all fine; the site converts and resizes them. Smaller files still
 work, but the build warns and they can look soft on large, high-density screens.
 
-| Slot                           | File name       | Aspect | Minimum size | Where it appears                                     |
-| ------------------------------ | --------------- | ------ | ------------ | ---------------------------------------------------- |
-| Home hero                      | `hero.webp`     | 16:9   | 2400 x 1350  | Home, full-bleed background behind the headline      |
-| Managed detection and response | `mdr.webp`      | 4:3    | 1600 x 1200  | Services, managed detection and response             |
-| Penetration testing            | `pentest.webp`  | 4:3    | 1600 x 1200  | Services, penetration testing                        |
-| Platform                       | `platform.webp` | 16:10  | 2000 x 1250  | Platform, beside "What your administrators will see" |
-| About                          | `about.webp`    | 3:2    | 1800 x 1200  | About, beside the mission                            |
+| Slot                           | File name       | Aspect | Minimum size | Where it appears                                    |
+| ------------------------------ | --------------- | ------ | ------------ | --------------------------------------------------- |
+| Home hero                      | `hero.webp`     | 16:9   | 2400 x 1350  | Home, full-bleed background behind the headline     |
+| Managed detection and response | `mdr.webp`      | 4:3    | 1600 x 1200  | Services, managed detection and response            |
+| Penetration testing            | `pentest.webp`  | 4:3    | 1600 x 1200  | Services, penetration testing                       |
+| Platform                       | `platform.webp` | 16:10  | 2000 x 1250  | Platform, beside "Less security work for your team" |
+| About                          | `about.webp`    | 3:2    | 1800 x 1200  | About, beside the mission                           |
 
 The hero is a full-bleed background behind the headline at every width, under a near-black
 scrim that fades from the left (`.hero-media` in `src/styles/global.css`). From 640 px wide up

@@ -56,8 +56,10 @@ middle and bottom; and no wall of text anywhere above the fold.
    and response, managed endpoint protection (EDR), penetration testing, compliance readiness.
    Each card: lucide icon, title, one sentence of 20 words or fewer, "Learn more" to its
    `/services/#…` anchor; the `pentest.webp` slot belongs on the penetration testing section
-   of the Services page. Roadmap items go in a single muted row of tags labelled "Roadmap",
-   never as cards.
+   of the Services page. The other services go in a single muted row of linked tags after
+   "Also from Direwolf:", never as cards on Home (owner decision 2026-10-29: the site has no
+   roadmap; until then this row was labelled "Roadmap"). The Services page holds all of them:
+   see "Services page (2026-10-29)" below.
 7. **Proof without customer claims.** Competitors use logo strips, ratings and testimonials
    right after the hero; Direwolf may not (rule 6, rows E1-E6 gated). Use instead: the cited
    statistics band, a credentials strip led by the row F1 wording (SDVOSB, SBA certified) with at
@@ -65,8 +67,9 @@ middle and bottom; and no wall of text anywhere above the fold.
    written report" for penetration testing). Leave the Experience section off until gate G18
    closes.
 8. **One primary call to action, repeated three times.** While `PLATFORM_LIVE` is `false` the
-   only call to action is "Contact us" (row W6; owner direction 2026-10-27: no early access, the
-   platform opens when it is complete), with "See services" as the hero's secondary link. Show
+   only call to action is "Contact us" (row W6; owner direction 2026-10-27: no early access;
+   owner decision 2026-10-29: no status sentence about the platform, which is described by its
+   design, never as running), with "See services" as the hero's secondary link. Show
    it in the header, the hero and the closing band, plus once after the service cards. Do
    not add an "Experienced a breach?" hotline: it implies round-the-clock human incident
    response, which the owner has not authorized (no 24/7 staffing claim).
@@ -175,16 +178,18 @@ Who gets motion is decided once, in CSS: `--motion-tier` on `:root` is `off`, `p
 | Statistics                            | Home (the count only on Services)              | Each figure counts up once over 1 s to its exact source string; its rule becomes an accent bar that grows on the same curve. At rest the bar is drawn                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | 1 s from view                     |
 | The flow (the signature)              | Home, "How it works"                           | A static schematic: Detect joined into a "Direwolf AI SOC" frame holding Investigate and Respond, the oversight node "Overseen by our security professionals" and the caption "Illustrative. Not live data." Played once when its steps are in view (all of them when they fit in 90% of the viewport, so on a phone Respond plays on screen; otherwise once they cover 85% of it). The figure has no scroll reveal: the run is its entrance. Pulses lay down the lines, each step lights as its pulse arrives, the frame lights once, everything rests; then a quiet Replay button. Carried past without playing (a fling, a jump), its lines are drawn. From 1,024 px the gaps are wider (about 90 px at 1,280) and the pulses longer, so the travelling alert reads; from 640 to 1,023 px each step is a row | 4.25 s from its start             |
 | Service cards                         | Home                                           | Today's 2 px lift, plus an edge light near the pointer (fine pointers) or at the top of the card (keyboard focus), and a 2 px arrow nudge                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | Pointer-driven                    |
-| Icon draw on reveal                   | Home, Services, Platform, About                | Listed icon tiles draw their strokes once as their item reveals, except beside status or compliance wording (copy rule 9, below): Services' Compliance readiness tile, Home's "Veteran-owned" and "When your contracts raise the bar" tiles and About's Ownership tile stay static                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              | 0.74 s                            |
+| Icon draw on reveal                   | Home, Services, About                          | Listed icon tiles draw their strokes once as their item reveals, except beside status or compliance wording (copy rule 9, below): Services' Compliance readiness tile, Home's "Veteran-owned" and "When your contracts raise the bar" tiles and About's Ownership tile stay static. From 2026-10-29 the Services short service cards, the EDR and MDR terms, the "How Direwolf fits" figure and every Platform key point are static too                                                                                                                                                                                                                                                                                                                                                                         | 0.74 s                            |
 | Page header (standard)                | Services, Platform, Compliance, About, Contact | Dot grid powers on, glow settles (2.4 s, was 5 s), eyebrow line, one pulse sweeps along the bottom edge at an even speed (about 1 px/ms at 1,280 px). Security and the Legal index use the calm (static) variant                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | 2.4 s                             |
 | Header                                | All                                            | On scroll, a centre-weighted line of light at the bottom edge; nav links draw a 1 px bar on hover and focus, the current page shows a static 2 px bar                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | 250 ms                            |
 | Reading-progress hairline             | Services, Platform, Compliance (md up)         | The bright part of the header's bottom line grows with the scroll                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | Scroll-driven                     |
 | Buttons                               | All                                            | Primary buttons get a 1 px top catch-light; hover lift as today; a press lands back flat                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | 150 ms                            |
 | Page-to-page cross-fade (if approved) | All                                            | The old page fades out (150 ms), the new page fades in with a 6 px rise (250 ms)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | 250 ms                            |
 
-Static by rule: every headline and sentence, the roadmap tags, the Compliance posture cards, the
-Platform `ComplianceStrip` and security cards, the "What you get" checks, Experience, the call
-to action panel, the contact form (field borders aside), legal documents and the 404 page.
+Static by rule: every headline and sentence, the Home service tags, the Compliance posture cards,
+the Platform `ComplianceStrip` and key points, the Services short service cards and the "How
+Direwolf fits" figure (both enter with the scroll reveal only), the "What you get" checks,
+Experience, the call to action panel, the contact form (field borders aside), legal documents
+and the 404 page.
 
 ### Words inside animations
 
@@ -197,8 +202,10 @@ to action panel, the contact form (field borders aside), legal documents and the
 - AI roles always carry "AI", list only built duties, and never get a person icon; "engineers"
   never appears in an animation; the only people icon is beside "our security professionals".
 - No vendor, customer or compliance words (FedRAMP, FIPS, CMMC, certified, compliant) in or
-  beside an animation, no animated checks or meters on status content, and no roadmap item in an
-  animation. Platform wording is future tense while `PLATFORM_LIVE` is `false`.
+  beside an animation, no animated checks or meters on status content, and nothing in an
+  animation that the Platform's software does not yet do. While `PLATFORM_LIVE` is `false`,
+  Platform wording describes the design ("built to", "designed to"), never a running service
+  and never a status sentence (owner decision 2026-10-29; until then it was in the future tense).
 - **Exception to the spec's M05 list** (2026-10-28 review): M05 asks for every Services tile,
   every Why Direwolf tile and every About Company tile to draw on reveal, which would draw a
   clipboard-check beside "NIST SP 800-171, CMMC and similar frameworks", badge-checks beside "SBA
@@ -207,6 +214,35 @@ to action panel, the contact form (field borders aside), legal documents and the
   static (`draw={false}`). `npm run motion` fails if any drawing icon sits in an item whose text
   names FedRAMP, FIPS, CMMC, NIST, "certified", "compliant", "authorized", "validated", "ready",
   "aligned", SDVOSB or "veteran-owned".
+
+### Services page (2026-10-29)
+
+Owner request 2026-10-29: every roadmap service becomes a service, the page must not be
+confusing, it shows the difference between MDR and EDR, and a simple graphic shows how Direwolf
+fits into a business, "not overcomplicated". Order (`src/pages/services.astro`):
+
+1. Page header with four linked group chips.
+2. **EDR and MDR, in plain terms**: a lede of 25 words or fewer and two term cards (claims register rows A4,
+   A8's short form and A9), then the figure **How Direwolf fits into your business**
+   (`src/components/ServiceFit.astro`, strings in `src/data/fit.ts`, row D2): three bands, Your
+   business, Direwolf (the near-black `.dark-band` panel, so it reads as the part we add) and
+   What you get, with three items each and a Lucide arrow between bands (down below 1,024 px,
+   right from 1,024 px). Interface, not illustration, like the Home flow: HTML text, no SVG
+   artwork, nothing figurative, at most nine labelled items, static apart from the scroll
+   reveal, icons never drawn, and a visible caption that says in words what the arrows show
+   (the text equivalent). It reads top to bottom at 375 px.
+3. **Four group sections** (`serviceGroups` in `src/data/services.ts`), alternating tint:
+   Detect and respond, Test and harden, Comply and prove, Plan and lead. Each has a heading and
+   one sentence, then its detailed services in the existing row template (MDR, EDR, penetration
+   testing, compliance readiness: kicker, lede, image or "What you get" card, who it is for,
+   "Request a quote"), then a grid of short cards for its other services (icon, name, one
+   sentence, "You get:", "Request a quote" preselecting the service's contact-form topic).
+4. The closing call to action.
+
+Every service is a service Direwolf's team delivers, worded by outcome and deliverable (register
+rule 9): no "engine", "dashboard", "portal" or "tracker" for unbuilt software. The CSS budget had
+about 200 bytes of room under the 11.5 KB cap (11,301 B after this change), so the page reuses
+existing classes and adds no CSS of its own.
 
 ### Budgets and checks
 

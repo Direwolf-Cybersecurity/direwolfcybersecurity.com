@@ -83,7 +83,7 @@ export const imageSlots: Record<ImageSlotId, ImageSlotSpec> = {
     minWidth: 2000,
     minHeight: 1250,
     alt: 'Abstract modular data center of black blocks edged with electric blue light',
-    placement: 'Platform, beside "What your administrators will see"',
+    placement: 'Platform, beside "Less security work for your team"',
     sizes: halfWidth,
   },
   about: {

@@ -16,8 +16,14 @@ const expiresLabel = new Intl.DateTimeFormat('en-US', {
   timeZone: 'UTC',
 }).format(new Date(securityTxtExpires));
 
-/** Bump when this policy's wording changes; the platform may record acknowledgements of it. */
-const policyVersion = 'v2026.10.25';
+/**
+ * Bump when this policy's wording changes; the platform may record acknowledgements of it.
+ * v2026.10.29 (owner decision 2026-10-29): the Scope note no longer says the Platform "is not yet
+ * in service", the security.txt note no longer says what the Platform "will serve", the PGP
+ * sentence drops "yet", and the last section no longer mentions the customer responsibility
+ * matrix. Nothing a researcher may or may not do changed.
+ */
+const policyVersion = 'v2026.10.29';
 ---
 
 <BaseLayout title="Security and responsible disclosure" description={description}>
@@ -52,8 +58,8 @@ const policyVersion = 'v2026.10.25';
       </ul>
       <p>
         Please do not send customer data, personal information you encountered, credentials or
-        secrets; a description is enough. We do not yet publish a PGP key; if you need to send
-        something sensitive, ask us for a secure channel first.
+        secrets; a description is enough. We do not publish a PGP key; if you need to send something
+        sensitive, ask us for a secure channel first.
       </p>
     </div>
   </Section>
@@ -101,9 +107,9 @@ const policyVersion = 'v2026.10.25';
       </ul>
       <p>
         The website is hosted separately from the Direwolf Platform and does not store customer
-        data. The Platform is built to run on Amazon Web Services in the US West (Oregon) Region and
-        is not yet in service; how it is built and protected is described on the{' '}
-        <a href="/platform/#security">Platform</a> page.
+        data. The Platform is built to run on Amazon Web Services in the US West (Oregon) Region;
+        how it is built and protected is described on the <a href="/platform/#security">Platform</a>{' '}
+        page.
       </p>
     </div>
   </Section>
@@ -194,9 +200,8 @@ const policyVersion = 'v2026.10.25';
       <p>
         We publish our disclosure contact in the RFC 9116 format at{' '}
         <a href="/.well-known/security.txt">{securityTxtUrl}</a>. The file lists the contact address
-        and this page, is renewed at least yearly (the current <code>Expires</code> date is
-        {expiresLabel}), and the Platform will serve the same file at{' '}
-        <code>{appHost}/.well-known/security.txt</code>.
+        and this page, and is renewed at least yearly (the current <code>Expires</code> date is{' '}
+        {expiresLabel}).
       </p>
     </div>
   </Section>
@@ -206,9 +211,7 @@ const policyVersion = 'v2026.10.25';
       <p>
         For how the Direwolf Platform is built and protected, see the{' '}
         <a href="/platform/#security">Platform</a> page. For our compliance posture, including
-        exactly what we do and do not claim, see <a href="/compliance/">Compliance</a>. Customers
-        and their assessors can ask about our customer responsibility matrix, which we are
-        completing as controls are implemented, through the <a href="/contact/">contact page</a>.
+        exactly what we do and do not claim, see <a href="/compliance/">Compliance</a>.
       </p>
       <p class="text-muted text-sm">
         Policy version <code>{policyVersion}</code>. Changes to this policy are published with a new

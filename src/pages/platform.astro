@@ -10,103 +10,88 @@ import { hasImage } from '../data/images';
 import type { IconName } from '../data/icons';
 import { PLATFORM_LIVE, loginUrl, signupUrl } from '../config';
 
-// While the platform is not in service the description and lede use the future tense, the only
-// call to action is "Contact us", and the page says the platform is being built and will open
-// when it is complete (claims register row W6; no early access, owner direction 2026-10-27). The
-// present-tense forms and the Sign up / Log in links return when PLATFORM_LIVE is true.
-const statusLine = 'The Direwolf Platform is being built now and will open when it is complete.';
-const description = PLATFORM_LIVE
-  ? 'The Direwolf Platform is the web application behind every Direwolf service: buy licenses, download organization-bound installers, invite users, and see what the SOC did.'
-  : 'The Direwolf Platform is the web application behind every Direwolf service: your administrators will use it to buy licenses, download organization-bound installers, invite users, and see what the SOC did.';
+/*
+ * Platform (owner request 2026-10-29): short. A heading, one lede and two groups of key points,
+ * so a customer understands that its data is protected and that the platform is designed to ease
+ * the security work on its organization; the details live on the Compliance page. No
+ * architecture, roadmap or status sections.
+ *
+ * Every point is true of how the platform is designed and built (docs/claims-register.md), and
+ * every point about software that is not in service is in design form ("built to", "designed
+ * to", rule 9), never as something a customer uses today: rows H1 and H7 (Platform form, "built
+ * to run on", never "runs on" or "hosted on" until gate G8), H4 and H5 ("built to encrypt", never
+ * "is encrypted" until G8), H8 (designed to run on Amazon Bedrock), S1-S3 and S6 (implemented in
+ * code; the audit log is "built for" administrators to review), A3, A6 and A8's short form in
+ * design form ("Designed so ..."), which carries row A2's oversight once on this page. The lede
+ * names only the detection and response service: the other services are delivered by our team
+ * (rows R2-R11), so the page never says "in one place" or "every Direwolf service" (row W6). No
+ * FedRAMP wording here, so no row H2 disclaimer is needed.
+ * The only call to action is "Contact us" while PLATFORM_LIVE is false (row W6); Sign up and Log
+ * in return when it is true. Icons are static (motion copy rule 9).
+ */
+const description =
+  'How the Direwolf Platform is built to keep your data protected and to take security work off your team, with AI overseen by our security professionals.';
 
-// 25 words or fewer (row W6). The monitoring idea is said once on this page, in the AI SOC card
-// below (row A8, which carries row A2's oversight wording).
-const lede = PLATFORM_LIVE
-  ? 'Your administrators buy licenses, deploy sensors and see what the AI SOC did.'
-  : 'Your administrators will buy licenses, deploy sensors and see what the AI SOC did.';
+// 25 words or fewer (docs/design-direction.md rule 12).
+const lede =
+  'The Direwolf Platform is the system behind our detection and response service. It is designed to take security work off your team.';
 
-const features: { icon: IconName; title: string; text: string }[] = [
-  {
-    icon: 'layout-dashboard',
-    title: 'Overview',
-    text: 'Open alerts, sensor health, seat usage and recent SOC actions at a glance.',
-  },
-  {
-    icon: 'bell',
-    title: 'Alerts',
-    text: 'Each alert with its timeline, a plain-English summary and the actions taken.',
-  },
-  {
-    icon: 'cpu',
-    title: 'Sensors',
-    text: 'Health, last check-in and version, with installers bound to your organization.',
-  },
-  {
-    icon: 'user-plus',
-    title: 'Users',
-    text: 'Invitations, roles, MFA status and active sessions.',
-  },
-  {
-    icon: 'scroll-text',
-    title: 'Audit log',
-    text: 'Every login, change and SOC action.',
-  },
-  {
-    icon: 'settings',
-    title: 'Settings and billing',
-    text: 'Notification recipients, session timeout, sign-in banner, licenses and payments.',
-  },
-];
+type Point = { icon: IconName; title: string; text: string };
 
-// Claims register rows H1, H9 and H10 (Platform forms, H9 and H10 after "Roadmap:" so Terms
-// §3.3 covers them) with H2 verbatim in the same item, S1-S7, H4/H5 (short forms), and the AI SOC
-// item, row A8's Platform form, which carries row H8's Bedrock short form and row A2's oversight
-// in one sentence (future tense until row H8's gate closes). FedRAMP appears only in the Hosting
-// item, never in a heading. Hosting and Encryption keep their full approved wording and span the
-// grid; every other item is one sentence within the 20-word card limit of
-// docs/design-direction.md rule 12.
-const security: { icon: IconName; title: string; text: string; wide?: boolean }[] = [
+// Each point's text is 20 words or fewer (docs/design-direction.md rule 12).
+const protectedPoints: Point[] = [
+  {
+    icon: 'lock',
+    title: 'Built to encrypt in transit and at rest',
+    text: 'TLS 1.2 or later for every connection, and keys held in AWS Key Management Service for stored data.',
+  },
   {
     icon: 'server',
-    title: 'Hosting',
-    text: 'The platform is built to run on AWS in the US West (Oregon) Region, with backups in US East (Ohio), using private networks, a web application firewall, and controlled egress. AWS reports both Regions at the FedRAMP Moderate baseline. It is not yet in service. Roadmap: we plan to move it to AWS GovCloud (US) as we onboard customers who need it, and we intend to pursue FedRAMP authorization for the Direwolf Platform as our customers require it. Direwolf itself is not FedRAMP certified or authorized. AWS’s FedRAMP certification belongs to AWS, not to the Direwolf Platform.',
-    wide: true,
+    title: 'In the United States, on AWS',
+    text: 'Built to run on Amazon Web Services in the US West (Oregon) Region, with backups in US East (Ohio).',
   },
   {
     icon: 'database',
-    title: 'Tenant isolation',
-    text: 'Each organization is isolated in the database by PostgreSQL row-level security on every query.',
+    title: 'Your data kept separate',
+    text: 'Each customer’s data is kept apart from every other customer’s, enforced by the database on every query.',
   },
   {
     icon: 'key-round',
-    title: 'Identity',
-    text: 'Multi-factor authentication is mandatory for every user, and new users join by invitation only.',
-  },
-  {
-    icon: 'timer',
-    title: 'Sessions',
-    text: 'Sessions lock after 15 idle minutes, and privileged actions require a fresh MFA check.',
-  },
-  {
-    icon: 'brain-circuit',
-    title: 'AI SOC',
-    text: 'AI analysts will triage every alert using Amazon Bedrock in AWS US Regions, overseen by our security professionals.',
+    title: 'Multi-factor sign-in',
+    text: 'Multi-factor authentication is required for every user, and new users join by invitation only.',
   },
   {
     icon: 'scroll-text',
-    title: 'Audit logging',
-    text: 'Every administrative and security-relevant action goes to an append-only, hash-chained audit log.',
+    title: 'Every important action recorded',
+    text: 'Administrative and security-relevant actions are written to a tamper-evident audit log built for your administrators to review.',
   },
   {
-    icon: 'git-pull-request',
-    title: 'Operations',
-    text: 'Infrastructure as code, reviewed in pull requests, with images and dependencies scanned in CI.',
+    icon: 'cloud',
+    title: 'AI analysis in AWS US Regions',
+    text: 'Designed to run on Amazon Bedrock, so your alerts are analyzed within AWS and not used to train models.',
+  },
+];
+
+const lessWorkPoints: Point[] = [
+  {
+    icon: 'network',
+    title: 'One partner for detection, testing and compliance',
+    text: 'Detection and response, testing, compliance and security planning from one provider, so you manage one relationship.',
   },
   {
-    icon: 'lock',
-    title: 'Encryption',
-    text: 'When the platform is in service, connections will use TLS 1.2 or later with a FIPS 140-validated security policy at the edge, and data at rest will be encrypted with customer-managed keys in AWS Key Management Service, whose hardware security modules are FIPS 140-validated.',
-    wide: true,
+    icon: 'brain-circuit',
+    title: 'AI handles the alert noise',
+    text: 'Designed so AI security analysts and responders work every alert around the clock, overseen by our team of security professionals.',
+  },
+  {
+    icon: 'mail',
+    title: 'Plain-English reports',
+    text: 'A plain-English summary of every alert, and a written report of what to fix after every test or review.',
+  },
+  {
+    icon: 'shield-check',
+    title: 'You set the guardrails',
+    text: 'AI responders are built to act only within guardrails you control, with one-click undo; risk analyses wait for your sign-off.',
   },
 ];
 
@@ -114,7 +99,7 @@ const withImage = hasImage('platform');
 ---
 
 <BaseLayout title="Platform" description={description} progress>
-  <PageHeader eyebrow="The Direwolf Platform" title="Your security, in one place" lede={lede}>
+  <PageHeader eyebrow="The Direwolf Platform" title="Built to protect your data" lede={lede}>
     {PLATFORM_LIVE ? (
       <div class="mt-8 flex flex-col gap-3 sm:flex-row">
         <a href={signupUrl} class="btn btn-primary" rel="noopener noreferrer">
@@ -125,39 +110,50 @@ const withImage = hasImage('platform');
         </a>
       </div>
     ) : (
-      <div class="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center">
-        <a href="/contact/" class="btn btn-primary">
+      <div class="mt-8">
+        <a href="/contact/?topic=platform" class="btn btn-primary">
           Contact us
         </a>
-        <p class="text-muted text-sm">{statusLine}</p>
       </div>
     )}
   </PageHeader>
 
-  <Section id="for-your-team">
+  {/* `security` is the anchor the Security page links to. */}
+  <Section id="security" eyebrow="Security" title="Your data stays protected">
+    <ul class="mt-10 grid gap-x-8 gap-y-8 sm:grid-cols-2 lg:grid-cols-3" data-reveal="stagger">
+      {protectedPoints.map((point) => (
+        <li class="flex gap-4">
+          <span class="icon-tile">
+            <Icon name={point.icon} class="h-5 w-5" />
+          </span>
+          <div>
+            <h3 class="font-semibold">{point.title}</h3>
+            <p class="text-muted mt-1 text-sm leading-relaxed">{point.text}</p>
+          </div>
+        </li>
+      ))}
+    </ul>
+    <ComplianceStrip class="mt-12" />
+  </Section>
+
+  <Section id="less-work" tone="surface">
     <div class:list={['grid gap-12', withImage && 'lg:grid-cols-2 lg:items-center lg:gap-16']}>
       <div>
         <div class="max-w-2xl" data-reveal>
           <p class="eyebrow">For your team</p>
-          <h2
-            id="for-your-team-heading"
-            class="mt-2 text-3xl font-semibold tracking-tight md:text-4xl"
-          >
-            {PLATFORM_LIVE ? 'What your administrators see' : 'What your administrators will see'}
+          <h2 id="less-work-heading" class="mt-2 text-3xl font-semibold tracking-tight md:text-4xl">
+            Less security work for your team
           </h2>
         </div>
-        <ul
-          class:list={['mt-10 grid gap-x-8 gap-y-8 sm:grid-cols-2', !withImage && 'lg:grid-cols-3']}
-          data-reveal="stagger"
-        >
-          {features.map((feature) => (
+        <ul class="mt-10 grid gap-x-8 gap-y-8 sm:grid-cols-2" data-reveal="stagger">
+          {lessWorkPoints.map((point) => (
             <li class="flex gap-4">
               <span class="icon-tile">
-                <Icon name={feature.icon} class="h-5 w-5" draw="reveal" />
+                <Icon name={point.icon} class="h-5 w-5" />
               </span>
               <div>
-                <h3 class="font-semibold">{feature.title}</h3>
-                <p class="text-muted mt-1 text-sm leading-relaxed">{feature.text}</p>
+                <h3 class="font-semibold">{point.title}</h3>
+                <p class="text-muted mt-1 text-sm leading-relaxed">{point.text}</p>
               </div>
             </li>
           ))}
@@ -165,44 +161,6 @@ const withImage = hasImage('platform');
       </div>
       {withImage && <ImageSlot id="platform" />}
     </div>
-  </Section>
-
-  <Section
-    id="security"
-    tone="surface"
-    eyebrow="How it is built"
-    title="Security, in plain language"
-    lede="The details will be documented in our system security plan and customer responsibility matrix, which we will make available to customers and their assessors."
-  >
-    <ul class="mt-12 grid gap-4 md:grid-cols-2 md:gap-6 lg:grid-cols-3" data-reveal="stagger">
-      {security.map((item) => (
-        <li
-          class:list={[
-            'card flex flex-col gap-3 sm:flex-row sm:gap-4',
-            item.wide && 'md:col-span-2 lg:col-span-3',
-          ]}
-        >
-          <span class="icon-tile">
-            <Icon name={item.icon} class="h-5 w-5" />
-          </span>
-          <div>
-            <h3 class="font-semibold">{item.title}</h3>
-            <p class:list={['text-muted mt-1 text-sm leading-relaxed', item.wide && 'max-w-4xl']}>
-              {item.text}
-            </p>
-          </div>
-        </li>
-      ))}
-    </ul>
-    <ComplianceStrip class="mt-10" />
-    <p class="text-muted mt-8 max-w-prose text-sm">
-      This describes the platform as designed and built for launch. For the status of our compliance
-      program, and exactly what we do and do not claim, see the{' '}
-      <a href="/compliance/" class="link">
-        Compliance
-      </a>{' '}
-      page.
-    </p>
   </Section>
 
   {PLATFORM_LIVE ? (

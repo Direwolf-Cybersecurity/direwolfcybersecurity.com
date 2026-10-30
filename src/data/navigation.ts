@@ -20,6 +20,15 @@ export const companyNav: NavLink[] = [
   { label: 'Contact', href: '/contact/' },
 ];
 
+/**
+ * Legal documents left out of the footer's Legal column and the /legal/ index (owner decision
+ * 2026-10-29: no Subprocessors tab). The page itself stays published at its URL, unchanged,
+ * because the Privacy Policy (sections 2 and 6) links to it as the list of service providers it
+ * discloses, and the Terms of Service incorporate it into the agreement (section 1) and point to
+ * it (sections 7 and 22).
+ */
+export const unlistedLegalDocs: readonly string[] = ['subprocessors'];
+
 /** Footer "Trust" column. Legal documents come from the content collection. */
 export const trustNav: NavLink[] = [
   { label: 'Security and responsible disclosure', href: '/security/' },

@@ -3,7 +3,7 @@ import { getCollection } from 'astro:content';
 import { Image } from 'astro:assets';
 import BrandLogo from './BrandLogo.astro';
 import veteranBadge from '../assets/brand/veteran-owned-badge.png';
-import { companyNav, trustNav } from '../data/navigation';
+import { companyNav, trustNav, unlistedLegalDocs } from '../data/navigation';
 import {
   siteTagline,
   ownershipStatement,
@@ -29,7 +29,11 @@ import {
  * in docs/launch-runbook.md, "Logo use".
  */
 
-const legalDocs = (await getCollection('legal')).sort((a, b) => a.data.order - b.data.order);
+// Unlisted documents (the Subprocessors list) stay published at their URLs, linked from the
+// documents that cite them (src/data/navigation.ts).
+const legalDocs = (await getCollection('legal'))
+  .filter((doc) => !unlistedLegalDocs.includes(doc.id))
+  .sort((a, b) => a.data.order - b.data.order);
 const year = new Date().getFullYear();
 const telHref = phone ? `tel:${phone.replace(/[^+\d]/g, '')}` : '';
 const footerLink = 'text-muted hover:text-fg inline-block py-1 no-underline hover:underline';

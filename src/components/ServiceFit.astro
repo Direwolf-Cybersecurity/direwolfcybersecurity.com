@@ -1,0 +1,54 @@
+---
+/**
+ * "How Direwolf fits into your business" (Services page, under the EDR and MDR explainer; owner
+ * request 2026-10-29). Interface, not illustration, like the Home flow: three labelled HTML bands
+ * (Your business, Direwolf, What you get) joined by two arrow icons, with no SVG artwork and
+ * nothing figurative. Every visible string is in src/data/fit.ts (claims register row D2).
+ *
+ * Static: it has no motion of its own; the bands enter with the site's scroll reveal
+ * (`data-reveal="stagger"`), which is off with reduced motion and without JavaScript. From 1,024 px
+ * the bands sit in a row with right arrows between them; below that they stack, with down
+ * arrows, so it reads top to bottom at 375 px. The middle band is Direwolf's near-black panel
+ * (`.dark-band`, the call-to-action panel's style), so every text pair keeps its 4.5:1 contrast in
+ * both color schemes. Screen readers get the bands as headed lists in reading order, and the
+ * caption says in words what the decorative arrows show. Icons are static (motion copy rule 9).
+ */
+import Icon from './Icon.astro';
+import { fitBands, fitCaption, fitTitle } from '../data/fit';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className = '' } = Astro.props;
+---
+
+<figure class={className} aria-labelledby="fit-heading">
+  <h3 id="fit-heading" class="text-xl font-semibold tracking-tight md:text-2xl">
+    {fitTitle}
+  </h3>
+  <div class="mt-6 flex flex-col gap-2 lg:flex-row lg:gap-3" data-reveal="stagger">
+    {fitBands.map((band, index) => (
+      <>
+        {index > 0 && (
+          <span class="text-accent flex items-center justify-center" aria-hidden="true">
+            <Icon name="arrow-down" class="h-6 w-6 lg:hidden" />
+            <Icon name="arrow-right" class="hidden h-6 w-6 lg:block" />
+          </span>
+        )}
+        <div class:list={['p-6 lg:flex-1', band.direwolf ? 'dark-band brand-panel' : 'card']}>
+          <h4 class="eyebrow">{band.title}</h4>
+          <ul class="mt-4 space-y-4">
+            {band.items.map((item) => (
+              <li class="flex gap-3 font-medium">
+                <Icon name={item.icon} class="text-accent mt-0.5 h-5 w-5" />
+                <span>{item.text}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </>
+    ))}
+  </div>
+  <figcaption class="text-muted mt-6 max-w-2xl text-sm">{fitCaption}</figcaption>
+</figure>

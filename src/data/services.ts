@@ -4,26 +4,72 @@ import type { ProductId } from './pricing';
 import type { StatId } from './stats';
 
 /**
- * Services and the roadmap. Owner direction 2026-10-24: Direwolf is an AI-driven managed
- * security services provider (MSSP) for any small or mid-size business, with no endpoint
- * management or RMM service. Only `services` may be described as offered; `roadmap` items are
- * always labelled as roadmap on the site (CLAUDE.md, register rule 9). Every statement below is
- * in docs/claims-register.md (rows A1-A4, A6-A8, C5, R1-R11). While PLATFORM_LIVE is false, bullets
- * that describe the Direwolf Platform use the future tense (row W6). The MDR lede and bullets
- * name only the AI roles built in the platform's code (analysts triage and investigate,
- * responders contain); the detection-engineer and advisor agents are owner intent, not built, so
- * this file never names them (row A8). Each idea is said once: the lede carries the roles and
- * the oversight, the bullets the detail.
+ * Services. Owner direction 2026-10-24: Direwolf is an AI-driven managed security services
+ * provider (MSSP) for any small or mid-size business, with no endpoint management or RMM service.
+ * Owner decision 2026-10-29: the site shows no roadmap; the services that were listed as planned
+ * for launch are current services (claims register rule 9, rows R2-R12), so this file has no
+ * roadmap list. Every statement below is in docs/claims-register.md (rows A1-A4, A6-A9, C5,
+ * R2-R12).
+ *
+ * How the services are worded (rule 9): each is a service Direwolf's team delivers to a customer,
+ * described by its outcome and deliverable, never as a feature of the Direwolf Platform's software
+ * while that platform is not in service (`PLATFORM_LIVE` in src/config.ts). So no "engine",
+ * "dashboard", "portal", "tracker" (as software), "in the same queue as your alerts" or "real
+ * time"; readiness, never "ready", "certified" or "compliant"; scanning is never called a
+ * penetration test, and the reverse; "Breach-exposure monitoring", never "dark web monitoring".
+ *
+ * The MDR lede and bullets name only the AI roles built in the platform's code (analysts triage
+ * and investigate, responders contain); the detection-engineer and advisor agents are owner
+ * intent, not built, so this file never names them (row A8).
  *
  * Vendor names: the endpoint protection vendor is not named anywhere in this file until the
- * partner agreement is signed (register rule 5, rows V1 and A4). When the gate closes, update
- * the register row first, then this file.
+ * partner agreement is signed (register rule 5, rows V1 and A4). Microsoft 365 and Google
+ * Workspace are named only as the customer's own services (row R7).
  */
 
+/**
+ * The four groups the Services page sorts every service into, in display order (owner request
+ * 2026-10-29: show the services without overwhelming the reader). `id` is the section anchor on
+ * /services/; `lede` is one sentence of 25 words or fewer (docs/design-direction.md rule 12).
+ */
+export const serviceGroups = [
+  {
+    id: 'detect-and-respond',
+    icon: 'radar',
+    title: 'Detect and respond',
+    lede: 'Endpoint protection on every device, every alert investigated, and confirmed threats contained under guardrails you control.',
+  },
+  {
+    id: 'test-and-harden',
+    icon: 'crosshair',
+    title: 'Test and harden',
+    lede: 'Find the weak spots attackers look for in your systems and settings, train your staff, and get a clear list of what to fix first.',
+  },
+  {
+    id: 'comply-and-prove',
+    icon: 'clipboard-check',
+    title: 'Comply and prove',
+    lede: 'Readiness for NIST SP 800-171, CMMC and similar frameworks, and the evidence your insurers and customers ask for.',
+  },
+  {
+    id: 'plan-and-lead',
+    icon: 'compass',
+    title: 'Plan and lead',
+    lede: 'Security leadership and a plan your business can follow, without a full-time security hire.',
+  },
+] as const satisfies readonly { id: string; icon: IconName; title: string; lede: string }[];
+
+export type ServiceGroupId = (typeof serviceGroups)[number]['id'];
+
+/**
+ * A service with its own detailed section on /services/ (the four original services). Its `id` is
+ * the section anchor, the Home card's link target and the contact-form topic code that the
+ * section's quote link preselects (ContactForm.astro).
+ */
 export interface Service {
-  /** Anchor on /services/ and the card link target. */
-  id: string;
+  id: 'mdr' | 'endpoint-protection' | 'penetration-testing' | 'compliance-readiness';
   name: string;
+  group: ServiceGroupId;
   /** Short line above the name on the Services page. */
   kicker: string;
   icon: IconName;
@@ -36,8 +82,6 @@ export interface Service {
   /** One sentence. */
   whoItIsFor: string;
   productId: ProductId;
-  /** Contact-form topic preselected by the section's quote link (ContactForm.astro). */
-  contactTopic: 'mdr' | 'endpoint-protection' | 'penetration-testing' | 'compliance-readiness';
   /** Owner-supplied image beside the section, when its file exists (src/data/images.ts). */
   image?: ImageSlotId;
   /** A cited third-party statistic shown in the section (register rule 13). */
@@ -50,6 +94,7 @@ export const services: Service[] = [
   {
     id: 'mdr',
     name: 'Managed detection and response',
+    group: 'detect-and-respond',
     kicker: 'Powered by the Direwolf AI SOC',
     icon: 'radar',
     summary: 'The Direwolf AI SOC triages every endpoint alert and contains confirmed threats.',
@@ -57,36 +102,38 @@ export const services: Service[] = [
     whatYouGet: [
       'AI analysts triage and investigate each alert, returning a verdict, a confidence level, a MITRE ATT&CK mapping and a plain-English summary.',
       'AI responders contain confirmed threats (stop the process, quarantine the file, isolate the host) under guardrails you control, with one-click undo.',
-      'Email alerts for your administrators, and a dashboard in the Direwolf Platform that will show alerts, sensor health and your audit log.',
+      'Email alerts for your administrators, with a plain-English summary of each alert and a full record of every action taken.',
     ],
     whoItIsFor:
       'Businesses without an in-house security team that want threats handled, not just reported.',
     productId: 'mdr',
-    contactTopic: 'mdr',
     image: 'mdr',
   },
   {
     id: 'endpoint-protection',
     name: 'Managed endpoint protection (EDR)',
+    group: 'detect-and-respond',
     kicker: 'Enterprise EDR on every endpoint',
     icon: 'shield-check',
     summary:
       'An enterprise EDR agent on every endpoint, bound to your organization, with alerts flowing into the AI SOC.',
     lede: 'Replace legacy antivirus with an enterprise endpoint detection and response (EDR) agent on your Windows, macOS and Linux endpoints, reporting to the Direwolf AI SOC from its first check-in.',
     whatYouGet: [
-      'EDR licenses for Windows, macOS and Linux, which will be bought and managed from the Direwolf Platform.',
-      'A dedicated tenant for your organization, provisioned automatically when you buy.',
+      // Not "licenses": Direwolf supplies EDR licenses only once the partner agreement is signed
+      // (rows V1 and A4).
+      'Enterprise EDR for Windows, macOS and Linux, deployed and managed by Direwolf.',
+      'A dedicated endpoint-protection tenant for your organization.',
       'Installers bound to your organization, so every sensor reports to the right place.',
-      'Sensors that go offline or fall out of date will be flagged in your dashboard.',
+      'We flag sensors that go offline or fall out of date.',
     ],
     whoItIsFor:
       'Businesses replacing consumer or legacy antivirus with modern endpoint protection.',
     productId: 'endpoint-protection',
-    contactTopic: 'endpoint-protection',
   },
   {
     id: 'penetration-testing',
     name: 'Penetration testing',
+    group: 'test-and-harden',
     kicker: 'See your business the way an attacker would',
     icon: 'crosshair',
     summary:
@@ -102,13 +149,13 @@ export const services: Service[] = [
     whoItIsFor:
       'Businesses that need a test for a customer, an insurer, a compliance program or their own peace of mind.',
     productId: 'penetration-testing',
-    contactTopic: 'penetration-testing',
     image: 'pentest',
     stat: 'S-STAT-5',
   },
   {
     id: 'compliance-readiness',
     name: 'Compliance readiness',
+    group: 'comply-and-prove',
     kicker: 'NIST SP 800-171, CMMC and similar frameworks',
     icon: 'clipboard-check',
     summary:
@@ -122,108 +169,138 @@ export const services: Service[] = [
     whoItIsFor:
       'Government contractors and other businesses with a framework to meet, by contract or by choice.',
     productId: 'compliance-readiness',
-    contactTopic: 'compliance-readiness',
     footnote:
       'Readiness support only. Direwolf does not certify organizations and is not an assessor.',
   },
 ];
 
-/** The three groups the Services page sorts the roadmap into, in display order. */
-export const roadmapGroups = [
-  { id: 'exposure', title: 'Exposure and posture' },
-  { id: 'compliance', title: 'Compliance and evidence' },
-  { id: 'readiness', title: 'Readiness and advisory' },
-] as const;
-
-export type RoadmapGroupId = (typeof roadmapGroups)[number]['id'];
-
-export interface RoadmapItem {
-  /** Short name, shown on Services and, when `homeTag` is set, as a Home roadmap tag. */
+/**
+ * The other services (owner decision 2026-10-29; register rows R2-R12, one row per service), each
+ * shown on /services/ as a short card in its group: the name, one sentence and what you get. `id`
+ * is the card's anchor on /services/ and the contact-form topic code its quote link preselects.
+ * Priced per engagement: "contact us" (row P1), so no product and no price here.
+ */
+export interface MoreService {
+  id: string;
   name: string;
-  /** One or two sentences for the Services roadmap section. */
+  group: ServiceGroupId;
+  icon: IconName;
+  /** One sentence, 25 words or fewer. */
   summary: string;
-  group: RoadmapGroupId;
-  /**
-   * Show the name as a tag on Home (design-direction rule 6: a single muted row of tags). Set on
-   * four items only (rows R2-R5), so the roadmap does not outweigh the four services there.
-   */
+  /** The deliverable, as a short noun phrase. */
+  youGet: string;
+  /** Show the name as a linked tag on Home, after the four service cards (four items). */
   homeTag?: boolean;
 }
 
-/**
- * Services planned for the platform's launch (owner direction 2026-10-27; register rows R1 to
- * R11, one row per item). Never described as available, never priced, and always under the
- * "Roadmap" label (register rule 9). Each item stays here until its register row's gate closes
- * (its platform milestone in service); it then moves to a service row and to `services` above.
- * The AI that will do much of this work is described once, in the Services roadmap lede, with
- * row A2's oversight wording, so no summary below repeats it.
- *
- * Honest names: "Breach-exposure monitoring", never "dark web monitoring" (row R3); scanning is
- * "authorized" and "not a penetration test" (row R2); the GRC tracker is "readiness support
- * only" and never says "ready" or "certified" (rule 4, row R5); the security officer program
- * names no one and never says "Qualified Individual" (row R11).
- */
-export const roadmap: RoadmapItem[] = [
+export const moreServices: MoreService[] = [
   {
-    name: 'Authorized external vulnerability scanning',
-    summary:
-      'Scheduled scans of the internet-facing addresses you authorize in writing, with findings in the same queue as your alerts. Not a penetration test.',
-    group: 'exposure',
-    homeTag: true,
-  },
-  {
+    id: 'breach-exposure-monitoring',
     name: 'Breach-exposure monitoring',
-    summary: 'Searches for your domains and accounts in breach data.',
-    group: 'exposure',
+    group: 'detect-and-respond',
+    icon: 'key-round',
+    summary:
+      'We check your domains and staff accounts against known breach data and tell you which passwords to reset.',
+    youGet: 'A breach-exposure report on an agreed schedule.',
     homeTag: true,
   },
   {
-    name: 'Microsoft 365 and Google Workspace posture reviews',
+    id: 'managed-firewall',
+    name: 'Managed firewall',
+    group: 'detect-and-respond',
+    icon: 'network',
     summary:
-      'Checks of settings such as MFA coverage, admin accounts and stale users, with a short list of what to fix first.',
-    group: 'exposure',
+      'We set up your firewall to a security baseline, keep it updated, watch its security events and review its rules every quarter.',
+    youGet: 'A hardened, patched firewall and a quarterly rule review.',
   },
   {
-    name: 'GRC compliance tracker',
+    id: 'incident-response-readiness',
+    name: 'Incident-response readiness',
+    group: 'detect-and-respond',
+    icon: 'list-checks',
     summary:
-      'Mark each requirement not started, in progress or complete, and attach evidence, notes and policies. Exports include a NIST SP 800-171 System Security Plan and POA&M that show the evidence. Readiness support only.',
-    group: 'compliance',
+      'An incident-response plan, a tabletop exercise with your team, and the notification deadlines that may apply, for your counsel to confirm.',
+    youGet: 'A written plan, an annual tabletop exercise and a deadlines list.',
+  },
+  {
+    id: 'vulnerability-scanning',
+    name: 'Vulnerability scanning',
+    group: 'test-and-harden',
+    icon: 'scan-search',
+    summary:
+      'Scheduled scans of the internet-facing systems you authorize in writing, with findings ranked so you fix the most serious first. Not a penetration test.',
+    youGet: 'A scan report after every scheduled scan.',
     homeTag: true,
   },
   {
-    name: 'Cyber-insurance evidence pack',
+    id: 'workspace-security-reviews',
+    name: 'Microsoft 365 and Google Workspace security reviews',
+    group: 'test-and-harden',
+    icon: 'cloud',
     summary:
-      'Dated evidence for each security question on your cyber-insurance application or renewal. Your executive reviews and signs the carrier’s form.',
-    group: 'compliance',
+      'A review of settings such as MFA coverage, admin accounts and stale users, with a short list of what to fix first.',
+    youGet: 'A prioritized list of setting changes for your administrator.',
   },
   {
-    name: 'Security questionnaire engine',
-    summary:
-      'Draft answers to the security questionnaires your customers send, each citing its evidence. Anything we cannot cite is marked Unknown, and you review and sign.',
-    group: 'compliance',
+    id: 'security-awareness-training',
+    name: 'Security awareness training',
+    group: 'test-and-harden',
+    icon: 'graduation-cap',
+    summary: 'Short security courses for your staff, with a completion record for each person.',
+    youGet: 'Courses, reminders and a training completion record.',
+    homeTag: true,
   },
   {
+    id: 'compliance-tracking',
+    name: 'Compliance tracking (GRC)',
+    group: 'comply-and-prove',
+    icon: 'folder-check',
+    summary:
+      'After your gap assessment, we keep each requirement’s status, evidence and plan of action current with you, and update your System Security Plan and POA&M.',
+    youGet: 'Control status, evidence and a plan of action, kept current. Readiness support only.',
+    homeTag: true,
+  },
+  {
+    id: 'cyber-insurance-readiness',
+    name: 'Cyber-insurance readiness',
+    group: 'comply-and-prove',
+    icon: 'umbrella',
+    summary:
+      'Dated evidence for each security question on your cyber-insurance application or renewal, for your executive to review before signing the carrier’s form.',
+    youGet: 'An evidence pack keyed to your carrier’s questions.',
+  },
+  {
+    id: 'security-questionnaires',
+    name: 'Security questionnaire support',
+    group: 'comply-and-prove',
+    icon: 'clipboard-list',
+    summary:
+      'Draft answers to the security questionnaires your customers send, each citing its evidence. Anything we cannot support is marked unknown, and you review and sign.',
+    youGet: 'Draft answers with their evidence, for your review and signature.',
+  },
+  {
+    id: 'risk-analysis',
     name: 'Risk analysis',
+    group: 'plan-and-lead',
+    icon: 'file-search',
     summary:
       'A dated, versioned risk analysis of your business, drafted from your profile and evidence, for you to review and approve.',
-    group: 'compliance',
+    youGet: 'A risk analysis document that is yours to keep.',
   },
   {
-    name: 'Incident-response readiness',
+    id: 'fractional-security-officer',
+    name: 'Fractional security officer',
+    group: 'plan-and-lead',
+    icon: 'compass',
     summary:
-      'An incident-response plan, an annual tabletop exercise and tracking of the notification deadlines that may apply, for your counsel to decide.',
-    group: 'readiness',
-  },
-  {
-    name: 'Security awareness training',
-    summary: 'Short courses for your staff, with completion tracking.',
-    group: 'readiness',
-    homeTag: true,
-  },
-  {
-    name: 'Fractional security officer program',
-    summary:
-      'Ongoing security program leadership from our team, with AI keeping the obligations calendar and drafting the reports and policies.',
-    group: 'readiness',
+      'Ongoing security program leadership from our team: a security plan, regular reviews, and the policies and reports your business needs, drafted for your approval.',
+    youGet: 'Regular reviews, a security plan, and policies and reports.',
   },
 ];
+
+/** Every group with its detailed services and its other services, in display order. */
+export const servicesByGroup = serviceGroups.map((group) => ({
+  ...group,
+  featured: services.filter((service) => service.group === group.id),
+  more: moreServices.filter((service) => service.group === group.id),
+}));

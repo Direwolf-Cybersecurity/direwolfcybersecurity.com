@@ -26,7 +26,7 @@ export const siteName = 'Direwolf Cybersecurity';
  */
 export const siteTagline = 'AI-driven managed security for small and mid-size businesses';
 export const siteDescription =
-  'Direwolf Cybersecurity is a managed security services provider for small and mid-size businesses: AI-driven detection and response monitored by a team of security professionals, managed endpoint protection, penetration testing and compliance readiness. An SBA-certified Service-Disabled Veteran-Owned Small Business headquartered in Colorado Springs, Colorado.';
+  'Direwolf Cybersecurity is a managed security services provider for small and mid-size businesses: AI-driven detection and response monitored by a team of security professionals, managed endpoint protection, penetration testing and vulnerability scanning, compliance readiness and security planning. An SBA-certified Service-Disabled Veteran-Owned Small Business headquartered in Colorado Springs, Colorado.';
 
 /** Canonical origin of this site. Must match `site` in astro.config.mjs and public/CNAME. */
 export const siteOrigin = 'https://www.direwolfcybersecurity.com';
@@ -89,13 +89,14 @@ export const socials: { name: string; url: string }[] = [];
 /**
  * Platform switch. `false` until the Direwolf Platform is in service at PUBLIC_APP_URL (it has no
  * DNS record yet; claims register rows H1 and W6). While `false`, the site offers no sign-up and
- * no early access (owner direction 2026-10-27: the platform opens when it is complete): the
- * header, the Home hero, the call-to-action band and the Platform page show a single "Contact us"
- * link to /contact/, the footer drops its platform link, the site says "The Direwolf Platform is
- * being built now and will open when it is complete.", the platform origin is left out of the
- * Content Security Policy, and `npm run links` fails if any built page links to the platform
- * host. Set it to `true` the day the platform serves sign-in, and the Log in / Sign up links
- * return.
+ * no early access (owner direction 2026-10-27): the header, the Home hero, the call-to-action
+ * band and the Platform page show a single "Contact us" link to /contact/, the footer drops its
+ * platform link, the platform origin is left out of the Content Security Policy, and
+ * `npm run links` fails if any built page links to the platform host. Since the owner decision
+ * of 2026-10-29 the site carries no status sentence about the platform ("being built", "will
+ * open", "not yet in service"); it describes the platform by its design ("built to", "designed
+ * to"), never as running. Set it to `true` the day the platform serves sign-in, and the Log in /
+ * Sign up links return.
  * Before setting it to `true`, close claims register row A8's gate (launch runbook G20): either the
  * AI detection-engineer agent is in service and row A8 says so, or "engineers" comes off the Home
  * hero line. While the flag is `true`, `npm run links` fails on any built page that still says
@@ -119,8 +120,10 @@ export const signupUrl = `${appUrl}/signup`;
  * Optional. When set, the contact form POSTs JSON to this URL (the platform's public
  * contact endpoint). When unset, the form falls back to opening the visitor's mail app.
  * The platform's ContactTopic (`apps.contact.models`) accepts penetration-testing and other, but
- * not mdr, endpoint-protection, compliance-readiness or launch-updates (it has managed-detection,
- * compliance and early-access instead); align both sides before PUBLIC_CONTACT_ENDPOINT is set.
+ * not mdr, endpoint-protection, compliance-readiness, platform or the codes of the services added
+ * on 2026-10-29 (each topic code is a service id in src/data/services.ts; it has
+ * managed-detection, compliance and early-access instead); align both sides before
+ * PUBLIC_CONTACT_ENDPOINT is set.
  */
 export const contactEndpoint: string | undefined =
   import.meta.env.PUBLIC_CONTACT_ENDPOINT || undefined;

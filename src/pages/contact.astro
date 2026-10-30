@@ -14,7 +14,7 @@ import {
 } from '../config';
 
 const description =
-  'Contact Direwolf Cybersecurity in Colorado Springs, Colorado: ask about our services, request a quote, or ask about our customer responsibility matrix for NIST SP 800-171.';
+  'Contact Direwolf Cybersecurity in Colorado Springs, Colorado: ask about our services or request a quote.';
 const telHref = phone ? `tel:${phone.replace(/[^+\d]/g, '')}` : '';
 ---
 
@@ -85,15 +85,8 @@ const telHref = phone ? `tel:${phone.replace(/[^+\d]/g, '')}` : '';
               .
             </dd>
           </div>
-          <div>
-            <dt class="font-semibold">Assessors and customers</dt>
-            <dd class="text-muted mt-1">
-              To ask about our customer responsibility matrix for NIST SP 800-171, which we are
-              completing as controls are implemented, use the form and mention &ldquo;CRM&rdquo; in
-              your message.
-            </dd>
-          </div>
-          {PLATFORM_LIVE ? (
+          {/* The platform sign-in shows only once the platform is in service (row W6). */}
+          {PLATFORM_LIVE && (
             <div>
               <dt class="font-semibold">Existing customers</dt>
               <dd class="text-muted mt-1">
@@ -101,14 +94,6 @@ const telHref = phone ? `tel:${phone.replace(/[^+\d]/g, '')}` : '';
                   Log in to the Direwolf Platform
                 </a>{' '}
                 to manage your organization.
-              </dd>
-            </div>
-          ) : (
-            <div>
-              <dt class="font-semibold">The Direwolf Platform</dt>
-              <dd class="text-muted mt-1">
-                The Direwolf Platform is being built now and will open when it is complete. To hear
-                when it opens, choose the topic Platform launch updates in the form.
               </dd>
             </div>
           )}

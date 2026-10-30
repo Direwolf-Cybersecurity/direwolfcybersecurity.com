@@ -6,14 +6,24 @@
  * topic. The "website" field is a honeypot: hidden from people, and a filled value makes the
  * submission a silent no-op.
  *
- * Topic: `?topic=<value>` in the page URL preselects a matching option, so the Services page's
- * per-service links (`?topic=mdr`, `endpoint-protection`, `penetration-testing`,
- * `compliance-readiness`) open the form ready for that request, and `?topic=launch-updates`
- * selects "Platform launch updates" (row W6). Without JavaScript the topic stays at its default,
- * Other. The platform's contact endpoint does not accept every code yet: see `contactEndpoint` in
- * src/config.ts before setting PUBLIC_CONTACT_ENDPOINT.
+ * Topics: every service, grouped as on the Services page (src/data/services.ts; each topic code is
+ * the service's id), then "The Direwolf Platform" (code `platform`, for questions about the
+ * platform; it replaced "Platform launch updates", code `launch-updates`, on 2026-10-29) and
+ * Other. `?topic=<value>` in the page URL preselects a matching option, so each service's
+ * "Request a quote" link on the Services page (`?topic=mdr`, `?topic=vulnerability-scanning`,
+ * ...) opens the form ready for that request; an unknown code leaves the default, Other, as
+ * JavaScript being off does. The platform's contact endpoint does not accept every code yet: see
+ * `contactEndpoint` in src/config.ts before setting PUBLIC_CONTACT_ENDPOINT.
  */
 import { contactEndpoint, contactEmail } from '../config';
+import { services, moreServices, serviceGroups } from '../data/services';
+
+const topicGroups = serviceGroups.map((group) => ({
+  title: group.title,
+  topics: [...services, ...moreServices]
+    .filter((service) => service.group === group.id)
+    .map((service) => ({ value: service.id, label: service.name })),
+}));
 ---
 
 <form
@@ -80,20 +90,17 @@ import { contactEndpoint, contactEmail } from '../config';
       Topic
     </label>
     <select id="cf-topic" name="topic" class="field mt-1">
-      <option value="mdr" data-subject="Managed detection and response inquiry">
-        Managed detection and response
-      </option>
-      <option value="endpoint-protection" data-subject="Managed endpoint protection inquiry">
-        Managed endpoint protection (EDR)
-      </option>
-      <option value="penetration-testing" data-subject="Penetration testing inquiry">
-        Penetration testing
-      </option>
-      <option value="compliance-readiness" data-subject="Compliance readiness inquiry">
-        Compliance readiness
-      </option>
-      <option value="launch-updates" data-subject="Platform launch updates request">
-        Platform launch updates: let me know when the Direwolf Platform opens
+      {topicGroups.map((group) => (
+        <optgroup label={group.title}>
+          {group.topics.map((topic) => (
+            <option value={topic.value} data-subject={`${topic.label} inquiry`}>
+              {topic.label}
+            </option>
+          ))}
+        </optgroup>
+      ))}
+      <option value="platform" data-subject="Direwolf Platform inquiry">
+        The Direwolf Platform
       </option>
       <option value="other" data-subject="Website inquiry" selected>
         Other

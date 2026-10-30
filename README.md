@@ -82,7 +82,7 @@ slot renders nothing and its section closes up around it, so the site always loo
 | hero     | `hero.webp`     | Home hero: full-bleed background behind the headline | 16:9   | 2400 x 1350  |
 | mdr      | `mdr.webp`      | Services, managed detection and response             | 4:3    | 1600 x 1200  |
 | pentest  | `pentest.webp`  | Services, penetration testing                        | 4:3    | 1600 x 1200  |
-| platform | `platform.webp` | Platform, beside "What your administrators will see" | 16:10  | 2000 x 1250  |
+| platform | `platform.webp` | Platform, beside "Less security work for your team"  | 16:10  | 2000 x 1250  |
 | about    | `about.webp`    | About, beside the mission                            | 3:2    | 1800 x 1200  |
 
 1. Every image must be **original or licensed for commercial use** (for example generated with a

@@ -3,8 +3,13 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageHeader from '../../components/PageHeader.astro';
 import Section from '../../components/Section.astro';
+import { unlistedLegalDocs } from '../../data/navigation';
 
-const docs = (await getCollection('legal')).sort((a, b) => a.data.order - b.data.order);
+// Unlisted documents (the Subprocessors list) stay published at their URLs, linked from the
+// documents that cite them (src/data/navigation.ts).
+const docs = (await getCollection('legal'))
+  .filter((doc) => !unlistedLegalDocs.includes(doc.id))
+  .sort((a, b) => a.data.order - b.data.order);
 const dateFormat = new Intl.DateTimeFormat('en-US', {
   year: 'numeric',
   month: 'long',

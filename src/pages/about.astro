@@ -12,7 +12,9 @@ import type { IconName } from '../data/icons';
 import { industries, hqLine, ownershipStatement, ownershipPhrase } from '../config';
 
 // Claims register rows F1-F5, C1, C2 (one sentence each on About), A2 and H1 (pointer only, in the
-// "Regulated industries" section).
+// "Regulated industries" section). Row F4 (owner request 2026-10-29): the "Who we are" lede is
+// the lead-in "Our cyber professionals bring experience from", completed by the industry list
+// under it, so the industries are not named twice.
 const description = `Direwolf Cybersecurity is ${ownershipPhrase} headquartered in Colorado Springs, Colorado, bringing AI-driven detection and response, monitored by a team of security professionals, to small and mid-size businesses.`;
 
 const industryIcons: Record<(typeof industries)[number], IconName> = {
@@ -62,7 +64,7 @@ const withImage = hasImage('about');
     tone="surface"
     eyebrow="Who we are"
     title="Cyber professionals from high-stakes industries"
-    lede="Our cyber professionals bring experience from healthcare, manufacturing, defense, aerospace, space and technology."
+    lede="Our cyber professionals bring experience from"
   >
     <ul
       class="mt-10 grid grid-cols-2 gap-x-8 gap-y-6 sm:grid-cols-3"
@@ -99,8 +101,8 @@ const withImage = hasImage('about');
           <a href="/compliance/" class="link">
             See our Compliance page
           </a>{' '}
-          for the current status, where the Direwolf Platform runs, and exactly what we do and do
-          not claim.
+          for the current status, where the Direwolf Platform is built to run, and exactly what we
+          do and do not claim.
         </p>
       </div>
     </div>
