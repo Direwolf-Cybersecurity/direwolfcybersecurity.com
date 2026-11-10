@@ -50,7 +50,8 @@ jobs:
       - name: Internal links and fragments over dist/
         run: npm run links
         env:
-          # The check also fails on links to this host while PLATFORM_LIVE is false.
+          # The check also fails on links to this host while PLATFORM_LIVE is false, except the
+          # sign-in URL (the header's Log in) while PLATFORM_LOGIN is true.
           PUBLIC_APP_URL: ${{ vars.PUBLIC_APP_URL }}
 
       - name: Accessibility (axe-core, WCAG 2.1 A/AA, light and dark, phone width)

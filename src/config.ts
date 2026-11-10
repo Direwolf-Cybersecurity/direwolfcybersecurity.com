@@ -108,15 +108,31 @@ export const socials: { name: string; url: string }[] = [];
 export const PLATFORM_LIVE = false;
 
 /**
- * Where "Log in" and "Sign up" point once PLATFORM_LIVE is true. Override at build time with
- * PUBLIC_APP_URL (for example to a staging platform). Always an absolute origin without a
- * trailing slash.
+ * Where "Log in" and "Sign up" point once PLATFORM_LIVE is true, and the header's "Log in" once
+ * PLATFORM_LOGIN is true. Override at build time with PUBLIC_APP_URL (for example to a staging
+ * platform). Always an absolute origin without a trailing slash. `/login` is the platform SPA's
+ * sign-in route (direwolf-platform `frontend/src/app/router.tsx`).
  */
 export const appUrl = (
   import.meta.env.PUBLIC_APP_URL || 'https://app.direwolfcybersecurity.com'
 ).replace(/\/+$/, '');
 export const loginUrl = `${appUrl}/login`;
 export const signupUrl = `${appUrl}/signup`;
+
+/**
+ * Header "Log in" switch (owner request 2026-11-09: "lets add a login tab at the top corner to
+ * allow me and other users to login to our platform"; claims register row W7). While `true`, the
+ * header shows a quiet "Log in" button to `loginUrl` at its top right from md up and in the
+ * mobile menu, beside "Contact us". It is the only thing the switch turns on: no sign-up, "Get
+ * started" or other platform link (the owner creates every customer account), so it is
+ * independent of PLATFORM_LIVE, and the platform origin stays out of the Content Security Policy
+ * (following a link needs no CSP source). While `false` it renders nothing.
+ * The owner flips it to `true` at the platform's first production deploy, once `loginUrl` serves
+ * the sign-in page (docs/launch-runbook.md §3.3, "Header Log in link"); until then it stays
+ * `false`, because the platform host has no DNS record and the link would be broken.
+ * scripts/check-links.mjs greps for this exact line, so keep its form.
+ */
+export const PLATFORM_LOGIN = false;
 
 /**
  * Optional. When set, the contact form POSTs JSON to this URL (the platform's public

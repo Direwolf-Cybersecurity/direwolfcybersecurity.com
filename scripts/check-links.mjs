@@ -7,11 +7,16 @@
 // not fetched, so the check is deterministic and works offline. The Open Graph image
 // (<meta property="og:image">) is checked the same way. Exit code 1 on any failure.
 //
-// Three more assertions:
+// Four more assertions:
 // - While `PLATFORM_LIVE` in src/config.ts is false (the platform is not in service), no href,
 //   src or action may point to the platform host (app.direwolfcybersecurity.com, or the host of
 //   PUBLIC_APP_URL when set): every such call to action is then "Contact us" (claims register
-//   row W6; the site offers no early access, owner direction 2026-10-27).
+//   row W6; the site offers no early access, owner direction 2026-10-27). The one exception is
+//   the header's "Log in" while `PLATFORM_LOGIN` is true (row W7, owner request 2026-11-09): a
+//   link to exactly the platform's sign-in URL (`loginUrl`, `<platform origin>/login`), never
+//   to sign-up or any other platform path.
+// - While `PLATFORM_LOGIN` is true, every page links to that sign-in URL (the header's "Log in"
+//   rendered on every page, the 404 page included).
 // - While `PLATFORM_LIVE` is true, no built page may still say "analysts, engineers and
 //   responders" (claims register row A8's gate, launch runbook G20): the AI detection-engineer
 //   agent is owner intent, not built, so "engineers" comes off the Home hero line before the
@@ -38,6 +43,11 @@ const siteOrigins = new Set([
 
 /** The platform's hosts: the production default and PUBLIC_APP_URL's host, when set. */
 const platformHosts = new Set(['app.direwolfcybersecurity.com']);
+/**
+ * The platform's sign-in URL as src/config.ts builds `loginUrl` (`${appUrl}/login`): from
+ * PUBLIC_APP_URL when set, else the production default.
+ */
+const loginUrl = `${(process.env.PUBLIC_APP_URL || 'https://app.direwolfcybersecurity.com').replace(/\/+$/, '')}/login`;
 try {
   if (process.env.PUBLIC_APP_URL) platformHosts.add(new URL(process.env.PUBLIC_APP_URL).host);
 } catch {
@@ -48,14 +58,15 @@ try {
 const engineerRole = /analysts, engineers and responders/i;
 
 /**
- * PLATFORM_LIVE from src/config.ts, read the way .github/workflows/deploy.yml reads
- * SITE_LAUNCHED (the exact `export const PLATFORM_LIVE = …;` line).
+ * A boolean switch from src/config.ts (PLATFORM_LIVE, PLATFORM_LOGIN), read the way
+ * .github/workflows/deploy.yml reads SITE_LAUNCHED (the exact `export const NAME = …;` line).
+ * @param {string} name
  * @returns {Promise<boolean>}
  */
-async function platformLive() {
+async function configFlag(name) {
   const config = await readFile(path.join(root, 'src', 'config.ts'), 'utf8');
-  const match = config.match(/^export const PLATFORM_LIVE = (true|false);$/m);
-  if (!match) throw new Error('src/config.ts: no `export const PLATFORM_LIVE = true|false;` line');
+  const match = config.match(new RegExp(`^export const ${name} = (true|false);$`, 'm'));
+  if (!match) throw new Error(`src/config.ts: no \`export const ${name} = true|false;\` line`);
   return match[1] === 'true';
 }
 
@@ -160,7 +171,8 @@ async function main() {
 
   const allFiles = await walk(dist);
   const files = allFiles.filter((f) => f.endsWith('.html'));
-  const live = await platformLive();
+  const live = await configFlag('PLATFORM_LIVE');
+  const login = await configFlag('PLATFORM_LOGIN');
   /** @type {string[]} */
   const failures = [];
   /** @type {string[]} Text of every page and stylesheet, for the unreferenced-image check. */
@@ -168,6 +180,7 @@ async function main() {
   let internalCount = 0;
   let externalCount = 0;
   let platformLinkCount = 0;
+  let loginLinkCount = 0;
 
   for (const file of files) {
     const rel = path.relative(dist, file).split(path.sep).join('/');
@@ -197,20 +210,31 @@ async function main() {
         (m) => m[1],
       ),
     ];
+    let pageLoginLinks = 0;
     for (const value of values) {
       try {
         const host = new URL(value, `https://www.direwolfcybersecurity.com${pagePath}`).host;
         if (platformHosts.has(host)) {
           platformLinkCount += 1;
-          if (!live) {
+          if (value === loginUrl) pageLoginLinks += 1;
+          // Row W7: with PLATFORM_LOGIN on, the sign-in URL itself is the one allowed link.
+          if (!live && !(login && value === loginUrl)) {
             failures.push(
-              `${pagePath}: links to the platform (${value}) while PLATFORM_LIVE is false in src/config.ts`,
+              login
+                ? `${pagePath}: links to the platform (${value}) while PLATFORM_LIVE is false in src/config.ts; PLATFORM_LOGIN allows only ${loginUrl}`
+                : `${pagePath}: links to the platform (${value}) while PLATFORM_LIVE and PLATFORM_LOGIN are false in src/config.ts`,
             );
           }
         }
       } catch {
         // Unparseable values are left to classify() below.
       }
+    }
+    loginLinkCount += pageLoginLinks;
+    if (login && pageLoginLinks === 0) {
+      failures.push(
+        `${pagePath}: no "Log in" link to ${loginUrl} while PLATFORM_LOGIN is true (src/components/Header.astro, row W7)`,
+      );
     }
 
     for (const value of values) {
@@ -265,10 +289,13 @@ async function main() {
   console.log(
     `Checked ${files.length} pages: ${internalCount} internal links, ${externalCount} external links (not fetched).`,
   );
+  const hosts = [...platformHosts].join(', ');
   console.log(
     live
-      ? `PLATFORM_LIVE is true: ${platformLinkCount} links to the platform (${[...platformHosts].join(', ')}).`
-      : `PLATFORM_LIVE is false: no links to the platform (${[...platformHosts].join(', ')}) allowed.`,
+      ? `PLATFORM_LIVE is true: ${platformLinkCount} links to the platform (${hosts}).`
+      : login
+        ? `PLATFORM_LIVE is false, PLATFORM_LOGIN is true: only ${loginUrl} allowed on the platform (${hosts}); ${loginLinkCount} "Log in" links on ${files.length} pages.`
+        : `PLATFORM_LIVE and PLATFORM_LOGIN are false: no links to the platform (${hosts}) allowed.`,
   );
   if (failures.length > 0) {
     console.error(`\n${failures.length} problem(s):`);

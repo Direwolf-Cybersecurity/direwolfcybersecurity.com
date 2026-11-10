@@ -70,7 +70,10 @@ middle and bottom; and no wall of text anywhere above the fold.
    only call to action is "Contact us" (row W6; owner direction 2026-10-27: no early access;
    owner decision 2026-10-29: no status sentence about the platform, which is described by its
    design, never as running), with "See services" as the hero's secondary link. Show
-   it in the header, the hero and the closing band, plus once after the service cards. Do
+   it in the header, the hero and the closing band, plus once after the service cards. The
+   header's "Log in" (row W7, `PLATFORM_LOGIN`, off until the platform's first production
+   deploy; owner request 2026-11-09) is a quiet secondary button before it, never a second call
+   to action and never paired with a sign-up link. Do
    not add an "Experienced a breach?" hotline: it implies round-the-clock human incident
    response, which the owner has not authorized (no 24/7 staffing claim).
 9. **A small, consistent motion system.** Durations 150 ms (hover), 250 ms (reveal), 400 ms

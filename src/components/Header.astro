@@ -1,7 +1,7 @@
 ---
 import BrandLogo from './BrandLogo.astro';
 import { primaryNav, isCurrent } from '../data/navigation';
-import { PLATFORM_LIVE, loginUrl, signupUrl } from '../config';
+import { PLATFORM_LIVE, PLATFORM_LOGIN, loginUrl, signupUrl } from '../config';
 
 /**
  * A near-black band (`.dark-band`) in both color schemes, so the owner's horizontal lockup, which
@@ -17,7 +17,11 @@ import { PLATFORM_LIVE, loginUrl, signupUrl } from '../config';
  *
  * Calls to action: "Log in" and "Sign up" while the platform is in service (PLATFORM_LIVE),
  * otherwise a single "Contact us" button to the contact page (claims register row W6; no early
- * access, owner direction 2026-10-27).
+ * access, owner direction 2026-10-27). PLATFORM_LOGIN (owner request 2026-11-09, row W7) adds
+ * only the quiet "Log in" button before "Contact us": at the header's top right from md up, and
+ * in the mobile menu below the navigation. It is never paired with a sign-up link, and its
+ * accessible name, "Log in to the Direwolf Platform", starts with the visible label (WCAG 2.5.3)
+ * and says where it leads.
  *
  * Without JavaScript the toggle cannot work: public/noscript.css, loaded by BaseLayout.astro in a
  * <noscript>, hides #menu-toggle and keeps #site-menu open. It is a file rather than an inline
@@ -68,15 +72,15 @@ const pathname = Astro.url.pathname;
         </ul>
       </nav>
       <div class="flex flex-col gap-3 sm:flex-row">
+        {(PLATFORM_LIVE || PLATFORM_LOGIN) && (
+          <a href={loginUrl} class="btn btn-secondary" rel="noopener noreferrer">
+            Log in<span class="sr-only"> to the Direwolf Platform</span>
+          </a>
+        )}
         {PLATFORM_LIVE ? (
-          <>
-            <a href={loginUrl} class="btn btn-secondary" rel="noopener noreferrer">
-              Log in
-            </a>
-            <a href={signupUrl} class="btn btn-primary" rel="noopener noreferrer">
-              Sign up
-            </a>
-          </>
+          <a href={signupUrl} class="btn btn-primary" rel="noopener noreferrer">
+            Sign up
+          </a>
         ) : (
           <a href="/contact/" class="btn btn-primary">
             Contact us
