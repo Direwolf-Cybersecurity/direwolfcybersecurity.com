@@ -17,12 +17,13 @@ import { PLATFORM_LIVE, signupUrl } from '../config';
 /*
  * Home (owner direction 2026-10-24): an AI-driven managed security services provider for any
  * small or mid-size business. Short copy, one idea per section, a visual element in each, and
- * each idea said once: the positioning line (row A8's draft of 2026-11-09, owner decision 4: the
- * AI SOC plan's Option B), which carries the oversight idea (row A2), is the hero subhead,
- * verbatim. It names only the AI roles built in the platform's code (analysts and responders), so
- * no page names the AI engineers and row A8's gate (launch runbook G20) takes its second branch;
- * "around the clock" stays in the first sentence, with the AI's work, and the person is in the
- * second. The "How it works" steps name the same roles (analysts triage, responders contain).
+ * each idea said once: the positioning line (row A8, as the owner chose it on 2026-11-09, owner
+ * decision 4), which carries the oversight idea (row A2: "with human oversight from Direwolf"),
+ * is the hero subhead, verbatim. It names only the AI roles built in the platform's code (analysts
+ * and responders), so no page names the AI engineers and row A8's gate (launch runbook G20) takes
+ * its second branch; "around the clock" describes only the AI's work, and the oversight carries
+ * no person, team or hours. The "How it works" steps name the same roles (analysts triage,
+ * responders contain).
  * Every claim is in docs/claims-register.md (rows F1, F5, A1-A4, A6-A8, C1, C5, R2-R5, S-STAT-2,
  * S-STAT-3, S-STAT-6, W6). While the platform is not in service the
  * hero's primary button is "Contact us" (row W6: no early access, owner direction 2026-10-27).
@@ -117,12 +118,12 @@ const reasons: { icon: IconName; title: string; text: string; draw?: false }[] =
         >
           Enterprise-grade security, sized for your business.
         </h1>
-        {/* Two non-breaking spaces keep the subhead's lines clear of the shield (npm run
+        {/* A non-breaking space keeps the subhead's first line clear of the shield (npm run
         hero-contrast): without "and&nbsp;responders" line 1 ends in "and" and drops under 4.5:1 at
-        640 px; without "Direwolf&nbsp;security" line 3 ends in "Direwolf" and does at 768 px. */}
+        640 px. */}
         <p class="text-muted mt-6 text-lg md:text-xl">
           A next-gen AI SOC: AI security analysts and&nbsp;responders work every alert around the
-          clock. Major incidents go straight to a Direwolf&nbsp;security professional.
+          clock, with human oversight from Direwolf.
         </p>
         <div class="mt-8 flex flex-col gap-3 sm:flex-row">
           {PLATFORM_LIVE ? (

@@ -12,13 +12,13 @@ import type { IconName } from '../data/icons';
 import { industries, hqLine, ownershipStatement, ownershipPhrase } from '../config';
 
 // Claims register rows F1-F5, C1, C2 (one sentence each on About), A2 and H1 (pointer only, in the
-// "Regulated industries" section). Draft of 2026-11-09 (owner decision 4): A2's oversight wording
-// is "a Direwolf security professional", never "a team"; company practices are in the documenting
-// tense and "certification" is not used until an assessor's date is set (rows C1, C2). Row F4
-// (owner request 2026-10-29): the "Who we are" lede is the lead-in "Our cyber professionals
-// bring experience from", completed by the industry list under it, so the industries are not
-// named twice.
-const description = `Direwolf Cybersecurity is ${ownershipPhrase} headquartered in Colorado Springs, Colorado, bringing AI-driven detection and response, overseen by a Direwolf security professional, to small and mid-size businesses.`;
+// "Regulated industries" section). Owner's review of 2026-11-09 (owner decision 4): A2's oversight
+// wording is "with human oversight from Direwolf", never a team, a named person or hours; company
+// practices are in the documenting tense and "certification" is not used until an assessor's date
+// is set (rows C1, C2). Row F4 (owner request 2026-10-29): the "Who we are" lede is the lead-in
+// "Our cyber professionals bring experience from", completed by the industry list under it, so
+// the industries are not named twice.
+const description = `Direwolf Cybersecurity is ${ownershipPhrase} headquartered in Colorado Springs, Colorado, bringing AI-driven detection and response, with human oversight from Direwolf, to small and mid-size businesses.`;
 
 const industryIcons: Record<(typeof industries)[number], IconName> = {
   Healthcare: 'heart-pulse',
@@ -53,9 +53,8 @@ const withImage = hasImage('about');
             enterprises take for granted.
           </p>
           <p>
-            AI-driven detection and response, overseen by a Direwolf security professional who is
-            paged for major incidents, lets us offer that protection at a price a small business can
-            carry.
+            AI-driven detection and response, with human oversight from Direwolf, lets us offer that
+            protection at a price a small business can carry.
           </p>
         </div>
       </div>

@@ -93,8 +93,10 @@ foundations plan decision 23).
 
 ## Questions for counsel on these passages
 
-1. Does "Direwolf's security personnel" or "a Direwolf security professional" (the website's
-   form) imply more than one person? (AI SOC autonomy plan, question U15.)
+1. Does "Direwolf's security personnel" imply more than one person? Since the owner's review of
+   2026-11-09 the website says "with human oversight from Direwolf" (claims register row A2),
+   which names no person, team or hours; should these documents use that form too? (AI SOC
+   autonomy plan, question U15.)
 2. Terms §3.1 refers to coverage hours "stated in your Order", and no Order Form exists yet
    (decision 5 drafts one). Is the sentence safe to publish before the Order Form, given that
    §3.5 also points to the Order?

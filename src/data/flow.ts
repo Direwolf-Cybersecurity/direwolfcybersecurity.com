@@ -5,8 +5,9 @@
  * src/pages/index.astro word for word: Detect (rows A1, A4), Investigate (row A8's analyst role
  * form) and Respond (rows A3 and A8's responder role form). They name only the AI roles built in
  * the platform's code; "engineers" never appears here (row A8's gate), and no AI role has a
- * person icon. The only people icon (`users`) is beside "a Direwolf security professional" (row
- * A2's draft of 2026-11-09; a single-person icon would match it better, motion gate 2b).
+ * person icon. The only people icon (`users`) is beside "Human oversight from Direwolf" (row A2's
+ * form chosen by the owner on 2026-11-09); the icon is settled with motion gate 2b, before the
+ * node is shown, so that it implies no team size.
  *
  * `oversight.shown` stays false until the owner approves the second Home mention of the oversight
  * idea (rows A2 and A8, motion gate 2b). The figure works without it: the run keeps the same
@@ -49,7 +50,7 @@ export const flowLegend = 'Direwolf AI SOC';
 /** The oversight node (rows A2 / A8 Platform form; shown only once motion gate 2b closes). */
 export const oversight = {
   shown: false,
-  text: 'Overseen by a Direwolf security professional',
+  text: 'Human oversight from Direwolf',
 } as const;
 
 /** The figure's caption: the flow is an illustration, not a live view (row D1). */

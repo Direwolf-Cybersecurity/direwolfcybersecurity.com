@@ -21,14 +21,14 @@ export const siteName = 'Direwolf Cybersecurity';
 /**
  * Positioning (owner direction 2026-10-24): an AI-driven managed security services provider
  * (MSSP) for any small or mid-size business; government contractors are one audience among
- * several. The description's oversight wording is row A2's draft of 2026-11-09 (owner decision 4,
- * the AI SOC plan's Option B): "a Direwolf security professional", never "a team". The tagline
- * is also set on the social card (scripts/generate-brand-assets.mjs reads this exact line), so
- * run `npm run brand:assets` after changing it. Claims register row F5.
+ * several. The description's oversight wording is row A2's form chosen by the owner on 2026-11-09
+ * (owner decision 4): "with human oversight from Direwolf", never a team, a named person or hours.
+ * The tagline is also set on the social card (scripts/generate-brand-assets.mjs reads this exact
+ * line), so run `npm run brand:assets` after changing it. Claims register row F5.
  */
 export const siteTagline = 'AI-driven managed security for small and mid-size businesses';
 export const siteDescription =
-  'Direwolf Cybersecurity is a managed security services provider for small and mid-size businesses: AI-driven detection and response overseen by a Direwolf security professional, managed endpoint protection, penetration testing and vulnerability scanning, compliance readiness and security planning. An SBA-certified Service-Disabled Veteran-Owned Small Business headquartered in Colorado Springs, Colorado.';
+  'Direwolf Cybersecurity is a managed security services provider for small and mid-size businesses: AI-driven detection and response with human oversight from Direwolf, managed endpoint protection, penetration testing and vulnerability scanning, compliance readiness and security planning. An SBA-certified Service-Disabled Veteran-Owned Small Business headquartered in Colorado Springs, Colorado.';
 
 /** Canonical origin of this site. Must match `site` in astro.config.mjs and public/CNAME. */
 export const siteOrigin = 'https://www.direwolfcybersecurity.com';
@@ -135,7 +135,7 @@ export const contactEndpoint: string | undefined =
  * is the short form of a claims-register row (C1, C2, H1 strip form, H4/H5 strip form) and the
  * Compliance page explains what each one means. "Aligned to NIST SP 800-171" describes the
  * Platform's design only, never Direwolf's company practices, which are being documented (row C1,
- * draft of 2026-11-09). Row H1 forbids hosting wording on Home,
+ * from the owner's review of 2026-11-09). Row H1 forbids hosting wording on Home,
  * Services and About, so never render the strip there; those pages link to /compliance/
  * instead. Change a phrase only after updating docs/claims-register.md.
  */

@@ -22,10 +22,10 @@ import type { StatId } from './stats';
  * and investigate, responders contain); the detection-engineer and advisor agents are owner
  * intent, not built, so this file never names them (row A8).
  *
- * Draft of 2026-11-09 (owner decision 4; improvement review item 3): the human side is "a Direwolf
- * security professional", never "our team" (row A2); phishing simulation is not offered (row A7;
- * platform ADR 0060); managed firewall is withdrawn until it has a delivery plan (row R12); the
- * fractional security officer is offered on request, after a scoping call (row R11).
+ * Owner's review of 2026-11-09 (owner decision 4; improvement review item 3): the human side is
+ * "with human oversight from Direwolf", never a team, a named person or hours (row A2); phishing
+ * simulation is not offered (row A7; platform ADR 0060); managed firewall and the fractional
+ * security officer are offered on request, after a scoping call (rows R12 and R11).
  *
  * Vendor names: the endpoint protection vendor is not named anywhere in this file until the
  * partner agreement is signed (register rule 5, rows V1 and A4). Microsoft 365 and Google
@@ -103,7 +103,7 @@ export const services: Service[] = [
     kicker: 'Powered by the Direwolf AI SOC',
     icon: 'radar',
     summary: 'The Direwolf AI SOC triages every endpoint alert and contains confirmed threats.',
-    lede: 'AI security analysts and responders work every alert from your endpoints around the clock. A Direwolf security professional oversees their work and is paged for major incidents.',
+    lede: 'AI security analysts and responders work every alert from your endpoints around the clock, with human oversight from Direwolf.',
     whatYouGet: [
       'AI analysts triage and investigate each alert, returning a verdict, a confidence level, a MITRE ATT&CK mapping and a plain-English summary.',
       'AI responders contain confirmed threats (stop the process, quarantine the file, isolate the host) under guardrails you control, with one-click undo.',
@@ -179,7 +179,7 @@ export const services: Service[] = [
 ];
 
 /**
- * The other services (owner decision 2026-10-29; register rows R2-R11, one row per service), each
+ * The other services (owner decision 2026-10-29; register rows R2-R12, one row per service), each
  * shown on /services/ as a short card in its group: the name, one sentence and what you get. `id`
  * is the card's anchor on /services/ and the contact-form topic code its quote link preselects.
  * Priced per engagement: "contact us" (row P1), so no product and no price here.
@@ -207,6 +207,16 @@ export const moreServices: MoreService[] = [
       'We check your domains and staff accounts against known breach data and tell you which passwords to reset.',
     youGet: 'A breach-exposure report on an agreed schedule.',
     homeTag: true,
+  },
+  {
+    id: 'managed-firewall',
+    name: 'Managed firewall',
+    group: 'detect-and-respond',
+    icon: 'network',
+    summary:
+      'We set up your firewall to a security baseline, keep it updated, watch its security events and review its rules every quarter.',
+    youGet:
+      'On request, after a scoping call: a hardened, patched firewall and a quarterly rule review.',
   },
   {
     id: 'incident-response-readiness',
