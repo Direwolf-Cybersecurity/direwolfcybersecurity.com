@@ -21,7 +21,7 @@ import type { IconName } from '../data/icons';
  * explainer with the "How Direwolf fits" figure (src/components/ServiceFit.astro), then one
  * section per group (src/data/services.ts): its detailed services, then a short card for each of
  * its other services. Every statement is in docs/claims-register.md (rows A1-A4, A6-A9, C5, D2,
- * P1, R2-R11, S-STAT-5).
+ * P1, R2-R11, S-STAT-5; row R12, managed firewall, is retired in the draft of 2026-11-09).
  *
  * A detailed service keeps its template. The DOM order is the reading order on phones: kicker,
  * heading, lede and any cited statistic; the owner's image, when its file exists; "What you get";
@@ -58,7 +58,8 @@ const groups = servicesByGroup.map((group, index) => ({
 const description =
   'Managed detection and response, endpoint protection (EDR), penetration testing, vulnerability scanning, compliance readiness and security planning for small and mid-size businesses, from Direwolf Cybersecurity.';
 
-// EDR and MDR in plain words (rows A4, A8 short form, A9). The MDR sentence carries the oversight.
+// EDR and MDR in plain words (rows A4, A8 short form, A9). The MDR text carries the oversight, in
+// its own sentence after "around the clock" (row A8, draft of 2026-11-09).
 // MDR is scoped to what the EDR reports, as in the MDR section below and on Home; Microsoft 365 or
 // Google Workspace monitoring is named only once the owner confirms it is delivered (row A9).
 const terms: { icon: IconName; short: string; long: string; text: string }[] = [
@@ -72,7 +73,7 @@ const terms: { icon: IconName; short: string; long: string; text: string }[] = [
     icon: 'radar',
     short: 'MDR',
     long: 'Managed detection and response',
-    text: 'The service that watches what your EDR reports, investigates every alert and responds. AI security analysts and responders do the work around the clock, overseen by our team of security professionals.',
+    text: 'The service that watches what your EDR reports, investigates every alert and responds. AI security analysts and responders do the work around the clock. Major incidents go straight to a Direwolf security professional.',
   },
 ];
 ---

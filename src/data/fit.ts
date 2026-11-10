@@ -47,7 +47,7 @@ export const fitBands: FitBand[] = [
       { icon: 'shield-check', text: 'EDR on your devices' },
       {
         icon: 'radar',
-        text: 'MDR: AI analysts and responders, overseen by our security professionals',
+        text: 'MDR: AI analysts and responders, overseen by a Direwolf security professional',
       },
       { icon: 'crosshair', text: 'Testing and compliance' },
     ],
