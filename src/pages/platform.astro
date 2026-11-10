@@ -22,15 +22,16 @@ import { PLATFORM_LIVE, loginUrl, signupUrl } from '../config';
  * to run on", never "runs on" or "hosted on" until gate G8), H4 and H5 ("built to encrypt", never
  * "is encrypted" until G8), H8 (designed to run on Amazon Bedrock), S1-S3 and S6 (implemented in
  * code; the audit log is "built for" administrators to review), A3, A6 and A8's short form in
- * design form ("Designed so ..."), which carries row A2's oversight once on this page. The lede
- * names only the detection and response service: the other services are delivered by our team
- * (rows R2-R11), so the page never says "in one place" or "every Direwolf service" (row W6). No
- * FedRAMP wording here, so no row H2 disclaimer is needed.
+ * design form ("Designed so ..."), ending "with human oversight from Direwolf" (the owner's choice
+ * of 2026-11-09, owner decision 4), which carries row A2's oversight once on this page. The lede
+ * names only the detection and response service: the other services are delivered by Direwolf as
+ * professional services (rows R2-R12), so the page never says "in one place" or "every Direwolf
+ * service" (row W6). No FedRAMP wording here, so no row H2 disclaimer is needed.
  * The only call to action is "Contact us" while PLATFORM_LIVE is false (row W6); Sign up and Log
  * in return when it is true. Icons are static (motion copy rule 9).
  */
 const description =
-  'How the Direwolf Platform is built to keep your data protected and to take security work off your team, with AI overseen by our security professionals.';
+  'How the Direwolf Platform is built to keep your data protected and to have AI take security work off your team, with human oversight from Direwolf.';
 
 // 25 words or fewer (docs/design-direction.md rule 12).
 const lede =
@@ -81,7 +82,7 @@ const lessWorkPoints: Point[] = [
   {
     icon: 'brain-circuit',
     title: 'AI handles the alert noise',
-    text: 'Designed so AI security analysts and responders work every alert around the clock, overseen by our team of security professionals.',
+    text: 'Designed so AI security analysts and responders work every alert around the clock, with human oversight from Direwolf.',
   },
   {
     icon: 'mail',

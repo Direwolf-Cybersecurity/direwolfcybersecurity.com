@@ -2,9 +2,9 @@
  * Pricing shown on the website.
  *
  * Mitch: this is the only file to edit when prices are known. Set `priceUsd` to a number to
- * display it; leave it `null` to show "Contact us for pricing". Prices here are informational.
- * The prices charged at checkout live in Stripe and are managed from the platform
- * (PLAN.md section 14.4 in the platform repository), so keep the two in step.
+ * display it; leave it `null` to show "Contact us for pricing". Prices here are informational:
+ * there is no online checkout, and each customer is invoiced the prices in its signed Order (owner
+ * decision of 2026-11-09: owner-managed access, no Stripe; claims register rows P1 and P2).
  *
  * Product names stay vendor-neutral until the partner agreement is signed
  * (docs/claims-register.md rule 5, row V1). Do not add "licensed through Direwolf" or a

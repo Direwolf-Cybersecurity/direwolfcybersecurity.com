@@ -8,9 +8,11 @@ const description =
   'Where Direwolf Cybersecurity stands on NIST SP 800-171 and CMMC Level 2, where the Direwolf Platform is built to run, how it is designed to protect data, and what we do not claim.';
 
 /** Update when this page is re-checked against docs/claims-register.md. */
-const lastReviewed = { iso: '2026-10-29', label: 'October 29, 2026' };
+const lastReviewed = { iso: '2026-11-09', label: 'November 9, 2026' };
 
-// Claims register rows C1, C2, H1 (long form) with H2, and H4/H5 with H6 (first sentence). Owner
+// Claims register rows C1, C2, H1 (long form) with H2, and H4/H5 with H6 (first sentence). Row C1,
+// from the owner's review of 2026-11-09 (owner decision 4): "aligned" describes the Platform's
+// design; company practices are in the documenting tense until their records exist. Owner
 // decision 2026-10-29: no roadmap and no "not yet in service" wording; the hosting and encryption
 // cards describe how the Platform is built and designed ("built to run on", "designed to"), never
 // that it is running, until gate G8 closes. The GovCloud and FedRAMP roadmap card (rows H9 and
@@ -19,7 +21,7 @@ const posture: { claim: string; meaning: string }[] = [
   {
     claim: 'Aligned to NIST SP 800-171',
     meaning:
-      'We have mapped NIST SP 800-171 (Revision 2, as used by CMMC Level 2) to the Direwolf Platform and to our company practices and, as part of preparing for a CMMC Level 2 assessment, we are documenting the system security plan, control matrix with evidence, and plan of action and milestones that the assessment requires. "Aligned" means we implement the requirements as we understand them and keep evidence of it. It is not a third-party certification.',
+      'We have mapped NIST SP 800-171 (Revision 2, as used by CMMC Level 2) to the Direwolf Platform, which is designed to implement its requirements in code. Our company policies and records are being documented as part of preparing for a CMMC Level 2 assessment, together with the system security plan, control matrix with evidence, and plan of action and milestones that the assessment requires. "Aligned" describes how the Platform is designed. It is not a third-party certification.',
   },
   {
     claim: 'Pursuing CMMC Level 2',

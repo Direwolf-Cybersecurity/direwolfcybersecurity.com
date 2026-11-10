@@ -11,7 +11,7 @@ import type { StatId } from './stats';
  * roadmap list. Every statement below is in docs/claims-register.md (rows A1-A4, A6-A9, C5,
  * R2-R12).
  *
- * How the services are worded (rule 9): each is a service Direwolf's team delivers to a customer,
+ * How the services are worded (rule 9): each is a service Direwolf delivers to a customer,
  * described by its outcome and deliverable, never as a feature of the Direwolf Platform's software
  * while that platform is not in service (`PLATFORM_LIVE` in src/config.ts). So no "engine",
  * "dashboard", "portal", "tracker" (as software), "in the same queue as your alerts" or "real
@@ -21,6 +21,11 @@ import type { StatId } from './stats';
  * The MDR lede and bullets name only the AI roles built in the platform's code (analysts triage
  * and investigate, responders contain); the detection-engineer and advisor agents are owner
  * intent, not built, so this file never names them (row A8).
+ *
+ * Owner's review of 2026-11-09 (owner decision 4; improvement review item 3): the human side is
+ * "with human oversight from Direwolf", never a team, a named person or hours (row A2); phishing
+ * simulation is not offered (row A7; platform ADR 0060); managed firewall and the fractional
+ * security officer are offered on request, after a scoping call (rows R12 and R11).
  *
  * Vendor names: the endpoint protection vendor is not named anywhere in this file until the
  * partner agreement is signed (register rule 5, rows V1 and A4). Microsoft 365 and Google
@@ -98,7 +103,7 @@ export const services: Service[] = [
     kicker: 'Powered by the Direwolf AI SOC',
     icon: 'radar',
     summary: 'The Direwolf AI SOC triages every endpoint alert and contains confirmed threats.',
-    lede: 'AI security analysts and responders work every alert from your endpoints around the clock. Our team of security professionals oversees their work and takes the cases the AI cannot decide.',
+    lede: 'AI security analysts and responders work every alert from your endpoints around the clock, with human oversight from Direwolf.',
     whatYouGet: [
       'AI analysts triage and investigate each alert, returning a verdict, a confidence level, a MITRE ATT&CK mapping and a plain-English summary.',
       'AI responders contain confirmed threats (stop the process, quarantine the file, isolate the host) under guardrails you control, with one-click undo.',
@@ -137,13 +142,12 @@ export const services: Service[] = [
     kicker: 'See your business the way an attacker would',
     icon: 'crosshair',
     summary:
-      'Scoped tests of your networks, web applications, cloud and email defenses, with a written report.',
+      'Scoped tests of your networks, web applications and cloud configuration, with a written report.',
     lede: 'We agree the scope with you, test it, and deliver a written report of what we found and how to fix it.',
     whatYouGet: [
       'External and internal network penetration testing.',
       'Web application testing.',
       'Cloud configuration testing.',
-      'Phishing simulation for your staff.',
       'A scoped engagement and a written report of findings and recommended fixes.',
     ],
     whoItIsFor:
@@ -211,7 +215,8 @@ export const moreServices: MoreService[] = [
     icon: 'network',
     summary:
       'We set up your firewall to a security baseline, keep it updated, watch its security events and review its rules every quarter.',
-    youGet: 'A hardened, patched firewall and a quarterly rule review.',
+    youGet:
+      'On request, after a scoping call: a hardened, patched firewall and a quarterly rule review.',
   },
   {
     id: 'incident-response-readiness',
@@ -293,8 +298,9 @@ export const moreServices: MoreService[] = [
     group: 'plan-and-lead',
     icon: 'compass',
     summary:
-      'Ongoing security program leadership from our team: a security plan, regular reviews, and the policies and reports your business needs, drafted for your approval.',
-    youGet: 'Regular reviews, a security plan, and policies and reports.',
+      'Security program leadership from a Direwolf security professional: a security plan, regular reviews, and the policies and reports your business needs, drafted for your approval.',
+    youGet:
+      'On request, after a scoping call: regular reviews, a security plan, and policies and reports.',
   },
 ];
 

@@ -1,0 +1,47 @@
+---
+title: Subprocessors
+version: v2026.11.09
+effectiveDate: 2026-11-09
+summary: The service providers that process customer data on Direwolf's behalf, what each one does, where it processes data, and how we tell you about changes.
+status: draft
+order: 70
+---
+
+import { privacyEmail } from '../../config';
+
+{/* DRAFT FOR COUNSEL REVIEW, 2026-11-09 (owner decision 4 of 2026-11-09). Not published: the version in effect is src/content/legal/subprocessors.mdx, v2026.10.25, which this draft does not change. The changed passages and the reasons are listed in docs/legal-drafts/2026-11-09/README.md. At publication, after counsel's review and the owner's yes: set version and effectiveDate to the publication day, set status to published, replace src/content/legal/subprocessors.mdx with this file, and remove this comment. */}
+
+## What this list is
+
+A subprocessor is a company Direwolf uses to process customer data on its behalf in order to deliver the Direwolf Platform and services. Each one is bound by a contract that limits its use of the data and requires appropriate security, which is how we meet Colorado's requirement to flow reasonable-security obligations down to service providers (C.R.S. 6-1-713.5). This list is incorporated into our [Terms of Service](/legal/terms/) and described in our [Privacy Policy](/legal/privacy/).
+
+This list describes the subprocessors Direwolf will use when the Platform launches. The agreement with the endpoint protection vendor is being put in place; see the [Compliance](/compliance/) page for the current status of our program.
+
+## Platform subprocessors
+
+The Platform is being brought into service; these statements describe how customer data is handled once you use it.
+
+| Subprocessor                  | What it does for Direwolf                                                                                                                                                                                                                                                                     | Data it processes                                                                                                                                                                                                                                                                           | Location                                                                                                                                                                                                                                                                         |
+| ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Amazon Web Services, Inc.** | Hosts the Platform: compute, databases, object storage, queues, key management, secrets, logging and monitoring, transactional email delivery (Amazon SES), and AI model inference (Amazon Bedrock) for the Direwolf AI SOC                                                                   | All Platform data: account, organization, billing contact, security data from your endpoints, audit and consent records, email notifications                                                                                                                                                | United States: AWS US West (Oregon), with backups in AWS US East (Ohio). AI inference runs on Amazon Bedrock in AWS US Regions: US East (N. Virginia), US East (Ohio) or US West (Oregon); AWS states Bedrock content is not used to train models or shared with model providers |
+| **SentinelOne, Inc.**         | Endpoint protection platform whose licenses Direwolf resells. Direwolf provisions a dedicated SentinelOne site for your organization and reads alerts, agent inventory and process timelines from it; the Direwolf AI SOC sends response actions (kill, quarantine, isolate, reconnect) to it | Security data from your endpoints: alerts and detections, hostnames and device identifiers, operating system and software details, process names and command lines, file names and hashes, network addresses, signed-in usernames. Your endpoints send this to SentinelOne's cloud directly | United States [data-residency option to be confirmed with the vendor before publication]                                                                                                                                                                                         |
+
+SentinelOne has two roles. It is Direwolf's subprocessor for the data Direwolf's connectors read from and write to its cloud, and it is your direct licensor under its own end user license agreement, which you accept before Direwolf provisions its product for you. Its own privacy terms govern its use of the data your endpoints send it, including any de-identified "system data" or "usage data" its terms permit it to keep.
+
+## Website service provider
+
+| Provider         | What it does                                                                                                                  | Data it processes                                                                                                                          | Location      |
+| ---------------- | ----------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ------------- |
+| **GitHub, Inc.** | Hosts this website ([www.direwolfcybersecurity.com](https://www.direwolfcybersecurity.com/)) as a static site on GitHub Pages | GitHub logs the IP address of each visitor for security purposes. Direwolf does not receive those logs. No customer data is on the website | United States |
+
+This website is hosted separately from the Direwolf Platform and does not store customer data.
+
+## What is not on this list
+
+Direwolf does not use analytics, advertising, marketing-automation, customer-support chat or third-party AI services that would receive customer or visitor data. If we add a provider in one of these categories, it will appear here first.
+
+## Changes to this list
+
+When we intend to add or replace a subprocessor that will process customer data, we will update this page with a new version and email the administrators of every customer organization at least 30 days before the new subprocessor begins processing, except where a change is needed urgently to address a security or legal risk, in which case we will notify you as soon as we reasonably can. If you have a reasonable, security-based objection to a new subprocessor, you may tell us within that period; if we cannot address the objection, you may terminate the affected subscription before the change takes effect and receive a refund of prepaid fees for the unused remainder of the term.
+
+Questions about this list: {privacyEmail}.
