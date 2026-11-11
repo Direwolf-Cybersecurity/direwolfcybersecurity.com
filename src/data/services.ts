@@ -106,7 +106,7 @@ export const services: Service[] = [
     lede: 'AI security analysts and responders work every alert from your endpoints around the clock, with human oversight from Direwolf.',
     whatYouGet: [
       'AI analysts triage and investigate each alert, returning a verdict, a confidence level, a MITRE ATT&CK mapping and a plain-English summary.',
-      'AI responders contain confirmed threats (stop the process, quarantine the file, isolate the host) under guardrails you control, with one-click undo.',
+      'AI responders contain confirmed threats (stop the process, quarantine the file, isolate the host) under guardrails you control, and Direwolf can undo isolations and quarantines.',
       'Email alerts for your administrators, with a plain-English summary of each alert and a full record of every action taken.',
     ],
     whoItIsFor:
